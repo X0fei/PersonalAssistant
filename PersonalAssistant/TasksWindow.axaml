@@ -1,0 +1,43 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="500"
+        x:Class="PersonalAssistant.TasksWindow"
+		x:CompileBindings="False"
+        Title="Задачи" 
+		Width="400" Height="500"
+		WindowStartupLocation="CenterScreen">
+	<DockPanel Margin="10">
+
+		<StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Spacing="10" HorizontalAlignment="Right" Margin="0,0,0,10">
+			<Button Name="GoBackButton" Content="Выйти" Click="GoBackButton_Click"/>
+			<Button Name="AddCategoryButton" Content="Добавить категорию"/>
+			<Button Name="AddTaskButton" Content="Добавить задачу" Click="AddTaskButton_Click"/>
+		</StackPanel>
+
+		<TabControl Name="CategoryTabs">
+
+			<TabItem Header="Все">
+				<ListBox Name="AllTasksList">
+					<ListBox.ItemTemplate>
+						<DataTemplate>
+							<StackPanel>
+								<TextBlock
+									Text="{Binding Name}"/>
+								<TextBlock
+									Text="{Binding Description}"/>
+								<TextBlock
+									Text="{Binding Priority}"/>
+								<TextBlock
+									Text="{Binding Status}"/>
+							</StackPanel>
+						</DataTemplate>
+					</ListBox.ItemTemplate>
+				</ListBox>
+			</TabItem>
+
+		</TabControl>
+
+	</DockPanel>
+</Window>

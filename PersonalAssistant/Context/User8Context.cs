@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using PersonalAssistant.Models;
 
-namespace PersonalAssistant.Context;
+namespace PersonalAssistant.Utils.Context;
 
-public partial class User8Context : DbContext
+public partial class User8Context : Microsoft.EntityFrameworkCore.DbContext
 {
     public User8Context()
     {

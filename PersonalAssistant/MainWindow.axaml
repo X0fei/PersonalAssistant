@@ -2,8 +2,51 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="500"
         x:Class="PersonalAssistant.MainWindow"
-        Title="PersonalAssistant">
-    Welcome to Avalonia!
+        Width="400" Height="500"
+        Title="Вход / Регистрация"
+        WindowStartupLocation="CenterScreen">
+	
+	<TabControl>
+		<TabItem Header="Вход">
+			<StackPanel Margin="20" Spacing="10">
+				<TextBlock Text="Логин"/>
+				<TextBox Name="LoginBox"/>
+
+				<TextBlock Text="Пароль"/>
+				<TextBox Name="LoginPasswordBox"
+                         PasswordChar="●"/>
+
+				<Button Content="Войти"
+                        HorizontalAlignment="Right"
+                        Margin="0,10,0,0"
+						Click="LoginButton_Click"/>
+			</StackPanel>
+		</TabItem>
+
+		<TabItem Header="Регистрация">
+			<StackPanel Margin="20" Spacing="10">
+				<TextBlock Text="Логин"/>
+				<TextBox Name="RegisterLoginBox"/>
+
+				<TextBlock Text="Имя"/>
+				<TextBox Name="RegisterUsernameBox"/>
+
+				<TextBlock Text="Пароль"/>
+				<TextBox Name="RegisterPasswordBox"
+                         PasswordChar="●"/>
+
+				<TextBlock Text="Подтвердите пароль"/>
+				<TextBox Name="RegisterConfirmPasswordBox"
+                         PasswordChar="●"/>
+
+				<Button Content="Зарегистрироваться"
+                        HorizontalAlignment="Right"
+                        Margin="0,10,0,0"
+						Click="RegisterButton_Click"/>
+			</StackPanel>
+		</TabItem>
+	</TabControl>
+	
 </Window>
