@@ -4,6 +4,7 @@ using Avalonia.Markup.Xaml;
 using PersonalAssistant.Models;
 using PersonalAssistant.Utils.Context;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace PersonalAssistant;
@@ -23,25 +24,27 @@ public partial class AddEditTask : Window
 
     private void SaveButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var user = Utils.DbContext.users.FirstOrDefault(u => u.Id == userID);
-        Models.Task newTask = new Models.Task()
-        {
-            Name = NameBox.Text,
-            Description = DescriptionBox.Text,
-            Priority = PriorityBox.SelectedIndex + 1,
-            Status = StatusBox.SelectedIndex + 1,
-            CreationDate = DateTime.Now
-        };
+        
 
         //newTask.Users.Add(user);
 
         using (var context = new User8Context())
         {
+            var user = context.Users.FirstOrDefault(u => u.Id == userID);
+            Models.Task newTask = new Models.Task()
+            {
+                Name = NameBox.Text,
+                Description = DescriptionBox.Text,
+                Priority = PriorityBox.SelectedIndex + 1,
+                Status = StatusBox.SelectedIndex + 1,
+                CreationDate = DateTime.Now,
+                Users = new List<User> { user }
+            };
             context.Add(newTask);
             context.SaveChanges();
         }
 
-        Utils.DbContext.tasks = [.. Utils.DbContext.User8Context.Tasks];
+        Utils.DbContext.Tasks = [.. Utils.DbContext.User8Context.Tasks];
 
         TasksWindow tasksWindow = new TasksWindow(userID);
         tasksWindow.Show();

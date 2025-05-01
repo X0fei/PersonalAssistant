@@ -28,9 +28,9 @@
 								<TextBlock
 									Text="{Binding Description}"/>
 								<TextBlock
-									Text="{Binding Priority}"/>
+									Text="{Binding PriorityNavigation.Name}"/>
 								<TextBlock
-									Text="{Binding Status}"/>
+									Text="{Binding StatusNavigation.Name}"/>
 							</StackPanel>
 						</DataTemplate>
 					</ListBox.ItemTemplate>

@@ -9,8 +9,8 @@ namespace PersonalAssistant;
 
 public partial class TasksWindow : Window
 {
-    int userID;
-    private List<Models.Task> displayAllTasks = Utils.DbContext.tasks.ToList();
+    private int userID;
+    private List<Models.Task> displayAllTasks;
     public TasksWindow()
     {
         InitializeComponent();
@@ -20,6 +20,9 @@ public partial class TasksWindow : Window
     {
         InitializeComponent();
         this.userID = userID;
+        displayAllTasks = Utils.DbContext.Tasks
+            .Where(task => task.Users.Any(user => user.Id == this.userID))
+            .ToList();
         AllTasksList.ItemsSource = displayAllTasks;
     }
 

@@ -9,7 +9,7 @@ namespace PersonalAssistant
 {
     public partial class MainWindow : Window
     {
-        private List<User> users = Utils.DbContext.users.ToList();
+        private List<User> users = Utils.DbContext.Users.ToList();
         public MainWindow()
         {
             InitializeComponent();
@@ -69,8 +69,8 @@ namespace PersonalAssistant
                 context.SaveChanges();
             }
 
-            Utils.DbContext.users = [.. Utils.DbContext.User8Context.Users];
-            users = Utils.DbContext.users.ToList();
+            Utils.DbContext.Users = [.. Utils.DbContext.User8Context.Users];
+            users = Utils.DbContext.Users.ToList();
 
             var user = users.FirstOrDefault(u => u.Login == login && u.Password == password);
 

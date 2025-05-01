@@ -12,8 +12,10 @@ namespace PersonalAssistant.Utils
     public static class DbContext
     {
         public static User8Context User8Context { get; set; } = new();
-        public static List<User> users { get; set; } = [.. User8Context.Users];
-        public static List<Models.Task> tasks { get; set; } = [.. User8Context.Tasks
+        public static List<User> Users { get; set; } = [.. User8Context.Users];
+        public static List<Models.Task> Tasks { get; set; } = [.. User8Context.Tasks
+            .Include(task => task.StatusNavigation)
+            .Include(task => task.PriorityNavigation)
             .Include(task => task.Users)];
     }
 }
