@@ -10,6 +10,7 @@
 		<!-- Кнопка Назад -->
 		<Button Name="BackButton"
                 Content="← Назад"
+				Click="GoBackButton_Click"
                 HorizontalAlignment="Left"
                 VerticalAlignment="Top"
                 DockPanel.Dock="Top"
@@ -41,8 +42,15 @@
 					<ComboBoxItem Content="Не выполнено"/>
 				</ComboBox>
 
-				<Button Name="SaveButton" Content="Сохранить" HorizontalAlignment="Right" Margin="0,10,0,0" Click="SaveButton_Click"/>
-
+				<StackPanel
+					Orientation="Horizontal"
+					HorizontalAlignment="Right"
+					Margin="0,10,0,0"
+					Spacing="10">
+					<Button Name="DeleteButton" Content="Удалить" Click="DeleteButton_Click" IsVisible="False"/>
+					<Button Name="SaveButton" Content="Сохранить" Click="SaveButton_Click"/>
+				</StackPanel>
+				
 			</StackPanel>
 		</ScrollViewer>
 	</DockPanel>

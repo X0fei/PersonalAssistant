@@ -39,4 +39,13 @@ public partial class TasksWindow : Window
         addEditTask.Show();
         Close();
     }
+
+    private void Item_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        var border = sender as Border;
+        int taskID = (int)border.Tag;
+        AddEditTask addEditTask = new AddEditTask(userID, taskID);
+        addEditTask.Show();
+        Close();
+    }
 }
