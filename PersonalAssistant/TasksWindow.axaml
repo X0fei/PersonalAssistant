@@ -14,6 +14,7 @@
 			<Button Name="GoBackButton" Content="Выйти" Click="GoBackButton_Click"/>
 			<Button Name="AddCategoryButton" Content="Добавить категорию"/>
 			<Button Name="AddTaskButton" Content="Добавить задачу" Click="AddTaskButton_Click"/>
+			<Button Name="ProfileButton" Content="Имя" Click="ProfileButton_Click"/>
 		</StackPanel>
 
 		<!-- Панель с фильтром -->

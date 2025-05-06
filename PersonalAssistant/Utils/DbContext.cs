@@ -21,5 +21,6 @@ namespace PersonalAssistant.Utils
         public static List<Models.List> Lists { get; set; } = [.. User8Context.Lists
             .Include(list => list.Tasks)
             .Include(task => task.Users)];
+        public static List<Pfp> Pfps { get; set; } = [.. User8Context.Pfps];
     }
 }

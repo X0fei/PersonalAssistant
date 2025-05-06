@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using PersonalAssistant.Models;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ namespace PersonalAssistant;
 public partial class TasksWindow : Window
 {
     private int userID;
+    private User currentUser;
     private List<Models.Task> displayAllTasks;
     public TasksWindow()
     {
@@ -19,11 +21,16 @@ public partial class TasksWindow : Window
     public TasksWindow(int userID)
     {
         InitializeComponent();
+
         this.userID = userID;
+        currentUser = Utils.DbContext.Users.First(u => u.Id == userID);
+        ProfileButton.Content = currentUser.Name;
+
         displayAllTasks = Utils.DbContext.Tasks
             .Where(task => task.Users.Any(user => user.Id == this.userID))
             .ToList();
         AllTasksList.ItemsSource = displayAllTasks;
+
         FilterComboBox.ItemsSource = Utils.DbContext.Statuses
             .Select(s => s.Name)
             .Prepend("Все")
@@ -72,4 +79,10 @@ public partial class TasksWindow : Window
         }
     }
 
+    private void ProfileButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        ProfileWindow profileWindow = new ProfileWindow(currentUser);
+        profileWindow.Show();
+        Close();
+    }
 }
