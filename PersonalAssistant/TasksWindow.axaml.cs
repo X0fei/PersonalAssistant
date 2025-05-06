@@ -24,6 +24,12 @@ public partial class TasksWindow : Window
             .Where(task => task.Users.Any(user => user.Id == this.userID))
             .ToList();
         AllTasksList.ItemsSource = displayAllTasks;
+        FilterComboBox.ItemsSource = Utils.DbContext.Statuses
+            .Select(s => s.Name)
+            .Prepend("Все")
+            .ToList();
+        FilterComboBox.SelectedIndex = 0;
+        FilterComboBox.SelectionChanged += FilterComboBox_SelectionChanged;
     }
 
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -42,10 +48,28 @@ public partial class TasksWindow : Window
 
     private void Item_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
-        var border = sender as Border;
-        int taskID = (int)border.Tag;
-        AddEditTask addEditTask = new AddEditTask(userID, taskID);
-        addEditTask.Show();
-        Close();
+        if (AllTasksList.SelectedItem is Models.Task selectedTask)
+        {
+            AddEditTask addEditTask = new AddEditTask(userID, selectedTask.Id);
+            addEditTask.Show();
+            Close();
+        }
     }
+
+    private void FilterComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        string selectedStatus = FilterComboBox.SelectedItem?.ToString() ?? "Все";
+
+        if (selectedStatus == "Все")
+        {
+            AllTasksList.ItemsSource = displayAllTasks;
+        }
+        else
+        {
+            AllTasksList.ItemsSource = displayAllTasks
+                .Where(t => t.StatusNavigation?.Name == selectedStatus)
+                .ToList();
+        }
+    }
+
 }

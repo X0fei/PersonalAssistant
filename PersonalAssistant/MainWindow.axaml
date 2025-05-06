@@ -9,42 +9,83 @@
         WindowStartupLocation="CenterScreen">
 	
 	<TabControl>
-		<TabItem Header="Вход">
-			<StackPanel Margin="20" Spacing="10">
-				<TextBlock Text="Логин"/>
-				<TextBox Name="LoginBox"/>
+		<TabItem
+			Header="Вход">
+			<StackPanel
+				Margin="20"
+				Spacing="10">
+				<TextBlock
+					Text="Логин"/>
+				<TextBox
+					Name="LoginBox"
+					TextChanged="Input_TextChanged"/>
 
-				<TextBlock Text="Пароль"/>
-				<TextBox Name="LoginPasswordBox"
-                         PasswordChar="●"/>
+				<TextBlock
+					Text="Пароль"/>
+				<TextBox
+					Name="LoginPasswordBox"
+                    PasswordChar="●"
+					TextChanged="Input_TextChanged"/>
 
-				<Button Content="Войти"
-                        HorizontalAlignment="Right"
-                        Margin="0,10,0,0"
-						Click="LoginButton_Click"/>
+				<TextBlock
+					Name="ErrorTextBlock"
+					IsVisible="False"
+					Foreground="Red"
+					FontSize="12"
+					Margin="0,10,0,0"/>
+
+				<Button
+					Content="Войти"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,0,0"
+					Click="LoginButton_Click"/>
+
 			</StackPanel>
 		</TabItem>
 
-		<TabItem Header="Регистрация">
-			<StackPanel Margin="20" Spacing="10">
-				<TextBlock Text="Логин"/>
-				<TextBox Name="RegisterLoginBox"/>
+		<TabItem
+			Header="Регистрация">
+			<StackPanel
+				Margin="20"
+				Spacing="10">
+				<TextBlock
+					Text="Логин"/>
+				<TextBox
+					Name="RegisterLoginBox"
+					TextChanged="RegisterLoginBox_TextChanged"/>
 
-				<TextBlock Text="Имя"/>
-				<TextBox Name="RegisterUsernameBox"/>
+				<TextBlock
+					Name="LoginErrorText"
+					Foreground="Red"
+					IsVisible="False"/>
 
-				<TextBlock Text="Пароль"/>
-				<TextBox Name="RegisterPasswordBox"
-                         PasswordChar="●"/>
+				<TextBlock
+					Text="Имя"/>
+				<TextBox
+					Name="RegisterUsernameBox"/>
 
-				<TextBlock Text="Подтвердите пароль"/>
-				<TextBox Name="RegisterConfirmPasswordBox"
-                         PasswordChar="●"/>
+				<TextBlock
+					Text="Пароль"/>
+				<TextBox
+					Name="RegisterPasswordBox"
+                    PasswordChar="●"/>
 
-				<Button Content="Зарегистрироваться"
-                        HorizontalAlignment="Right"
-                        Margin="0,10,0,0"
-						Click="RegisterButton_Click"/>
+				<TextBlock
+					Text="Подтвердите пароль"/>
+				<TextBox
+					Name="RegisterConfirmPasswordBox"
+                    PasswordChar="●"/>
+
+				<TextBlock
+					Name="PasswordErrorText"
+					Foreground="Red"
+					IsVisible="False"/>
+
+				<Button
+					Content="Зарегистрироваться"
+                    HorizontalAlignment="Right"
+                    Margin="0,10,0,0"
+					Click="RegisterButton_Click"/>
 			</StackPanel>
 		</TabItem>
 	</TabControl>

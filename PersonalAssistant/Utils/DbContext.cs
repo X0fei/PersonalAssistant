@@ -17,5 +17,9 @@ namespace PersonalAssistant.Utils
             .Include(task => task.StatusNavigation)
             .Include(task => task.PriorityNavigation)
             .Include(task => task.Users)];
+        public static List<Status> Statuses { get; set; } = [.. User8Context.Statuses];
+        public static List<Models.List> Lists { get; set; } = [.. User8Context.Lists
+            .Include(list => list.Tasks)
+            .Include(task => task.Users)];
     }
 }

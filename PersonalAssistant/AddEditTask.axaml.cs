@@ -13,7 +13,7 @@ namespace PersonalAssistant;
 public partial class AddEditTask : Window
 {
     private int userID;
-    private int taskID;
+    private int? taskID = null;
     public AddEditTask()
     {
         InitializeComponent();
