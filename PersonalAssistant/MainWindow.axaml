@@ -18,14 +18,18 @@
 					Text="Логин"/>
 				<TextBox
 					Name="LoginBox"
-					TextChanged="Input_TextChanged"/>
+					TextChanged="Input_TextChanged"
+					MaxLength="40"
+					KeyDown="EnterToTab"/>
 
 				<TextBlock
 					Text="Пароль"/>
 				<TextBox
 					Name="LoginPasswordBox"
                     PasswordChar="●"
-					TextChanged="Input_TextChanged"/>
+					TextChanged="Input_TextChanged"
+					MaxLength="200"
+					KeyDown="EnterToTab"/>
 
 				<TextBlock
 					Name="ErrorTextBlock"
@@ -52,7 +56,9 @@
 					Text="Логин"/>
 				<TextBox
 					Name="RegisterLoginBox"
-					TextChanged="RegisterLoginBox_TextChanged"/>
+					TextChanged="RegisterLoginBox_TextChanged"
+					MaxLength="40"
+					KeyDown="EnterToTab"/>
 
 				<TextBlock
 					Name="LoginErrorText"
@@ -60,21 +66,20 @@
 					IsVisible="False"/>
 
 				<TextBlock
-					Text="Имя"/>
-				<TextBox
-					Name="RegisterUsernameBox"/>
-
-				<TextBlock
 					Text="Пароль"/>
 				<TextBox
 					Name="RegisterPasswordBox"
-                    PasswordChar="●"/>
+                    PasswordChar="●"
+					MaxLength="200"
+					KeyDown="EnterToTab"/>
 
 				<TextBlock
 					Text="Подтвердите пароль"/>
 				<TextBox
 					Name="RegisterConfirmPasswordBox"
-                    PasswordChar="●"/>
+                    PasswordChar="●"
+					MaxLength="200"
+					KeyDown="EnterToTab"/>
 
 				<TextBlock
 					Name="PasswordErrorText"

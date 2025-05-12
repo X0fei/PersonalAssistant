@@ -9,13 +9,13 @@
 	<StackPanel Margin="20" Spacing="10">
 		<Button Content="Назад" Click="BackButton_Click" HorizontalAlignment="Left"/>
 
-		<Image Name="ProfileImage" Width="100" Height="100"/>
+		<Image Name="ProfileImage" Width="100" Height="100" HorizontalAlignment="Left"/>
 		<Button Content="Добавить фотографию" Click="AddPhotoButton_Click"/>
 
 		<TextBox Name="NameBox" Watermark="Имя"/>
 		<TextBox Name="BioBox" Watermark="Описание"/>
 		<TextBox Name="LoginBox" Watermark="Логин"/>
-		<TextBox Name="PasswordBox" Watermark="Пароль"/>
+		<TextBox Name="PasswordBox" Watermark="Новый пароль"/>
 		<TextBox Name="ConfirmBox" Watermark="Подтверждение пароля"/>
 
 		<Button Content="Сохранить" Click="SaveButton_Click"/>
