@@ -139,4 +139,21 @@ public partial class TasksWindow : Window
             .ToList();
         FilterComboBox.SelectedIndex = 0;
     }
+    private async void ListsOfTasks_ItemDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        if (ListsOfTasks.SelectedItem is List selectedList && selectedList.Id != 0)
+        {
+            // Открываем окно редактирования списка
+            AddEditListOfTasksWindow addEditListOfTasksWindow = new AddEditListOfTasksWindow(userID, selectedList.Id);
+            await addEditListOfTasksWindow.ShowDialog(this);
+        }
+        else
+        {
+            // Если выбран "Все", ничего не делаем
+            return;
+        }
+
+        // Обновляем данные после закрытия окна
+        LoadData();
+    }
 }

@@ -16,6 +16,11 @@
 			HorizontalAlignment="Right"
 			Spacing="10">
 			<Button
+				Name="DeleteButton"
+				Content="Удалить"
+				Click="DeleteButton_Click"/>
+
+			<Button
 				Name="CancelButton"
 				Content="Отмена"
 				Click="CancelButton_Click"/>

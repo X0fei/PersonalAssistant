@@ -50,6 +50,7 @@
 		<ListBox
 			Name="ListsOfTasks"
 			SelectionChanged="ListsOfTasks_SelectionChanged"
+			DoubleTapped="ListsOfTasks_ItemDoubleTapped"
 			SelectionMode="Single">
 			<ListBox.ItemTemplate>
 				<DataTemplate>

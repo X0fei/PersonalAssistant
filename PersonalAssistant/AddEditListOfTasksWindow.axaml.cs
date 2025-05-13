@@ -12,19 +12,42 @@ namespace PersonalAssistant;
 
 public partial class AddEditListOfTasksWindow : Window
 {
-    private int userID;
-    private User currentUser;
     public AddEditListOfTasksWindow()
     {
         InitializeComponent();
     }
+
+    private int userID;
+    private User currentUser;
+    private int? listID;
 
     public string? CategoryName { get; private set; }
 
     public AddEditListOfTasksWindow(int userID)
     {
         InitializeComponent();
+
         this.userID = userID;
+    }
+
+    public AddEditListOfTasksWindow(int userID, int? listID = null)
+    {
+        InitializeComponent();
+
+        this.userID = userID;
+        this.listID = listID;
+
+        DeleteButton.IsVisible = true;
+
+        if (listID.HasValue)
+        {
+            // Загружаем данные списка из БД
+            var list = Utils.DbContext.Lists.FirstOrDefault(l => l.Id == listID.Value);
+            if (list != null)
+            {
+                ListOfTasksName.Text = list.Name;
+            }
+        }
     }
 
     private void CancelButton_Click(object? sender, RoutedEventArgs e)
@@ -32,32 +55,80 @@ public partial class AddEditListOfTasksWindow : Window
         Close();
     }
 
-    private void SaveButton_Click(object? sender, RoutedEventArgs e)
+    private void SaveButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        var name = ListOfTasksName.Text?.Trim();
+        string listName = ListOfTasksName.Text.Trim();
 
-        if (!string.IsNullOrWhiteSpace(name))
+        if (string.IsNullOrEmpty(listName))
         {
-            using (var context = new User8Context())
+            return;
+        }
+
+        using (var context = new User8Context())
+        {
+            if (listID.HasValue)
             {
-                var user = context.Users.FirstOrDefault(u => u.Id == userID);
-                Models.List newList = new Models.List()
+                // Редактирование существующего списка
+                var list = context.Lists.FirstOrDefault(l => l.Id == listID.Value);
+                if (list != null)
                 {
-                    Name = name,
-                    Users = new List<User> { user }
+                    list.Name = listName;
+                    context.SaveChanges();
+                }
+            }
+            else
+            {
+                // Создание нового списка
+                var newList = new List
+                {
+                    Name = listName,
+                    Users = new List<User> { context.Users.First(u => u.Id == userID) }
                 };
-                
                 context.Lists.Add(newList);
                 context.SaveChanges();
             }
-
-            Utils.DbContext.User8Context = new();
-            Utils.DbContext.Lists = Utils.DbContext.User8Context.Lists
-                .Include(list => list.Tasks)
-                .Include(task => task.Users)
-                .ToList();
-
-            Close();
         }
+
+        Utils.DbContext.User8Context = new User8Context();
+        Utils.DbContext.Lists = Utils.DbContext.User8Context.Lists
+            .Include(list => list.Tasks)
+            .Include(list => list.Users)
+            .ToList();
+
+        Close();
+    }
+    private void DeleteButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        if (listID.HasValue)
+        {
+            using (var context = new User8Context())
+            {
+                var list = context.Lists
+                    .Include(l => l.Users)
+                    .Include(l => l.Tasks)
+                    .FirstOrDefault(l => l.Id == listID.Value);
+
+                if (list != null)
+                {
+                    // Удаляем связи с пользователями  
+                    list.Users.Clear();
+
+                    // Удаляем связи с задачами  
+                    list.Tasks.Clear();
+
+                    // Удаляем сам список  
+                    context.Lists.Remove(list);
+                    context.SaveChanges();
+                }
+            }
+        }
+
+        Utils.DbContext.User8Context = new User8Context();
+        Utils.DbContext.Lists = Utils.DbContext.User8Context.Lists
+            .Include(list => list.Tasks)
+            .Include(list => list.Users)
+            .ToList();
+
+        Close();
     }
 }
