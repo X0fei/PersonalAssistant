@@ -22,5 +22,7 @@ namespace PersonalAssistant.Utils
             .Include(list => list.Tasks)
             .Include(task => task.Users)];
         public static List<Pfp> Pfps { get; set; } = [.. User8Context.Pfps];
+
+        public static List<PriorityTable> PriorityTables { get; set; } = [.. User8Context.PriorityTables];
     }
 }

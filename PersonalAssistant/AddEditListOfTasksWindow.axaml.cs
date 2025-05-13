@@ -28,6 +28,8 @@ public partial class AddEditListOfTasksWindow : Window
         InitializeComponent();
 
         this.userID = userID;
+
+        DeleteButton.IsVisible = false;
     }
 
     public AddEditListOfTasksWindow(int userID, int? listID = null)
@@ -36,8 +38,6 @@ public partial class AddEditListOfTasksWindow : Window
 
         this.userID = userID;
         this.listID = listID;
-
-        DeleteButton.IsVisible = true;
 
         if (listID.HasValue)
         {

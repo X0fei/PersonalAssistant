@@ -44,7 +44,14 @@ public partial class AddEditTask : Window
 
             NameBox.Text = task.Name;
             DescriptionBox.Text = task.Description;
-            PriorityBox.SelectedIndex = (int)(task.Priority - 1);
+            if (task.Priority != null)
+            {
+                PriorityBox.SelectedIndex = (int)(task.Priority - 1);
+            }
+            if (task.PriorityTable != null)
+            {
+                PriorityTableBox.SelectedIndex = (int)(task.PriorityTable - 1);
+            }
             StatusBox.SelectedIndex = task.Status - 1;
 
             // Устанавливаем выбранный элемент в ListOfTasksBox  
@@ -74,6 +81,7 @@ public partial class AddEditTask : Window
                     Name = NameBox.Text,
                     Description = DescriptionBox.Text,
                     Priority = PriorityBox.SelectedIndex + 1,
+                    PriorityTable = PriorityTableBox.SelectedIndex + 1,
                     Status = StatusBox.SelectedIndex + 1,
                     CreationDate = DateTime.Now,
                     Users = new List<User> { user },
@@ -97,14 +105,18 @@ public partial class AddEditTask : Window
                 task.Name = NameBox.Text;
                 task.Description = DescriptionBox.Text;
                 task.Priority = PriorityBox.SelectedIndex + 1;
+                task.PriorityTable = PriorityTableBox.SelectedIndex + 1;
                 task.Status = StatusBox.SelectedIndex + 1;
 
-                // Обновляем список, к которому относится задача  
+                // Обновляем список, к которому относится задача
                 var selectedList = (Models.List)ListOfTasksBox.SelectedItem;
-                var newList = context.Lists.FirstOrDefault(l => l.Id == selectedList.Id);
-                task.Lists.Clear();
-                task.Lists.Add(newList);
-
+                if (selectedList != null )
+                {
+                    var newList = context.Lists.FirstOrDefault(l => l.Id == selectedList.Id);
+                    task.Lists.Clear();
+                    task.Lists.Add(newList);
+                }
+                
                 context.SaveChanges();
             }
         }

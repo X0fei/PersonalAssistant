@@ -54,16 +54,16 @@ public partial class TasksWindow : Window
 
     private void FilterComboBox_SelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
     {
-        string selectedStatus = FilterComboBox.SelectedItem?.ToString() ?? "Все";
+        string selectedPriority = FilterComboBox.SelectedItem?.ToString() ?? "Все";
 
-        if (selectedStatus == "Все")
+        if (selectedPriority == "Все")
         {
             AllTasksList.ItemsSource = displayAllTasks;
         }
         else
         {
             AllTasksList.ItemsSource = displayAllTasks
-                .Where(t => t.StatusNavigation?.Name == selectedStatus)
+                .Where(t => t.PriorityTableNavigation?.Name == selectedPriority)
                 .ToList();
         }
     }
@@ -132,8 +132,8 @@ public partial class TasksWindow : Window
         // Устанавливаем "Все" как выбранный элемент
         ListsOfTasks.SelectedIndex = 0;
 
-        // Подгружаем статусы задач
-        FilterComboBox.ItemsSource = Utils.DbContext.Statuses
+        // Подгружаем статусы задач в фильтрацию
+        FilterComboBox.ItemsSource = Utils.DbContext.PriorityTables
             .Select(s => s.Name)
             .Prepend("Все")
             .ToList();

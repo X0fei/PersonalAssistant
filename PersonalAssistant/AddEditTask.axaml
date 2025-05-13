@@ -35,6 +35,15 @@
 					<ComboBoxItem Content="Высокий"/>
 				</ComboBox>
 
+				<TextBlock Text="Приоритет по таблице Эйзенхауэра"/>
+				<ComboBox Name="PriorityTableBox">
+					<ComboBoxItem Content="Нет"/>
+					<ComboBoxItem Content="Не срочно и не важно"/>
+					<ComboBoxItem Content="Важно, но не срочно"/>
+					<ComboBoxItem Content="Срочно, но не важно"/>
+					<ComboBoxItem Content="Срочно и важно"/>
+				</ComboBox>
+
 				<TextBlock Text="Статус"/>
 				<ComboBox Name="StatusBox">
 					<ComboBoxItem Content="Не начато"/>
