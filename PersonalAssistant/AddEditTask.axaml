@@ -4,6 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
         x:Class="PersonalAssistant.AddEditTask"
+		x:CompileBindings="False"
         Title="Добавить задачу" Width="400" Height="450" WindowStartupLocation="CenterOwner">
 	<DockPanel Margin="10">
 
@@ -40,6 +41,16 @@
 					<ComboBoxItem Content="В процессе"/>
 					<ComboBoxItem Content="Выполнено"/>
 					<ComboBoxItem Content="Не выполнено"/>
+				</ComboBox>
+
+				<TextBlock Text="Список"/>
+				<ComboBox Name="ListOfTasksBox">
+					<ComboBox.ItemTemplate>
+						<DataTemplate>
+							<TextBlock
+								Text="{Binding Name}"/>
+						</DataTemplate>
+					</ComboBox.ItemTemplate>
 				</ComboBox>
 
 				<StackPanel

@@ -25,4 +25,10 @@
     </PackageReference>
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="AddEditListOfTasksWindow.axaml.cs">
+      <DependentUpon>AddEditListOfTasksWindow.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>

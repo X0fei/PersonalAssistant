@@ -24,19 +24,8 @@ public partial class TasksWindow : Window
 
         this.userID = userID;
         currentUser = Utils.DbContext.Users.First(u => u.Id == userID);
-        ProfileButton.Content = currentUser.Name;
 
-        displayAllTasks = Utils.DbContext.Tasks
-            .Where(task => task.Users.Any(user => user.Id == this.userID))
-            .ToList();
-        AllTasksList.ItemsSource = displayAllTasks;
-
-        FilterComboBox.ItemsSource = Utils.DbContext.Statuses
-            .Select(s => s.Name)
-            .Prepend("Все")
-            .ToList();
-        FilterComboBox.SelectedIndex = 0;
-        FilterComboBox.SelectionChanged += FilterComboBox_SelectionChanged;
+        LoadData();
     }
 
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -63,7 +52,7 @@ public partial class TasksWindow : Window
         }
     }
 
-    private void FilterComboBox_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    private void FilterComboBox_SelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
     {
         string selectedStatus = FilterComboBox.SelectedItem?.ToString() ?? "Все";
 
@@ -84,5 +73,70 @@ public partial class TasksWindow : Window
         ProfileWindow profileWindow = new ProfileWindow(currentUser);
         profileWindow.Show();
         Close();
+    }
+
+    private void AddListOfTasksButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        OpenListOfTasksWindow();
+    }
+
+    private async System.Threading.Tasks.Task OpenListOfTasksWindow()
+    {
+        AddEditListOfTasksWindow addEditListOfTasksWindow = new AddEditListOfTasksWindow(userID);
+        await addEditListOfTasksWindow.ShowDialog(this);
+        ListsOfTasks.ItemsSource = Utils.DbContext.Lists
+            .Where(l => l.Users.Any(u => u.Id == currentUser.Id))
+            .ToList();
+    }
+    private void ListsOfTasks_SelectionChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        displayAllTasks = Utils.DbContext.Tasks
+            .Where(t => t.Users.Any(u => u.Id == currentUser.Id))
+            .ToList();
+
+        if (ListsOfTasks.SelectedItem is List selectedList && selectedList.Id != 0)
+        {
+            // Фильтруем задачи, связанные с выбранным списком
+            AllTasksList.ItemsSource = displayAllTasks
+                .Where(t => t.Lists.Any(l => l.Id == selectedList.Id))
+                .ToList();
+        }
+        else
+        {
+            // Если выбран "Все", показываем все задачи
+            AllTasksList.ItemsSource = displayAllTasks;
+        }
+    }
+
+    private void LoadData()
+    {
+        // Подгружаем имя пользователя в кнопку профиля
+        ProfileButton.Content = currentUser.Name;
+
+        // Подгружаем все задачи
+        displayAllTasks = Utils.DbContext.Tasks
+            .Where(t => t.Users.Any(u => u.Id == currentUser.Id))
+            .ToList();
+        AllTasksList.ItemsSource = displayAllTasks;
+
+        // Подгружаем списки задач
+        var lists = Utils.DbContext.Lists
+            .Where(l => l.Users.Any(u => u.Id == currentUser.Id))
+            .ToList();
+
+        // Добавляем элемент "Все" в начало списка
+        lists.Insert(0, new List { Id = 0, Name = "Все" });
+
+        ListsOfTasks.ItemsSource = lists;
+
+        // Устанавливаем "Все" как выбранный элемент
+        ListsOfTasks.SelectedIndex = 0;
+
+        // Подгружаем статусы задач
+        FilterComboBox.ItemsSource = Utils.DbContext.Statuses
+            .Select(s => s.Name)
+            .Prepend("Все")
+            .ToList();
+        FilterComboBox.SelectedIndex = 0;
     }
 }
