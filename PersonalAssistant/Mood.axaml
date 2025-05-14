@@ -16,5 +16,6 @@
 			<Button Name="NextMonthBtn" Content="&gt;" Width="40"/>
 		</StackPanel>
 		<UniformGrid Name="CalendarGrid" Columns="7" Rows="6" Margin="10" HorizontalAlignment="Center"/>
+		<TextBlock Name="WeekStatText" FontSize="16" Margin="0,20,0,0" HorizontalAlignment="Center"/>
 	</StackPanel>
 </Window>

@@ -82,11 +82,78 @@ public partial class Mood : Window
                 var dialog = new AddEditMoodWindow(_currentUserId, date);
                 var result = await dialog.ShowDialog<bool?>(this);
                 if (result == true)
+                {
                     DrawCalendar();
+                    UpdateWeekStat();
+                }
             };
 
             CalendarGrid.Children.Add(border);
         }
+
+        UpdateWeekStat();
+    }
+
+    private void UpdateWeekStat()
+    {
+        // Определяем диапазон прошлой календарной недели (понедельник-воскресенье)
+        DateTime today = DateTime.Today;
+        int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
+        DateTime thisMonday = today.AddDays(-daysSinceMonday);
+        DateTime lastMonday = thisMonday.AddDays(-7);
+        DateTime lastSunday = thisMonday.AddDays(-1);
+
+        using var context = new User8Context();
+        var lastWeekFeelings = context.Feelings
+            .Where(f => f.Users.Any(u => u.Id == _currentUserId)
+                        && f.Date.Date >= lastMonday.Date
+                        && f.Date.Date <= lastSunday.Date)
+            .ToList();
+
+        if (lastWeekFeelings.Count == 0)
+        {
+            WeekStatText.Text = "Нет данных по прошлой неделе";
+            return;
+        }
+
+        // Группируем по Level, ищем самый частый
+        var groups = lastWeekFeelings
+            .GroupBy(f => f.Level)
+            .Select(g => new { Level = g.Key, Count = g.Count() })
+            .ToList();
+
+        int maxCount = groups.Max(g => g.Count);
+        var mostFrequent = groups.Where(g => g.Count == maxCount).ToList();
+
+        if (mostFrequent.Count > 1)
+        {
+            WeekStatText.Text = "На прошлой неделе не было настроения, которое встречалось чаще всего";
+            return;
+        }
+
+        int level = mostFrequent[0].Level;
+        string emotionName = GetEmotionNameByLevel(level);
+
+        WeekStatText.Text = $"За прошую неделю чаще всего вы испытывали такое настроение: {emotionName}";
+    }
+
+    // Используйте тот же метод, что и в AddEditMoodWindow
+    private string GetEmotionNameByLevel(int level)
+    {
+        int emotionId = level switch
+        {
+            < 15 => 7,
+            < 30 => 6,
+            < 45 => 5,
+            < 55 => 4,
+            < 70 => 3,
+            < 85 => 2,
+            _ => 1
+        };
+
+        using var context = new User8Context();
+        var emotion = context.Emotions.FirstOrDefault(e => e.Id == emotionId);
+        return emotion?.Name ?? "Неизвестно";
     }
 
     private IBrush GetBrushByFeeling(int? level)
