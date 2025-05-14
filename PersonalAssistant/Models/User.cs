@@ -23,6 +23,8 @@ public partial class User
 
     public virtual Pfp? MainPfpNavigation { get; set; }
 
+    public virtual ICollection<Feeling> Feelings { get; set; } = new List<Feeling>();
+
     public virtual ICollection<List> Lists { get; set; } = new List<List>();
 
     public virtual ICollection<Pfp> Pfps { get; set; } = new List<Pfp>();

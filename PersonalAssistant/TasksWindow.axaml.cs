@@ -156,4 +156,11 @@ public partial class TasksWindow : Window
         // Обновляем данные после закрытия окна
         LoadData();
     }
+
+    private void MoodButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        Mood moodWindow = new Mood(userID);
+        moodWindow.Show();
+        Close();
+    }
 }

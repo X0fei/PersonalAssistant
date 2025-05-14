@@ -1,0 +1,20 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PersonalAssistant.Mood"
+		x:CompileBindings="False"
+        Title="Настроение">
+	<StackPanel>
+		<Button
+			Content="Назад"
+			Click="GoBackButton_Click"/>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,10">
+			<Button Name="PrevMonthBtn" Content="&lt;" Width="40"/>
+			<TextBlock Name="MonthText" FontSize="18" Margin="10,0"/>
+			<Button Name="NextMonthBtn" Content="&gt;" Width="40"/>
+		</StackPanel>
+		<UniformGrid Name="CalendarGrid" Columns="7" Rows="6" Margin="10" HorizontalAlignment="Center"/>
+	</StackPanel>
+</Window>

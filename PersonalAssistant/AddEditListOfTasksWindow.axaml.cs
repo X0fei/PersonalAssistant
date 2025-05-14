@@ -3,8 +3,8 @@ using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
+using PersonalAssistant.Context;
 using PersonalAssistant.Models;
-using PersonalAssistant.Utils.Context;
 using System.Collections.Generic;
 using System.Linq;
 

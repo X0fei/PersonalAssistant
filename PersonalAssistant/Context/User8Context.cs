@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using PersonalAssistant.Models;
 
-namespace PersonalAssistant.Utils.Context;
+namespace PersonalAssistant.Context;
 
-public partial class User8Context : Microsoft.EntityFrameworkCore.DbContext
+public partial class User8Context : DbContext
 {
     public User8Context()
     {
@@ -36,7 +36,7 @@ public partial class User8Context : Microsoft.EntityFrameworkCore.DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=45.67.56.214; Port=5666; Username=user8; Password=i9ehyuJ3; Database=user8");
+        => optionsBuilder.UseNpgsql("Host=45.67.56.214; Port=5666; Database=user8; Username=user8; Password=i9ehyuJ3");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -288,6 +288,24 @@ public partial class User8Context : Microsoft.EntityFrameworkCore.DbContext
             entity.HasOne(d => d.MainPfpNavigation).WithMany(p => p.Users)
                 .HasForeignKey(d => d.MainPfp)
                 .HasConstraintName("users_pfps_fk");
+
+            entity.HasMany(d => d.Feelings).WithMany(p => p.Users)
+                .UsingEntity<Dictionary<string, object>>(
+                    "UsersFeeling",
+                    r => r.HasOne<Feeling>().WithMany()
+                        .HasForeignKey("Feeling")
+                        .HasConstraintName("users_feelings_feelings_fk"),
+                    l => l.HasOne<User>().WithMany()
+                        .HasForeignKey("User")
+                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .HasConstraintName("users_feelings_users_fk"),
+                    j =>
+                    {
+                        j.HasKey("User", "Feeling").HasName("users_feelings_pk");
+                        j.ToTable("users_feelings");
+                        j.IndexerProperty<int>("User").HasColumnName("user");
+                        j.IndexerProperty<int>("Feeling").HasColumnName("feeling");
+                    });
 
             entity.HasMany(d => d.Lists).WithMany(p => p.Users)
                 .UsingEntity<Dictionary<string, object>>(

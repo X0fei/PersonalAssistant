@@ -14,4 +14,6 @@ public partial class Feeling
     public DateTime Date { get; set; }
 
     public virtual ICollection<Emotion> Emotions { get; set; } = new List<Emotion>();
+
+    public virtual ICollection<User> Users { get; set; } = new List<User>();
 }

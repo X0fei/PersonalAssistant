@@ -45,6 +45,11 @@
 				Name="FilterComboBox"
 				SelectionChanged="FilterComboBox_SelectionChanged"
 				Width="150"/>
+			<Button
+				Name="MoodButton"
+				Content="Настроение"
+				Click="MoodButton_Click"
+				Margin="100 0 0 0"/>
 		</StackPanel>
 
 		<ListBox
