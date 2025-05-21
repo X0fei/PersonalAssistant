@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PersonalAssistant.Utils
+namespace PersonalAssistant.Helpers
 {
-    public static class DbContext
+    public static class DBContext
     {
         public static User8Context User8Context { get; set; } = new();
         public static List<User> Users { get; set; } = [.. User8Context.Users];
@@ -24,5 +24,11 @@ namespace PersonalAssistant.Utils
         public static List<Pfp> Pfps { get; set; } = [.. User8Context.Pfps];
 
         public static List<PriorityTable> PriorityTables { get; set; } = [.. User8Context.PriorityTables];
+
+        public static User GetUserByLogin(string login)
+        {
+            return Users.FirstOrDefault(u => u.Login == login)
+                ?? throw new InvalidOperationException($"Пользователь с логином '{login}' не найден.");
+        }
     }
 }

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +24,7 @@ public partial class TasksWindow : Window
         InitializeComponent();
 
         this.userID = userID;
-        currentUser = Utils.DbContext.Users.First(u => u.Id == userID);
+        currentUser = DBContext.Users.First(u => u.Id == userID);
 
         LoadData();
     }
@@ -84,13 +85,13 @@ public partial class TasksWindow : Window
     {
         AddEditListOfTasksWindow addEditListOfTasksWindow = new AddEditListOfTasksWindow(userID);
         await addEditListOfTasksWindow.ShowDialog(this);
-        ListsOfTasks.ItemsSource = Utils.DbContext.Lists
+        ListsOfTasks.ItemsSource = DBContext.Lists
             .Where(l => l.Users.Any(u => u.Id == currentUser.Id))
             .ToList();
     }
     private void ListsOfTasks_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
-        displayAllTasks = Utils.DbContext.Tasks
+        displayAllTasks = DBContext.Tasks
             .Where(t => t.Users.Any(u => u.Id == currentUser.Id))
             .ToList();
 
@@ -114,13 +115,13 @@ public partial class TasksWindow : Window
         ProfileButton.Content = currentUser.Name;
 
         // Подгружаем все задачи
-        displayAllTasks = Utils.DbContext.Tasks
+        displayAllTasks = DBContext.Tasks
             .Where(t => t.Users.Any(u => u.Id == currentUser.Id))
             .ToList();
         AllTasksList.ItemsSource = displayAllTasks;
 
         // Подгружаем списки задач
-        var lists = Utils.DbContext.Lists
+        var lists = DBContext.Lists
             .Where(l => l.Users.Any(u => u.Id == currentUser.Id))
             .ToList();
 
@@ -133,7 +134,7 @@ public partial class TasksWindow : Window
         ListsOfTasks.SelectedIndex = 0;
 
         // Подгружаем статусы задач в фильтрацию
-        FilterComboBox.ItemsSource = Utils.DbContext.PriorityTables
+        FilterComboBox.ItemsSource = DBContext.PriorityTables
             .Select(s => s.Name)
             .Prepend("Все")
             .ToList();

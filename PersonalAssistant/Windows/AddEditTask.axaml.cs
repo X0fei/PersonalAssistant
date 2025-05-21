@@ -22,7 +22,7 @@ public partial class AddEditTask : Window
     {
         InitializeComponent();
         this.userID = userID;
-        ListOfTasksBox.ItemsSource = Utils.DbContext.Lists
+        ListOfTasksBox.ItemsSource = Utils.DBContext.Lists
             .Where(t => t.Users.Any(u => u.Id == userID))
             .ToList();
     }
@@ -32,7 +32,7 @@ public partial class AddEditTask : Window
         DeleteButton.IsVisible = true;
         this.userID = userID;
         this.taskID = taskID;
-        ListOfTasksBox.ItemsSource = Utils.DbContext.Lists
+        ListOfTasksBox.ItemsSource = Utils.DBContext.Lists
             .Where(t => t.Users.Any(u => u.Id == userID))
             .ToList();
 
@@ -73,7 +73,7 @@ public partial class AddEditTask : Window
             {
                 var user = context.Users.FirstOrDefault(u => u.Id == userID);
 
-                var selectedList = (Models.List)ListOfTasksBox.SelectedItem;
+                List selectedList = ListOfTasksBox.SelectedItem as List;
                 var list = context.Lists.FirstOrDefault(l => l.Id == selectedList.Id);
 
                 Models.Task newTask = new Models.Task()
@@ -121,8 +121,8 @@ public partial class AddEditTask : Window
             }
         }
 
-        Utils.DbContext.User8Context = new();
-        Utils.DbContext.Tasks = [.. Utils.DbContext.User8Context.Tasks
+        Utils.DBContext.User8Context = new();
+        Utils.DBContext.Tasks = [.. Utils.DBContext.User8Context.Tasks
            .Include(task => task.StatusNavigation)
            .Include(task => task.PriorityNavigation)
            .Include(task => task.Users)];
@@ -154,8 +154,8 @@ public partial class AddEditTask : Window
             context.SaveChanges();
         }
 
-        Utils.DbContext.User8Context = new();
-        Utils.DbContext.Tasks = [.. Utils.DbContext.User8Context.Tasks
+        Utils.DBContext.User8Context = new();
+        Utils.DBContext.Tasks = [.. Utils.DBContext.User8Context.Tasks
             .Include(task => task.StatusNavigation)
             .Include(task => task.PriorityNavigation)
             .Include(task => task.Users)];

@@ -18,7 +18,7 @@ public partial class AddEditMoodWindow : Window
     }
 
     private readonly int _userId;
-    private readonly DateTime _date;
+    private readonly DateOnly _date;
     private Feeling? _feeling;
 
     public string DateText => _date.ToString("dd MMMM yyyy");
@@ -29,7 +29,7 @@ public partial class AddEditMoodWindow : Window
         set => LevelSlider.Value = value;
     }
 
-    public AddEditMoodWindow(int userId, DateTime date)
+    public AddEditMoodWindow(int userId, DateOnly date)
     {
         InitializeComponent();
         _userId = userId;
@@ -51,7 +51,7 @@ public partial class AddEditMoodWindow : Window
     {
         using var context = new User8Context();
         _feeling = context.Feelings
-            .Where(f => f.Users.Any(u => u.Id == _userId) && f.Date.Date == _date.Date)
+            .Where(f => f.Users.Any(u => u.Id == _userId) && f.Date.Day == _date.Day)
             .FirstOrDefault();
 
         if (_feeling != null)
@@ -96,7 +96,7 @@ public partial class AddEditMoodWindow : Window
         var user = context.Users.First(u => u.Id == _userId);
 
         var feeling = context.Feelings
-            .FirstOrDefault(f => f.Users.Any(u => u.Id == _userId) && f.Date.Date == _date.Date);
+            .FirstOrDefault(f => f.Users.Any(u => u.Id == _userId) && f.Date.Day == _date.Day);
 
         if (feeling == null)
         {
@@ -120,7 +120,7 @@ public partial class AddEditMoodWindow : Window
     {
         using var context = new User8Context();
         var feeling = context.Feelings
-            .FirstOrDefault(f => f.Users.Any(u => u.Id == _userId) && f.Date.Date == _date.Date);
+            .FirstOrDefault(f => f.Users.Any(u => u.Id == _userId) && f.Date.Day == _date.Day);
 
         if (feeling != null)
         {

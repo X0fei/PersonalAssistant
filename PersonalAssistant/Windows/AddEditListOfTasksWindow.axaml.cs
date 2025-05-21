@@ -42,7 +42,7 @@ public partial class AddEditListOfTasksWindow : Window
         if (listID.HasValue)
         {
             // Загружаем данные списка из БД
-            var list = Utils.DbContext.Lists.FirstOrDefault(l => l.Id == listID.Value);
+            var list = Utils.DBContext.Lists.FirstOrDefault(l => l.Id == listID.Value);
             if (list != null)
             {
                 ListOfTasksName.Text = list.Name;
@@ -89,8 +89,8 @@ public partial class AddEditListOfTasksWindow : Window
             }
         }
 
-        Utils.DbContext.User8Context = new User8Context();
-        Utils.DbContext.Lists = Utils.DbContext.User8Context.Lists
+        Utils.DBContext.User8Context = new User8Context();
+        Utils.DBContext.Lists = Utils.DBContext.User8Context.Lists
             .Include(list => list.Tasks)
             .Include(list => list.Users)
             .ToList();
@@ -123,8 +123,8 @@ public partial class AddEditListOfTasksWindow : Window
             }
         }
 
-        Utils.DbContext.User8Context = new User8Context();
-        Utils.DbContext.Lists = Utils.DbContext.User8Context.Lists
+        Utils.DBContext.User8Context = new User8Context();
+        Utils.DBContext.Lists = Utils.DBContext.User8Context.Lists
             .Include(list => list.Tasks)
             .Include(list => list.Users)
             .ToList();

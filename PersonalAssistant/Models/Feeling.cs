@@ -11,7 +11,7 @@ public partial class Feeling
 
     public string? Description { get; set; }
 
-    public DateTime Date { get; set; }
+    public DateOnly Date { get; set; }
 
     public virtual ICollection<Emotion> Emotions { get; set; } = new List<Emotion>();
 

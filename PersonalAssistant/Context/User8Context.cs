@@ -35,8 +35,9 @@ public partial class User8Context : DbContext
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseNpgsql("Host=45.67.56.214; Port=5666; Database=user8; Username=user8; Password=i9ehyuJ3");
+    {
+        optionsBuilder.UseNpgsql("Host=45.67.56.214; Port=5666; Username=user8; Password=i9ehyuJ3; Database=user8");
+    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -62,21 +63,22 @@ public partial class User8Context : DbContext
 
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.Date)
-                .HasColumnType("timestamp without time zone")
+                .HasDefaultValueSql("CURRENT_DATE")
                 .HasColumnName("date");
             entity.Property(e => e.Description).HasColumnName("description");
-            entity.Property(e => e.Level).HasColumnName("level");
+            entity.Property(e => e.Level)
+                .HasDefaultValue(50)
+                .HasColumnName("level");
 
             entity.HasMany(d => d.Emotions).WithMany(p => p.Feelings)
                 .UsingEntity<Dictionary<string, object>>(
                     "FeelingsEmotion",
                     r => r.HasOne<Emotion>().WithMany()
                         .HasForeignKey("Emotion")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
+                        .OnDelete(DeleteBehavior.SetNull)
                         .HasConstraintName("feelings_emotions_emotions_fk"),
                     l => l.HasOne<Feeling>().WithMany()
                         .HasForeignKey("Feeling")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("feelings_emotions_feelings_fk"),
                     j =>
                     {
@@ -189,15 +191,17 @@ public partial class User8Context : DbContext
 
             entity.HasOne(d => d.PriorityNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.Priority)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("tasks_priorities_fk");
 
             entity.HasOne(d => d.PriorityTableNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.PriorityTable)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("tasks_priority_table_fk");
 
             entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.Status)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("tasks_statuses_fk");
 
             entity.HasMany(d => d.Lists).WithMany(p => p.Tasks)
@@ -205,11 +209,9 @@ public partial class User8Context : DbContext
                     "TasksList",
                     r => r.HasOne<List>().WithMany()
                         .HasForeignKey("List")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("tasks_lists_lists_fk"),
                     l => l.HasOne<Task>().WithMany()
                         .HasForeignKey("Task")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("tasks_lists_tasks_fk"),
                     j =>
                     {
@@ -224,11 +226,9 @@ public partial class User8Context : DbContext
                     "TasksSub",
                     r => r.HasOne<Task>().WithMany()
                         .HasForeignKey("SubTask")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("tasks_subs_tasks_fk_1"),
                     l => l.HasOne<Task>().WithMany()
                         .HasForeignKey("Task")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("tasks_subs_tasks_fk"),
                     j =>
                     {
@@ -243,11 +243,9 @@ public partial class User8Context : DbContext
                     "TasksSub",
                     r => r.HasOne<Task>().WithMany()
                         .HasForeignKey("Task")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("tasks_subs_tasks_fk"),
                     l => l.HasOne<Task>().WithMany()
                         .HasForeignKey("SubTask")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("tasks_subs_tasks_fk_1"),
                     j =>
                     {
@@ -297,7 +295,6 @@ public partial class User8Context : DbContext
                         .HasConstraintName("users_feelings_feelings_fk"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("User")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("users_feelings_users_fk"),
                     j =>
                     {
@@ -312,11 +309,9 @@ public partial class User8Context : DbContext
                     "UsersList",
                     r => r.HasOne<List>().WithMany()
                         .HasForeignKey("List")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("users_lists_lists_fk"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("User")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("users_lists_users_fk"),
                     j =>
                     {
@@ -331,11 +326,9 @@ public partial class User8Context : DbContext
                     "UsersPfp",
                     r => r.HasOne<Pfp>().WithMany()
                         .HasForeignKey("Pfp")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("users_pfps_pfps_fk"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("User")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("users_pfps_users_fk"),
                     j =>
                     {
@@ -350,11 +343,9 @@ public partial class User8Context : DbContext
                     "UsersTask",
                     r => r.HasOne<Task>().WithMany()
                         .HasForeignKey("Task")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("users_tasks_tasks_fk"),
                     l => l.HasOne<User>().WithMany()
                         .HasForeignKey("User")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
                         .HasConstraintName("users_tasks_users_fk"),
                     j =>
                     {

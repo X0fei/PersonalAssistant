@@ -6,7 +6,7 @@ using PersonalAssistant.Models;
 using System.Collections.Generic;
 using System;
 using System.Linq;
-using PersonalAssistant.Utils;
+using PersonalAssistant.Helpers;
 using PersonalAssistant.Context;
 
 namespace PersonalAssistant;
@@ -47,11 +47,10 @@ public partial class Mood : Window
         List<Feeling> feelings;
         using (var context = new User8Context())
         {
-            feelings = context.Feelings
+            feelings = [.. context.Feelings
                 .Where(f => f.Users.Any(u => u.Id == _currentUserId)
                             && f.Date.Month == _currentMonth.Month
-                            && f.Date.Year == _currentMonth.Year)
-                .ToList();
+                            && f.Date.Year == _currentMonth.Year)];
         }
 
         for (int i = 0; i < startDayOfWeek; i++)
@@ -59,8 +58,8 @@ public partial class Mood : Window
 
         for (int day = 1; day <= daysInMonth; day++)
         {
-            var date = new DateTime(_currentMonth.Year, _currentMonth.Month, day);
-            var feeling = feelings.FirstOrDefault(f => f.Date.Date == date.Date);
+            var date = new DateOnly(_currentMonth.Year, _currentMonth.Month, day);
+            var feeling = feelings.FirstOrDefault(f => f.Date.Day == date.Day);
 
             var border = new Border
             {
@@ -106,8 +105,8 @@ public partial class Mood : Window
         using var context = new User8Context();
         var lastWeekFeelings = context.Feelings
             .Where(f => f.Users.Any(u => u.Id == _currentUserId)
-                        && f.Date.Date >= lastMonday.Date
-                        && f.Date.Date <= lastSunday.Date)
+                        && f.Date.Day >= lastMonday.Day
+                        && f.Date.Day <= lastSunday.Day)
             .ToList();
 
         if (lastWeekFeelings.Count == 0)
@@ -138,7 +137,7 @@ public partial class Mood : Window
     }
 
     // Используйте тот же метод, что и в AddEditMoodWindow
-    private string GetEmotionNameByLevel(int level)
+    private static string GetEmotionNameByLevel(int level)
     {
         int emotionId = level switch
         {
@@ -156,7 +155,7 @@ public partial class Mood : Window
         return emotion?.Name ?? "Неизвестно";
     }
 
-    private IBrush GetBrushByFeeling(int? level)
+    private static IBrush GetBrushByFeeling(int? level)
     {
         if (level == null)
             return Brushes.LightGray;
@@ -173,7 +172,7 @@ public partial class Mood : Window
 
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        TasksWindow taskWindow = new TasksWindow(_currentUserId);
+        TasksWindow taskWindow = new(_currentUserId);
         taskWindow.Show();
         Close();
     }

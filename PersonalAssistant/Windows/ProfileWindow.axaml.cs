@@ -81,7 +81,7 @@ public partial class ProfileWindow : Window
             return;
         }
 
-        if (Utils.DbContext.Users.Any(u => u.Login == login && u.Id != user.Id))
+        if (Utils.DBContext.Users.Any(u => u.Login == login && u.Id != user.Id))
         {
             ErrorText.Text = "Этот логин уже занят.";
             return;
@@ -114,13 +114,13 @@ public partial class ProfileWindow : Window
             File.Copy(selectedImagePath, newPath, true);
 
             var pfp = new Pfp { Path = newPath };
-            Utils.DbContext.User8Context.Pfps.Add(pfp);
-            Utils.DbContext.User8Context.SaveChanges();
+            Utils.DBContext.User8Context.Pfps.Add(pfp);
+            Utils.DBContext.User8Context.SaveChanges();
 
             user.MainPfp = pfp.Id;
         }
 
-        Utils.DbContext.User8Context.SaveChanges();
+        Utils.DBContext.User8Context.SaveChanges();
 
         var tasksWindow = new TasksWindow(user.Id);
         tasksWindow.Show();
