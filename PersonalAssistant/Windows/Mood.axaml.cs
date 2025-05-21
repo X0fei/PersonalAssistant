@@ -33,8 +33,6 @@ public partial class Mood : Window
         DrawCalendar();
     }
 
-    // ... (остальной код не меняется)
-
     private void DrawCalendar()
     {
         MonthText.Text = _currentMonth.ToString("MMMM yyyy");

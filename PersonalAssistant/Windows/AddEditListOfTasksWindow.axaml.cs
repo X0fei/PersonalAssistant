@@ -4,6 +4,7 @@ using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using PersonalAssistant.Context;
+using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,7 +43,7 @@ public partial class AddEditListOfTasksWindow : Window
         if (listID.HasValue)
         {
             // Загружаем данные списка из БД
-            var list = Utils.DBContext.Lists.FirstOrDefault(l => l.Id == listID.Value);
+            var list = DBContext.Lists.FirstOrDefault(l => l.Id == listID.Value);
             if (list != null)
             {
                 ListOfTasksName.Text = list.Name;
@@ -57,7 +58,7 @@ public partial class AddEditListOfTasksWindow : Window
 
     private void SaveButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        string listName = ListOfTasksName.Text.Trim();
+        string? listName = ListOfTasksName.Text?.Trim();
 
         if (string.IsNullOrEmpty(listName))
         {
@@ -89,8 +90,8 @@ public partial class AddEditListOfTasksWindow : Window
             }
         }
 
-        Utils.DBContext.User8Context = new User8Context();
-        Utils.DBContext.Lists = Utils.DBContext.User8Context.Lists
+        DBContext.User8Context = new User8Context();
+        DBContext.Lists = DBContext.User8Context.Lists
             .Include(list => list.Tasks)
             .Include(list => list.Users)
             .ToList();
@@ -123,8 +124,8 @@ public partial class AddEditListOfTasksWindow : Window
             }
         }
 
-        Utils.DBContext.User8Context = new User8Context();
-        Utils.DBContext.Lists = Utils.DBContext.User8Context.Lists
+        DBContext.User8Context = new User8Context();
+        DBContext.Lists = DBContext.User8Context.Lists
             .Include(list => list.Tasks)
             .Include(list => list.Users)
             .ToList();

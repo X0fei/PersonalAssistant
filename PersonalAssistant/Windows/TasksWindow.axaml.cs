@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -31,6 +32,7 @@ public partial class TasksWindow : Window
 
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        DBContext.CurrentUser = null;
         MainWindow mainWindow = new MainWindow();
         mainWindow.Show();
         Close();
@@ -38,6 +40,7 @@ public partial class TasksWindow : Window
 
     private void AddTaskButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
         AddEditTask addEditTask = new AddEditTask(userID);
         addEditTask.Show();
         Close();
@@ -47,6 +50,7 @@ public partial class TasksWindow : Window
     {
         if (AllTasksList.SelectedItem is Models.Task selectedTask)
         {
+            DBContext.PreviousWindowType = typeof(TasksWindow);
             AddEditTask addEditTask = new AddEditTask(userID, selectedTask.Id);
             addEditTask.Show();
             Close();
@@ -71,6 +75,7 @@ public partial class TasksWindow : Window
 
     private void ProfileButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
         ProfileWindow profileWindow = new ProfileWindow(currentUser);
         profileWindow.Show();
         Close();
@@ -85,9 +90,16 @@ public partial class TasksWindow : Window
     {
         AddEditListOfTasksWindow addEditListOfTasksWindow = new AddEditListOfTasksWindow(userID);
         await addEditListOfTasksWindow.ShowDialog(this);
-        ListsOfTasks.ItemsSource = DBContext.Lists
+
+        // Подгружаем списки задач
+        var lists = DBContext.Lists
             .Where(l => l.Users.Any(u => u.Id == currentUser.Id))
             .ToList();
+
+        // Добавляем элемент "Все" в начало списка
+        lists.Insert(0, new List { Id = 0, Name = "Все" });
+
+        ListsOfTasks.ItemsSource = lists;
     }
     private void ListsOfTasks_SelectionChanged(object? sender, SelectionChangedEventArgs e)
     {
@@ -160,8 +172,16 @@ public partial class TasksWindow : Window
 
     private void MoodButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
         Mood moodWindow = new Mood(userID);
         moodWindow.Show();
+        Close();
+    }
+
+    private void MatrixButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        EisenhowerMatrixWindow matrixWindow = new EisenhowerMatrixWindow(userID);
+        matrixWindow.Show();
         Close();
     }
 }

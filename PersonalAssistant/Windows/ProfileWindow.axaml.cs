@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
 using System.IO;
 using System.Linq;
@@ -81,7 +82,7 @@ public partial class ProfileWindow : Window
             return;
         }
 
-        if (Utils.DBContext.Users.Any(u => u.Login == login && u.Id != user.Id))
+        if (DBContext.Users.Any(u => u.Login == login && u.Id != user.Id))
         {
             ErrorText.Text = "Этот логин уже занят.";
             return;
@@ -114,13 +115,13 @@ public partial class ProfileWindow : Window
             File.Copy(selectedImagePath, newPath, true);
 
             var pfp = new Pfp { Path = newPath };
-            Utils.DBContext.User8Context.Pfps.Add(pfp);
-            Utils.DBContext.User8Context.SaveChanges();
+            DBContext.User8Context.Pfps.Add(pfp);
+            DBContext.User8Context.SaveChanges();
 
             user.MainPfp = pfp.Id;
         }
 
-        Utils.DBContext.User8Context.SaveChanges();
+        DBContext.User8Context.SaveChanges();
 
         var tasksWindow = new TasksWindow(user.Id);
         tasksWindow.Show();

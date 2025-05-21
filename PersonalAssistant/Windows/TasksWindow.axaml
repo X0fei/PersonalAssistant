@@ -46,10 +46,15 @@
 				SelectionChanged="FilterComboBox_SelectionChanged"
 				Width="150"/>
 			<Button
+				Name="MatrixButton"
+				Content="Матрица Эйзенхауэра"
+				Click="MatrixButton_Click"
+				Margin="10 0 0 0"/>
+			<Button
 				Name="MoodButton"
 				Content="Настроение"
 				Click="MoodButton_Click"
-				Margin="100 0 0 0"/>
+				Margin="10 0 0 0"/>
 		</StackPanel>
 
 		<ListBox
@@ -72,7 +77,6 @@
 				<DataTemplate>
 					<Border
 						Tag="{Binding Id}"
-						DoubleTapped="Item_DoubleTapped"
 						Background="">
 						<StackPanel>
 							<TextBlock

@@ -79,6 +79,7 @@ namespace PersonalAssistant
 
         private void LogIn(User user)
         {
+            DBContext.CurrentUser = user;
             new TasksWindow(user.Id).Show();
             Close();
         }
@@ -175,9 +176,7 @@ namespace PersonalAssistant
 
             if (user != null)
             {
-                TasksWindow tasksWindow = new(user.Id);
-                tasksWindow.Show();
-                Close();
+                LogIn(user);
             }
         }
 

@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using PersonalAssistant.Context;
+using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
 using System;
 using System.Collections.Generic;
@@ -22,9 +23,17 @@ public partial class AddEditTask : Window
     {
         InitializeComponent();
         this.userID = userID;
-        ListOfTasksBox.ItemsSource = Utils.DBContext.Lists
-            .Where(t => t.Users.Any(u => u.Id == userID))
+
+        // Подгружаем списки задач
+        var lists = DBContext.Lists
+            .Where(l => l.Users.Any(u => u.Id == this.userID))
             .ToList();
+
+        // Добавляем элемент "Нет" в начало списка
+        lists.Insert(0, new List { Id = 0, Name = "Нет" });
+
+        ListOfTasksBox.ItemsSource = lists;
+        ListOfTasksBox.SelectedIndex = 0;
     }
     public AddEditTask(int userID, int taskID)
     {
@@ -32,9 +41,16 @@ public partial class AddEditTask : Window
         DeleteButton.IsVisible = true;
         this.userID = userID;
         this.taskID = taskID;
-        ListOfTasksBox.ItemsSource = Utils.DBContext.Lists
-            .Where(t => t.Users.Any(u => u.Id == userID))
+
+        // Подгружаем списки задач
+        var lists = DBContext.Lists
+            .Where(l => l.Users.Any(u => u.Id == this.userID))
             .ToList();
+
+        // Добавляем элемент "Нет" в начало списка
+        lists.Insert(0, new List { Id = 0, Name = "Нет" });
+
+        ListOfTasksBox.ItemsSource = lists;
 
         using (var context = new User8Context())
         {
@@ -74,19 +90,51 @@ public partial class AddEditTask : Window
                 var user = context.Users.FirstOrDefault(u => u.Id == userID);
 
                 List selectedList = ListOfTasksBox.SelectedItem as List;
-                var list = context.Lists.FirstOrDefault(l => l.Id == selectedList.Id);
-
-                Models.Task newTask = new Models.Task()
+                List? list = null;
+                if (selectedList != null)
                 {
-                    Name = NameBox.Text,
-                    Description = DescriptionBox.Text,
-                    Priority = PriorityBox.SelectedIndex + 1,
-                    PriorityTable = PriorityTableBox.SelectedIndex + 1,
-                    Status = StatusBox.SelectedIndex + 1,
-                    CreationDate = DateTime.Now,
-                    Users = new List<User> { user },
-                    Lists = new List<Models.List> { list }
-                };
+                    list = context.Lists.FirstOrDefault(l => l.Id == selectedList.Id);
+                    // Proceed with logic
+                }
+                else
+                {
+                    // Handle the case where no list is selected
+                }
+
+                if (string.IsNullOrEmpty(NameBox.Text))
+                {
+                    NameBox.Text = "Задача";
+                }
+
+                Models.Task newTask;
+                if (ListOfTasksBox.SelectedIndex == 0)
+                {
+                    newTask = new Models.Task()
+                    {
+                        Name = NameBox.Text,
+                        Description = DescriptionBox.Text,
+                        Priority = PriorityBox.SelectedIndex + 1,
+                        PriorityTable = PriorityTableBox.SelectedIndex + 1,
+                        Status = StatusBox.SelectedIndex + 1,
+                        CreationDate = DateTime.Now,
+                        Users = new List<User> { user }
+                    };
+                }
+                else
+                {
+                    newTask = new Models.Task()
+                    {
+                        Name = NameBox.Text,
+                        Description = DescriptionBox.Text,
+                        Priority = PriorityBox.SelectedIndex + 1,
+                        PriorityTable = PriorityTableBox.SelectedIndex + 1,
+                        Status = StatusBox.SelectedIndex + 1,
+                        CreationDate = DateTime.Now,
+                        Users = new List<User> { user },
+                        Lists = new List<Models.List> { list }
+                    };
+                }
+
                 context.Add(newTask);
                 context.SaveChanges();
             }
@@ -101,6 +149,11 @@ public partial class AddEditTask : Window
                     .Include(t => t.Lists)
                     .FirstOrDefault(t => t.Id == taskID);
 
+                if (string.IsNullOrEmpty(NameBox.Text))
+                {
+                    NameBox.Text = "Задача";
+                }
+
                 // Обновляем поля задачи  
                 task.Name = NameBox.Text;
                 task.Description = DescriptionBox.Text;
@@ -108,35 +161,54 @@ public partial class AddEditTask : Window
                 task.PriorityTable = PriorityTableBox.SelectedIndex + 1;
                 task.Status = StatusBox.SelectedIndex + 1;
 
-                // Обновляем список, к которому относится задача
-                var selectedList = (Models.List)ListOfTasksBox.SelectedItem;
-                if (selectedList != null )
+                if (ListOfTasksBox.SelectedIndex == 0)
                 {
-                    var newList = context.Lists.FirstOrDefault(l => l.Id == selectedList.Id);
                     task.Lists.Clear();
-                    task.Lists.Add(newList);
+                }
+                else
+                {
+                    // Обновляем список, к которому относится задача
+                    var selectedList = (Models.List)ListOfTasksBox.SelectedItem;
+                    if (selectedList != null)
+                    {
+                        var newList = context.Lists.FirstOrDefault(l => l.Id == selectedList.Id);
+                        task.Lists.Clear();
+                        task.Lists.Add(newList);
+                    }
                 }
                 
                 context.SaveChanges();
             }
         }
 
-        Utils.DBContext.User8Context = new();
-        Utils.DBContext.Tasks = [.. Utils.DBContext.User8Context.Tasks
+        DBContext.User8Context = new();
+        DBContext.Tasks = [.. DBContext.User8Context.Tasks
            .Include(task => task.StatusNavigation)
            .Include(task => task.PriorityNavigation)
            .Include(task => task.Users)];
 
-        TasksWindow tasksWindow = new TasksWindow(userID);
-        tasksWindow.Show();
-        Close();
+        DBContext.Lists = [.. DBContext.User8Context.Lists
+            .Include(list => list.Tasks)
+            .Include(task => task.Users)];
+
+        // Для создания окна того же типа, что и предыдущее, используйте сохранённый экземпляр или тип окна.
+        // Если у вас есть только тип окна (например, DBContext.PreviousWindowType), создайте экземпляр через рефлексию:
+        if (DBContext.PreviousWindowType != null)
+        {
+            var previousWindow = (Window)Activator.CreateInstance(DBContext.PreviousWindowType, userID);
+            previousWindow.Show();
+            Close();
+        }
     }
 
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        TasksWindow tasksWindow = new TasksWindow(userID);
-        tasksWindow.Show();
-        Close();
+        if (DBContext.PreviousWindowType != null)
+        {
+            var previousWindow = (Window)Activator.CreateInstance(DBContext.PreviousWindowType, userID);
+            previousWindow.Show();
+            Close();
+        }
     }
 
     private void DeleteButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
@@ -154,14 +226,17 @@ public partial class AddEditTask : Window
             context.SaveChanges();
         }
 
-        Utils.DBContext.User8Context = new();
-        Utils.DBContext.Tasks = [.. Utils.DBContext.User8Context.Tasks
+        DBContext.User8Context = new();
+        DBContext.Tasks = [.. DBContext.User8Context.Tasks
             .Include(task => task.StatusNavigation)
             .Include(task => task.PriorityNavigation)
             .Include(task => task.Users)];
 
-        TasksWindow tasksWindow = new TasksWindow(userID);
-        tasksWindow.Show();
-        Close();
+        if (DBContext.PreviousWindowType != null)
+        {
+            var previousWindow = (Window)Activator.CreateInstance(DBContext.PreviousWindowType, userID);
+            previousWindow.Show();
+            Close();
+        }
     }
 }

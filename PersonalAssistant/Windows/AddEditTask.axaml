@@ -2,7 +2,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="600"
         x:Class="PersonalAssistant.AddEditTask"
 		x:CompileBindings="False"
         Title="Добавить задачу" Width="400" Height="450" WindowStartupLocation="CenterOwner">
@@ -28,7 +28,8 @@
 				<TextBox Name="DescriptionBox" AcceptsReturn="True" Height="80"/>
 
 				<TextBlock Text="Приоритет"/>
-				<ComboBox Name="PriorityBox">
+				<ComboBox Name="PriorityBox"
+						  SelectedIndex="0">
 					<ComboBoxItem Content="Без приоритета"/>
 					<ComboBoxItem Content="Низкий"/>
 					<ComboBoxItem Content="Средний"/>
@@ -36,7 +37,8 @@
 				</ComboBox>
 
 				<TextBlock Text="Приоритет по таблице Эйзенхауэра"/>
-				<ComboBox Name="PriorityTableBox">
+				<ComboBox Name="PriorityTableBox"
+						  SelectedIndex="0">
 					<ComboBoxItem Content="Нет"/>
 					<ComboBoxItem Content="Не срочно и не важно"/>
 					<ComboBoxItem Content="Важно, но не срочно"/>
@@ -45,7 +47,8 @@
 				</ComboBox>
 
 				<TextBlock Text="Статус"/>
-				<ComboBox Name="StatusBox">
+				<ComboBox Name="StatusBox"
+						  SelectedIndex="0">
 					<ComboBoxItem Content="Не начато"/>
 					<ComboBoxItem Content="В процессе"/>
 					<ComboBoxItem Content="Выполнено"/>

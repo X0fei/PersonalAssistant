@@ -25,6 +25,9 @@ namespace PersonalAssistant.Helpers
 
         public static List<PriorityTable> PriorityTables { get; set; } = [.. User8Context.PriorityTables];
 
+        public static Type PreviousWindowType { get; set; } = typeof(MainWindow);
+        public static User? CurrentUser { get; set; } = null;
+
         public static User GetUserByLogin(string login)
         {
             return Users.FirstOrDefault(u => u.Login == login)
