@@ -90,7 +90,7 @@
 
 					<Button
 						Name="AddListOfTasksButton"
-						Content="Добавить категорию"
+						Content="Добавить список"
 						Click="AddListOfTasksButton_Click"/>
 					<Button
 						Name="AddTaskButton"
@@ -100,62 +100,124 @@
 				</StackPanel>
 				
 			</Grid>
+			
+			<ScrollViewer>
+				
+				<Grid
+					RowDefinitions="Auto, *, *"
+					Margin="0 10 0 0">
 
-			<Grid
-				RowDefinitions="Auto, *"
-				Margin="0 10 0 0">
+					<ListBox
+						Grid.Row="0"
+						Name="ListsOfTasks"
+						SelectionChanged="ListsOfTasks_SelectionChanged"
+						DoubleTapped="ListsOfTasks_ItemDoubleTapped"
+						SelectionMode="Single"
+						ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+						PointerWheelChanged="HorizontalScrollViewerWithoutShift"
+						BorderThickness="1">
+						<ListBox.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel
+									Orientation="Horizontal"/>
+							</ItemsPanelTemplate>
+						</ListBox.ItemsPanel>
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<TextBlock
+										Text="{Binding Name}"/>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
 
-				<ListBox
-					Grid.Row="0"
-					Name="ListsOfTasks"
-					SelectionChanged="ListsOfTasks_SelectionChanged"
-					DoubleTapped="ListsOfTasks_ItemDoubleTapped"
-					SelectionMode="Single"
-					ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-					PointerWheelChanged="HorizontalScrollViewerWithoutShift"
-					BorderThickness="1">
-					<ListBox.ItemsPanel>
-						<ItemsPanelTemplate>
-							<StackPanel
-								Orientation="Horizontal"/>
-						</ItemsPanelTemplate>
-					</ListBox.ItemsPanel>
-					<ListBox.ItemTemplate>
-						<DataTemplate>
-							<TextBlock
-									Text="{Binding Name}"/>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
+					<ListBox
+						Grid.Row="1"
+						Name="AllTasksList"
+						DoubleTapped="Item_DoubleTapped"
+						BorderThickness="1"
+						MaxHeight="300">
+						<ListBox.ItemTemplate>
+							<DataTemplate>
+								<Border
+									Tag="{Binding Id}"
+									Background="">
+									<StackPanel>
+										<TextBlock
+											Text="{Binding Name}"/>
+										<TextBlock
+											Text="{Binding Description}"/>
+										<TextBlock >
+											<Run  Text="Приоритет:"/>
+											<Run Text="{Binding PriorityNavigation.Name}"/>
+										</TextBlock>
+										<TextBlock
+											Text="{Binding StatusNavigation.Name}"/>
+									</StackPanel>
+								</Border>
+							</DataTemplate>
+						</ListBox.ItemTemplate>
+					</ListBox>
 
-				<ListBox
-					Grid.Row="1"
-					Name="AllTasksList"
-					DoubleTapped="Item_DoubleTapped"
-					BorderThickness="1">
-					<ListBox.ItemTemplate>
-						<DataTemplate>
+					<Grid
+						Grid.Row="2"
+						Margin="0, 20, 0, 0"
+						RowDefinitions="Auto, *">
+
+						<!-- Календарь -->
+						<Calendar
+							Name="TasksCalendar"
+							SelectedDatesChanged="TasksCalendar_SelectedDatesChanged"
+							PointerExited="TasksCalendar_PointerExited"
+							Margin="0, 0, 0, 10"/>
+
+						<!-- Всплывающее окно с задачами на выбранную дату -->
+						<Popup
+							Name="TasksOnDatePopup"
+							Placement="BottomEdgeAlignedRight"
+							IsOpen="{Binding IsPopupOpen}">
 							<Border
-								Tag="{Binding Id}"
-								Background="">
+								Background="White"
+								BorderBrush="Gray"
+								BorderThickness="1"
+								Padding="8">
 								<StackPanel>
 									<TextBlock
-										Text="{Binding Name}"/>
-									<TextBlock
-										Text="{Binding Description}"/>
-									<TextBlock >
-										<Run  Text="Приоритет:"/>
-										<Run Text="{Binding PriorityNavigation.Name}"/>
-									</TextBlock>
-									<TextBlock
-										Text="{Binding StatusNavigation.Name}"/>
+										Text="Задачи на этот день:"
+										FontWeight="Bold"
+										Margin="0,0,0,5"/>
+									<ListBox
+										Name="TasksOnDateList"
+										DoubleTapped="Item_DoubleTapped"
+										BorderThickness="1">
+										<ListBox.ItemTemplate>
+											<DataTemplate>
+												<Border
+													Tag="{Binding Id}"
+													Background="">
+													<StackPanel>
+														<TextBlock
+															Text="{Binding Name}"/>
+														<TextBlock
+															Text="{Binding Description}"/>
+														<TextBlock >
+															<Run  Text="Приоритет:"/>
+															<Run Text="{Binding PriorityNavigation.Name}"/>
+														</TextBlock>
+														<TextBlock
+															Text="{Binding StatusNavigation.Name}"/>
+													</StackPanel>
+												</Border>
+											</DataTemplate>
+										</ListBox.ItemTemplate>
+									</ListBox>
 								</StackPanel>
 							</Border>
-						</DataTemplate>
-					</ListBox.ItemTemplate>
-				</ListBox>
-				
-			</Grid>
+						</Popup>
+					</Grid>
+
+				</Grid>
+
+			</ScrollViewer>
 
 		</DockPanel>
 
