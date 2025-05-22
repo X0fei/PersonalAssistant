@@ -21,13 +21,13 @@ public partial class Task
 
     public int Status { get; set; }
 
-    public int? PriorityTable { get; set; }
+    public int? EisenhowerMatrix { get; set; }
 
     public DateTime CreationDate { get; set; }
 
-    public virtual Priority? PriorityNavigation { get; set; }
+    public virtual EisenhowerMatrix? EisenhowerMatrixNavigation { get; set; }
 
-    public virtual PriorityTable? PriorityTableNavigation { get; set; }
+    public virtual Priority? PriorityNavigation { get; set; }
 
     public virtual Status StatusNavigation { get; set; } = null!;
 

@@ -16,6 +16,8 @@ public partial class User8Context : DbContext
     {
     }
 
+    public virtual DbSet<EisenhowerMatrix> EisenhowerMatrices { get; set; }
+
     public virtual DbSet<Emotion> Emotions { get; set; }
 
     public virtual DbSet<Feeling> Feelings { get; set; }
@@ -25,8 +27,6 @@ public partial class User8Context : DbContext
     public virtual DbSet<Pfp> Pfps { get; set; }
 
     public virtual DbSet<Priority> Priorities { get; set; }
-
-    public virtual DbSet<PriorityTable> PriorityTables { get; set; }
 
     public virtual DbSet<Status> Statuses { get; set; }
 
@@ -40,6 +40,23 @@ public partial class User8Context : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<EisenhowerMatrix>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("priority_table_pk");
+
+            entity.ToTable("eisenhower_matrix");
+
+            entity.HasIndex(e => e.Name, "priority_table_unique").IsUnique();
+
+            entity.HasIndex(e => e.Strength, "priority_table_unique_1").IsUnique();
+
+            entity.Property(e => e.Id).HasColumnName("id");
+            entity.Property(e => e.Name)
+                .HasColumnType("character varying")
+                .HasColumnName("name");
+            entity.Property(e => e.Strength).HasColumnName("strength");
+        });
+
         modelBuilder.Entity<Emotion>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("emotions_pk");
@@ -127,23 +144,6 @@ public partial class User8Context : DbContext
             entity.Property(e => e.Strength).HasColumnName("strength");
         });
 
-        modelBuilder.Entity<PriorityTable>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("priority_table_pk");
-
-            entity.ToTable("priority_table");
-
-            entity.HasIndex(e => e.Name, "priority_table_unique").IsUnique();
-
-            entity.HasIndex(e => e.Strength, "priority_table_unique_1").IsUnique();
-
-            entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Name)
-                .HasColumnType("character varying")
-                .HasColumnName("name");
-            entity.Property(e => e.Strength).HasColumnName("strength");
-        });
-
         modelBuilder.Entity<Status>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("statuses_pk");
@@ -175,6 +175,7 @@ public partial class User8Context : DbContext
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("deadline");
             entity.Property(e => e.Description).HasColumnName("description");
+            entity.Property(e => e.EisenhowerMatrix).HasColumnName("eisenhower_matrix");
             entity.Property(e => e.EndDate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("end_date");
@@ -182,7 +183,6 @@ public partial class User8Context : DbContext
                 .HasColumnType("character varying")
                 .HasColumnName("name");
             entity.Property(e => e.Priority).HasColumnName("priority");
-            entity.Property(e => e.PriorityTable).HasColumnName("priority_table");
             entity.Property(e => e.StartDate)
                 .HasColumnType("timestamp without time zone")
                 .HasColumnName("start_date");
@@ -190,15 +190,15 @@ public partial class User8Context : DbContext
                 .HasDefaultValue(1)
                 .HasColumnName("status");
 
+            entity.HasOne(d => d.EisenhowerMatrixNavigation).WithMany(p => p.Tasks)
+                .HasForeignKey(d => d.EisenhowerMatrix)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("tasks_eisenhower_matrix_fk");
+
             entity.HasOne(d => d.PriorityNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.Priority)
                 .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("tasks_priorities_fk");
-
-            entity.HasOne(d => d.PriorityTableNavigation).WithMany(p => p.Tasks)
-                .HasForeignKey(d => d.PriorityTable)
-                .OnDelete(DeleteBehavior.SetNull)
-                .HasConstraintName("tasks_priority_table_fk");
 
             entity.HasOne(d => d.StatusNavigation).WithMany(p => p.Tasks)
                 .HasForeignKey(d => d.Status)

@@ -23,7 +23,7 @@ namespace PersonalAssistant.Helpers
             .Include(task => task.Users)];
         public static List<Pfp> Pfps { get; set; } = [.. User8Context.Pfps];
 
-        public static List<PriorityTable> PriorityTables { get; set; } = [.. User8Context.PriorityTables];
+        public static List<EisenhowerMatrix> EisenhowerMatrices { get; set; } = [.. User8Context.EisenhowerMatrices];
 
         public static Type PreviousWindowType { get; set; } = typeof(MainWindow);
         public static User? CurrentUser { get; set; } = null;

@@ -64,9 +64,9 @@ public partial class AddEditTask : Window
             {
                 PriorityBox.SelectedIndex = (int)(task.Priority - 1);
             }
-            if (task.PriorityTable != null)
+            if (task.EisenhowerMatrix != null)
             {
-                PriorityTableBox.SelectedIndex = (int)(task.PriorityTable - 1);
+                PriorityTableBox.SelectedIndex = (int)(task.EisenhowerMatrix - 1);
             }
             StatusBox.SelectedIndex = task.Status - 1;
 
@@ -83,6 +83,39 @@ public partial class AddEditTask : Window
 
     private void SaveButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
+        // Получаем значения из DatePicker и TimePicker
+        DateTime? startDateTime = null, endDateTime = null, deadlineDateTime = null;
+
+        if (StartDatePicker.SelectedDate.HasValue && StartTimePicker.SelectedTime.HasValue)
+            startDateTime = StartDatePicker.SelectedDate.Value.Date + StartTimePicker.SelectedTime.Value;
+
+        if (EndDatePicker.SelectedDate.HasValue && EndTimePicker.SelectedTime.HasValue)
+            endDateTime = EndDatePicker.SelectedDate.Value.Date + EndTimePicker.SelectedTime.Value;
+
+        if (DeadlineDatePicker.SelectedDate.HasValue && DeadlineTimePicker.SelectedTime.HasValue)
+            deadlineDateTime = DeadlineDatePicker.SelectedDate.Value.Date + DeadlineTimePicker.SelectedTime.Value;
+
+        // Валидация дат
+        if (startDateTime.HasValue && endDateTime.HasValue && startDateTime > endDateTime)
+        {
+            //await MessageBox.Show(this, "Дата начала не может быть позже даты окончания.", "Ошибка", MessageBox.MessageBoxButtons.Ok);
+            return;
+        }
+        if (deadlineDateTime.HasValue)
+        {
+            if (startDateTime.HasValue && deadlineDateTime < startDateTime)
+            {
+                //await MessageBox.Show(this, "Дедлайн не может быть раньше даты начала.", "Ошибка", MessageBox.MessageBoxButtons.Ok);
+                return;
+            }
+            if (endDateTime.HasValue && deadlineDateTime < endDateTime)
+            {
+                //await MessageBox.Show(this, "Дедлайн не может быть раньше даты окончания.", "Ошибка", MessageBox.MessageBoxButtons.Ok);
+                return;
+            }
+        }
+
+
         if (taskID == null)
         {
             using (var context = new User8Context())
@@ -114,10 +147,13 @@ public partial class AddEditTask : Window
                         Name = NameBox.Text,
                         Description = DescriptionBox.Text,
                         Priority = PriorityBox.SelectedIndex + 1,
-                        PriorityTable = PriorityTableBox.SelectedIndex + 1,
+                        EisenhowerMatrix = PriorityTableBox.SelectedIndex + 1,
                         Status = StatusBox.SelectedIndex + 1,
                         CreationDate = DateTime.Now,
-                        Users = new List<User> { user }
+                        Users = new List<User> { user },
+                        StartDate = startDateTime,
+                        EndDate = endDateTime,
+                        Deadline = deadlineDateTime
                     };
                 }
                 else
@@ -127,11 +163,14 @@ public partial class AddEditTask : Window
                         Name = NameBox.Text,
                         Description = DescriptionBox.Text,
                         Priority = PriorityBox.SelectedIndex + 1,
-                        PriorityTable = PriorityTableBox.SelectedIndex + 1,
+                        EisenhowerMatrix = PriorityTableBox.SelectedIndex + 1,
                         Status = StatusBox.SelectedIndex + 1,
                         CreationDate = DateTime.Now,
                         Users = new List<User> { user },
-                        Lists = new List<Models.List> { list }
+                        Lists = new List<Models.List> { list },
+                        StartDate = startDateTime,
+                        EndDate = endDateTime,
+                        Deadline = deadlineDateTime
                     };
                 }
 
@@ -158,8 +197,11 @@ public partial class AddEditTask : Window
                 task.Name = NameBox.Text;
                 task.Description = DescriptionBox.Text;
                 task.Priority = PriorityBox.SelectedIndex + 1;
-                task.PriorityTable = PriorityTableBox.SelectedIndex + 1;
+                task.EisenhowerMatrix = PriorityTableBox.SelectedIndex + 1;
                 task.Status = StatusBox.SelectedIndex + 1;
+                task.StartDate = startDateTime;
+                task.EndDate = endDateTime;
+                task.Deadline = deadlineDateTime;
 
                 if (ListOfTasksBox.SelectedIndex == 0)
                 {

@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.VisualTree;
 using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
 using System.Collections;
@@ -68,7 +69,7 @@ public partial class TasksWindow : Window
         else
         {
             AllTasksList.ItemsSource = displayAllTasks
-                .Where(t => t.PriorityTableNavigation?.Name == selectedPriority)
+                .Where(t => t.EisenhowerMatrixNavigation?.Name == selectedPriority)
                 .ToList();
         }
     }
@@ -146,7 +147,7 @@ public partial class TasksWindow : Window
         ListsOfTasks.SelectedIndex = 0;
 
         // ѕодгружаем статусы задач в фильтрацию
-        FilterComboBox.ItemsSource = DBContext.PriorityTables
+        FilterComboBox.ItemsSource = DBContext.EisenhowerMatrices
             .Select(s => s.Name)
             .Prepend("¬се")
             .ToList();
@@ -183,5 +184,24 @@ public partial class TasksWindow : Window
         EisenhowerMatrixWindow matrixWindow = new EisenhowerMatrixWindow(userID);
         matrixWindow.Show();
         Close();
+    }
+
+    private void HorizontalScrollViewerWithoutShift(object? sender, Avalonia.Input.PointerWheelEventArgs e)
+    {
+        if (sender is ListBox listBox)
+        {
+            var scrollViewer = listBox.GetVisualDescendants()
+                .OfType<ScrollViewer>()
+                .FirstOrDefault();
+
+            if (scrollViewer != null)
+            {
+                // e.Delta.Y > 0 Ч прокрутка вверх, < 0 Ч вниз
+                scrollViewer.Offset = scrollViewer.Offset.WithX(
+                    scrollViewer.Offset.X - e.Delta.Y * 40 // 40 Ч скорость прокрутки, можно изменить
+                );
+                e.Handled = true;
+            }
+        }
     }
 }

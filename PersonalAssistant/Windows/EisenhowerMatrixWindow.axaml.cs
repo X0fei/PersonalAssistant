@@ -26,16 +26,16 @@ public partial class EisenhowerMatrixWindow : Window
     private void Load()
     {
         UrgentImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.PriorityTable == 5)
+            .Where(t => t.EisenhowerMatrix == 5)
             .ToList();
         UrgentNotImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.PriorityTable == 4)
+            .Where(t => t.EisenhowerMatrix == 4)
             .ToList();
         NotUrgentImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.PriorityTable == 3)
+            .Where(t => t.EisenhowerMatrix == 3)
             .ToList();
         NotUrgentNotImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.PriorityTable == 2)
+            .Where(t => t.EisenhowerMatrix == 2)
             .ToList();
     }
 
