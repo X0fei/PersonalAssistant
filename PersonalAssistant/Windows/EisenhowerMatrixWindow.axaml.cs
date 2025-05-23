@@ -26,22 +26,22 @@ public partial class EisenhowerMatrixWindow : Window
     private void Load()
     {
         UrgentImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.EisenhowerMatrix == 5)
+            .Where(t => t.EisenhowerMatrix == 5).Where(t => t.Users.Any(u => u.Id == userID))
             .ToList();
         UrgentNotImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.EisenhowerMatrix == 4)
+            .Where(t => t.EisenhowerMatrix == 4).Where(t => t.Users.Any(u => u.Id == userID))
             .ToList();
         NotUrgentImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.EisenhowerMatrix == 3)
+            .Where(t => t.EisenhowerMatrix == 3).Where(t => t.Users.Any(u => u.Id == userID))
             .ToList();
         NotUrgentNotImportantListBox.ItemsSource = DBContext.Tasks
-            .Where(t => t.EisenhowerMatrix == 2)
+            .Where(t => t.EisenhowerMatrix == 2).Where(t => t.Users.Any(u => u.Id == userID))
             .ToList();
     }
 
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        TasksWindow tasksWindow = new();
+        TasksWindow tasksWindow = new(userID);
         tasksWindow.Show();
         Close();
     }
