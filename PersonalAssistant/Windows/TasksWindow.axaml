@@ -104,9 +104,9 @@
 								Background="#F9F0EB">
 								<Image
 									Name="ProfileImage"
+									Source="/Assets/Images/PFPs/blank_profile.png"
 									Width="75"
-									Height="75"
-									Source="/Assets/Icons/blank_profile.png">
+									Height="75">
 									<Image.Clip>
 										<EllipseGeometry
 											Center="37.5,37.5"
@@ -270,39 +270,90 @@
 					Background="#F9F0EB"
 					Padding="40 25">
 					<DockPanel>
-						<Grid
-							ColumnDefinitions="*, Auto"
-							DockPanel.Dock="Top">
-							<Border
-								Grid.Column="0">
-								<StackPanel>
+						<Border
+							DockPanel.Dock="Top"
+							Background="#F3E6DE"
+							Padding="30 0"
+							CornerRadius="25">
+							<Grid
+								ColumnDefinitions="*, Auto">
+								<StackPanel
+									Grid.Column="0"
+									Margin="0 0 50 0"
+									Spacing="15"
+									VerticalAlignment="Center">
 									<TextBlock
-										Text="Привет, Имя!"/>
+										Name="GreetingTextBlock"
+										Text="Привет, Имя!"
+										FontSize="24"
+										Foreground="#373E46"/>
 									<TextBlock
 										Text="Здесь ты можешь ставить задачи, следить за дедлайнами и отмечать своё настроение каждый день. Управляй делами и заботься о себе — в одном месте."
-										TextWrapping="Wrap"/>
+										TextWrapping="Wrap"
+										FontSize="14"
+										Foreground="#1F3729"/>
 								</StackPanel>
-							</Border>
-							<Image
-								Grid.Column="1"
-								Source="/Assets/Icons/greeting.png"
-								Width="170"
-								Height="170"/>
-						</Grid>
+								<Image
+									Grid.Column="1"
+									Source="/Assets/Images/Layout/greeting.png"
+									Width="150"
+									Height="150"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center"/>
+							</Grid>
+						</Border>
+
 						<Grid
 							RowDefinitions="Auto, *">
 							<StackPanel
 								Grid.Row="0">
 								<TextBlock
-									Text="Посмотри на свои задачи!"/>
-								<ComboBox>
+									Text="Посмотри на свои задачи!"
+									FontSize="32"
+									Margin="0 30"/>
+								<ComboBox
+									Background="#F3E6DE"
+									BorderThickness="0"
+									CornerRadius="12"
+									Margin="0 0 0 30">
 
 								</ComboBox>
 							</StackPanel>
-							<ListBox
-								Grid.Row="1">
 
-							</ListBox>
+							<Border
+								Grid.Row="1"
+								Background="#F3E6DE"
+								CornerRadius="25">
+								<ListBox
+									Name="AllTasksList"
+									DoubleTapped="Item_DoubleTapped"
+									Background="Transparent"
+									CornerRadius="25">
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<Border
+												Tag="{Binding Id}"
+												Background="#F9F0EB"
+												CornerRadius="12"
+												Padding="10"
+												>
+												<StackPanel>
+													<TextBlock
+														Text="{Binding Name}"/>
+													<TextBlock
+														Text="{Binding Description}"/>
+													<TextBlock >
+														<Run  Text="Приоритет:"/>
+														<Run Text="{Binding PriorityNavigation.Name}"/>
+													</TextBlock>
+													<TextBlock
+														Text="{Binding StatusNavigation.Name}"/>
+												</StackPanel>
+											</Border>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+							</Border>
 						</Grid>
 					</DockPanel>
 
@@ -311,37 +362,11 @@
 
 				<DockPanel
 					Margin="10">
-
-					<!-- Панель меню -->
-					<Grid
-						ColumnDefinitions="Auto, *, Auto"
-						DockPanel.Dock="Top">
-
-					</Grid>
-
 					<DockPanel
 						Margin="0, 30, 0, 0">
-
 						<Grid
 							ColumnDefinitions="Auto, *"
 							DockPanel.Dock="Top">
-
-							<!-- Панель с фильтром -->
-							<StackPanel
-								Grid.Column="0"
-								Orientation="Horizontal">
-
-								<TextBlock
-									Text="Фильтр:"
-									VerticalAlignment="Center"
-									Margin="0,0,5,0"/>
-								<ComboBox
-									Name="FilterComboBox"
-									SelectionChanged="FilterComboBox_SelectionChanged"
-									Width="150"/>
-
-							</StackPanel>
-
 							<StackPanel
 								Grid.Column="1"
 								Orientation="Horizontal"
@@ -382,34 +407,6 @@
 										<DataTemplate>
 											<TextBlock
 													Text="{Binding Name}"/>
-										</DataTemplate>
-									</ListBox.ItemTemplate>
-								</ListBox>
-
-								<ListBox
-									Grid.Row="1"
-									Name="AllTasksList"
-									DoubleTapped="Item_DoubleTapped"
-									BorderThickness="1"
-									MaxHeight="300">
-									<ListBox.ItemTemplate>
-										<DataTemplate>
-											<Border
-												Tag="{Binding Id}"
-												Background="">
-												<StackPanel>
-													<TextBlock
-														Text="{Binding Name}"/>
-													<TextBlock
-														Text="{Binding Description}"/>
-													<TextBlock >
-														<Run  Text="Приоритет:"/>
-														<Run Text="{Binding PriorityNavigation.Name}"/>
-													</TextBlock>
-													<TextBlock
-														Text="{Binding StatusNavigation.Name}"/>
-												</StackPanel>
-											</Border>
 										</DataTemplate>
 									</ListBox.ItemTemplate>
 								</ListBox>

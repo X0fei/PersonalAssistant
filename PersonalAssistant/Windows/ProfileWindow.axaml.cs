@@ -42,7 +42,7 @@ public partial class ProfileWindow : Window
         }
         else
         {
-            ProfileImage.Source = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "/Assets/Icons/blank_profile.png");
+            ProfileImage.Source = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "/Assets/Images/PFPs/blank_profile.png");
         }
     }
 

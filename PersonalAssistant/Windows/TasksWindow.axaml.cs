@@ -77,21 +77,21 @@ public partial class TasksWindow : Window
         }
     }
 
-    private void FilterComboBox_SelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
-    {
-        string selectedPriority = FilterComboBox.SelectedItem?.ToString() ?? "Все";
+    //private void FilterComboBox_SelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
+    //{
+    //    string selectedPriority = FilterComboBox.SelectedItem?.ToString() ?? "Все";
 
-        if (selectedPriority == "Все")
-        {
-            AllTasksList.ItemsSource = displayAllTasks;
-        }
-        else
-        {
-            AllTasksList.ItemsSource = displayAllTasks
-                .Where(t => t.EisenhowerMatrixNavigation?.Name == selectedPriority)
-                .ToList();
-        }
-    }
+    //    if (selectedPriority == "Все")
+    //    {
+    //        AllTasksList.ItemsSource = displayAllTasks;
+    //    }
+    //    else
+    //    {
+    //        AllTasksList.ItemsSource = displayAllTasks
+    //            .Where(t => t.EisenhowerMatrixNavigation?.Name == selectedPriority)
+    //            .ToList();
+    //    }
+    //}
 
     private void ProfileButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
@@ -150,13 +150,15 @@ public partial class TasksWindow : Window
         }
         else
         {
-            ProfileImage.Source = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "/Assets/Icons/blank_profile.png");
+            ProfileImage.Source = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "/Assets/Images/PFPs/blank_profile.png");
         }
     }
 
     private void LoadData()
     {
         LoadProfileImage();
+
+        GreetingTextBlock.Text = "Привет, " + currentUser.Name + "!";
 
         // Привязка коллекции к ItemsControl
         TasksOnDateList.ItemsSource = displayAllTasks;
@@ -183,12 +185,12 @@ public partial class TasksWindow : Window
         // Устанавливаем "Все" как выбранный элемент
         ListsOfTasks.SelectedIndex = 0;
 
-        // Подгружаем статусы задач в фильтрацию
-        FilterComboBox.ItemsSource = DBContext.EisenhowerMatrices
-            .Select(s => s.Name)
-            .Prepend("Все")
-            .ToList();
-        FilterComboBox.SelectedIndex = 0;
+        //// Подгружаем статусы задач в фильтрацию
+        //FilterComboBox.ItemsSource = DBContext.EisenhowerMatrices
+        //    .Select(s => s.Name)
+        //    .Prepend("Все")
+        //    .ToList();
+        //FilterComboBox.SelectedIndex = 0;
     }
     private async void ListsOfTasks_ItemDoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
     {
