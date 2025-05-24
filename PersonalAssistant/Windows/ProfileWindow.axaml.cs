@@ -2,8 +2,10 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
 using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
+using System;
 using System.IO;
 using System.Linq;
 
@@ -36,7 +38,11 @@ public partial class ProfileWindow : Window
         var pfp = user.MainPfpNavigation;
         if (pfp != null && File.Exists(pfp.Path))
         {
-            ProfileImage.Source = new Avalonia.Media.Imaging.Bitmap(pfp.Path);
+            ProfileImage.Source = new Bitmap(pfp.Path);
+        }
+        else
+        {
+            ProfileImage.Source = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "/Assets/Icons/blank_profile.png");
         }
     }
 

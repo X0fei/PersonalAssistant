@@ -2,6 +2,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
 using Avalonia.VisualTree;
 using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
@@ -9,6 +10,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -139,13 +141,28 @@ public partial class TasksWindow : Window
         }
     }
 
+    private void LoadProfileImage()
+    {
+        var pfp = currentUser.MainPfpNavigation;
+        if (pfp != null && File.Exists(pfp.Path))
+        {
+            ProfileImage.Source = new Bitmap(pfp.Path);
+        }
+        else
+        {
+            ProfileImage.Source = new Bitmap(AppDomain.CurrentDomain.BaseDirectory + "/Assets/Icons/blank_profile.png");
+        }
+    }
+
     private void LoadData()
     {
+        LoadProfileImage();
+
         // Привязка коллекции к ItemsControl
         TasksOnDateList.ItemsSource = displayAllTasks;
 
-        // Подгружаем имя пользователя в кнопку профиля
-        ProfileButton.Content = currentUser.Name;
+        // Подгружаем имя пользователя
+        UserName.Text = currentUser.Name;
 
         // Подгружаем все задачи
         displayAllTasks = DBContext.Tasks

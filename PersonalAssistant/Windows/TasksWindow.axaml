@@ -10,13 +10,13 @@
         Title="Задачи">
 
 	<!-- Главное окно -->
-	<DockPanel>
+	<DockPanel
+		Margin="25">
 
 		<!-- Меню (слева) -->
 		<Border
-			DockPanel.Dock="Left"
-			Padding="20">
-			
+			DockPanel.Dock="Left">
+
 			<DockPanel>
 
 				<TextBlock
@@ -55,16 +55,19 @@
 						Background="Transparent"
 						FontSize="15"/>
 					<Button
+						Click="MoodButton_Click"
 						Content="Настроение"
 						Foreground="#183F28"
 						Background="Transparent"
 						FontSize="15"/>
 					<Button
+						Click="AddTaskButton_Click"
 						Content="Добавить задачу"
 						Foreground="#183F28"
 						Background="Transparent"
 						FontSize="15"/>
 					<Button
+						Click="MatrixButton_Click"
 						Content="Матрица Эйзенхауэра"
 						Foreground="#183F28"
 						Background="Transparent"
@@ -77,272 +80,409 @@
 		</Border>
 
 		<!-- Основная часть окна -->
-		<DockPanel>
+		<Border
+			CornerRadius="25"
+			Background="#F3E6DE"
+			Margin="35 0 0 0">
+			<DockPanel>
 
-			<Border
-				DockPanel.Dock="Right"
-				Padding="20"
-				Background="#F3E6DE">
-				<DockPanel>
-
-					<Grid
-						DockPanel.Dock="Top"
-						ColumnDefinitions="Auto, Auto, *">
-
-						<Image
-							Grid.Column="0"
-							Width="75"
-							Height="75"/>
-						<TextBlock
-							Grid.Column="1"
-							Text="Имя пользователя"
-							Foreground="#264E37"
-							FontSize="16"/>
-						<Button
-							Grid.Column="2">
-							<Image/>
-						</Button>
-
-					</Grid>
-
-					<StackPanel
-						Spacing="20">
-
-						<Button>
-							
-						</Button>
-						<Button>
-
-						</Button>
-						<Button>
-
-						</Button>
-						<Button>
-
-						</Button>
-						
-					</StackPanel>
-
-				</DockPanel>
-
-			</Border>
-
-
-			<DockPanel
-				Margin="10">
-
-				<!-- Панель меню -->
-				<Grid
-					ColumnDefinitions="Auto, *, Auto"
-					DockPanel.Dock="Top">
-
-					<!-- Кнопка «Выйти» -->
-					<Button
-						Grid.Column="0"
-						Name="GoBackButton"
-						Content="Выйти"
-						Click="GoBackButton_Click"/>
-
-					<!-- Панель с кнопками для перехода на другие окна -->
-					<StackPanel
-						Grid.Column="1"
-						Orientation="Horizontal"
-						HorizontalAlignment="Center"
-						Spacing="10">
-
-						<!-- Кнопка «Матрица Эйзенхауэра» -->
-						<Button
-							Name="MatrixButton"
-							Content="Матрица Эйзенхауэра"
-							Click="MatrixButton_Click"/>
-
-						<!-- Кнопка «Настроение» -->
-						<Button
-							Name="MoodButton"
-							Content="Настроение"
-							Click="MoodButton_Click"/>
-
-						<!-- Кнопка «Статистика» -->
-						<Button
-							Name="StatisticsButton"
-							Content="Статистика"/>
-
-					</StackPanel>
-
-					<!-- Кнопка для перехода в профиль пользователя -->
-					<Button
-						Grid.Column="2"
-						Name="ProfileButton"
-						Content="Имя"
-						Click="ProfileButton_Click"/>
-
-				</Grid>
-
-				<DockPanel
-					Margin="0, 30, 0, 0">
-
-					<Grid
-						ColumnDefinitions="Auto, *"
-						DockPanel.Dock="Top">
-
-						<!-- Панель с фильтром -->
-						<StackPanel
-							Grid.Column="0"
-							Orientation="Horizontal">
-
-							<TextBlock
-								Text="Фильтр:"
-								VerticalAlignment="Center"
-								Margin="0,0,5,0"/>
-							<ComboBox
-								Name="FilterComboBox"
-								SelectionChanged="FilterComboBox_SelectionChanged"
-								Width="150"/>
-
-						</StackPanel>
-
-						<StackPanel
-							Grid.Column="1"
-							Orientation="Horizontal"
-							HorizontalAlignment="Right"
-							Spacing="10">
-
-							<Button
-								Name="AddListOfTasksButton"
-								Content="Добавить список"
-								Click="AddListOfTasksButton_Click"/>
-							<Button
-								Name="AddTaskButton"
-								Content="Добавить задачу"
-								Click="AddTaskButton_Click"/>
-
-						</StackPanel>
-
-					</Grid>
-
-					<ScrollViewer>
+				<Border
+					DockPanel.Dock="Right"
+					Padding="15">
+					<DockPanel>
 
 						<Grid
-							RowDefinitions="Auto, *, *"
-							Margin="0 10 0 0">
+							DockPanel.Dock="Top"
+							ColumnDefinitions="Auto, Auto, *">
 
-							<ListBox
-								Grid.Row="0"
-								Name="ListsOfTasks"
-								SelectionChanged="ListsOfTasks_SelectionChanged"
-								DoubleTapped="ListsOfTasks_ItemDoubleTapped"
-								SelectionMode="Single"
-								ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-								PointerWheelChanged="HorizontalScrollViewerWithoutShift"
-								BorderThickness="1">
-								<ListBox.ItemsPanel>
-									<ItemsPanelTemplate>
-										<StackPanel
-											Orientation="Horizontal"/>
-									</ItemsPanelTemplate>
-								</ListBox.ItemsPanel>
-								<ListBox.ItemTemplate>
-									<DataTemplate>
-										<TextBlock
-												Text="{Binding Name}"/>
-									</DataTemplate>
-								</ListBox.ItemTemplate>
-							</ListBox>
+							<Border
+								Grid.Column="0"
+								Width="75"
+								Height="75"
+								Margin="0 0 20 0"
+								CornerRadius="180"
+								Background="#F9F0EB">
+								<Image
+									Name="ProfileImage"
+									Width="75"
+									Height="75"
+									Source="/Assets/Icons/blank_profile.png">
+									<Image.Clip>
+										<EllipseGeometry
+											Center="37.5,37.5"
+											RadiusX="37.5"
+											RadiusY="37.5"/>
+									</Image.Clip>
+								</Image>
+							</Border>
 
-							<ListBox
-								Grid.Row="1"
-								Name="AllTasksList"
-								DoubleTapped="Item_DoubleTapped"
-								BorderThickness="1"
-								MaxHeight="300">
-								<ListBox.ItemTemplate>
-									<DataTemplate>
-										<Border
-											Tag="{Binding Id}"
-											Background="">
-											<StackPanel>
-												<TextBlock
-													Text="{Binding Name}"/>
-												<TextBlock
-													Text="{Binding Description}"/>
-												<TextBlock >
-													<Run  Text="Приоритет:"/>
-													<Run Text="{Binding PriorityNavigation.Name}"/>
-												</TextBlock>
-												<TextBlock
-													Text="{Binding StatusNavigation.Name}"/>
-											</StackPanel>
-										</Border>
-									</DataTemplate>
-								</ListBox.ItemTemplate>
-							</ListBox>
-
-							<Grid
-								Grid.Row="2"
-								Margin="0, 20, 0, 0"
-								RowDefinitions="Auto, *">
-
-								<!-- Календарь -->
-								<Calendar
-									Name="TasksCalendar"
-									SelectedDatesChanged="TasksCalendar_SelectedDatesChanged"
-									PointerExited="TasksCalendar_PointerExited"
-									Margin="0, 0, 0, 10"/>
-
-								<!-- Всплывающее окно с задачами на выбранную дату -->
-								<Popup
-									Name="TasksOnDatePopup"
-									Placement="BottomEdgeAlignedRight"
-									IsOpen="{Binding IsPopupOpen}">
-									<Border
-										Background="White"
-										BorderBrush="Gray"
-										BorderThickness="1"
-										Padding="8">
-										<StackPanel>
-											<TextBlock
-												Text="Задачи на этот день:"
-												FontWeight="Bold"
-												Margin="0,0,0,5"/>
-											<ListBox
-												Name="TasksOnDateList"
-												DoubleTapped="Item_DoubleTapped"
-												BorderThickness="1">
-												<ListBox.ItemTemplate>
-													<DataTemplate>
-														<Border
-															Tag="{Binding Id}"
-															Background="">
-															<StackPanel>
-																<TextBlock
-																	Text="{Binding Name}"/>
-																<TextBlock
-																	Text="{Binding Description}"/>
-																<TextBlock >
-																	<Run  Text="Приоритет:"/>
-																	<Run Text="{Binding PriorityNavigation.Name}"/>
-																</TextBlock>
-																<TextBlock
-																	Text="{Binding StatusNavigation.Name}"/>
-															</StackPanel>
-														</Border>
-													</DataTemplate>
-												</ListBox.ItemTemplate>
-											</ListBox>
-										</StackPanel>
-									</Border>
-								</Popup>
-							</Grid>
+							<TextBlock
+								Grid.Column="1"
+								Name="UserName"
+								Text="Имя"
+								Foreground="#264E37"
+								FontSize="16"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Top"
+								Margin="0 5 0 0"/>
+							<Button
+								Grid.Column="2"
+								Click="ProfileButton_Click"
+								Background="Transparent"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Top">
+								<Image
+									Source="/Assets/Icons/edit_icon.png"
+									Width="16.67"
+									Height="16.67"/>
+							</Button>
 
 						</Grid>
 
-					</ScrollViewer>
+						<StackPanel
+							Spacing="20"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom">
+
+							<Button
+								Width="250"
+								Height="85"
+								Background="#F9F0EB"
+								CornerRadius="12">
+								<DockPanel
+									Margin="15 5 10 5">
+									<TextBlock
+										DockPanel.Dock="Right"
+										Text="→"
+										Foreground="#E0AF49"
+										FontSize="24"
+										VerticalAlignment="Center"/>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Активные задачи"
+										Foreground="#183F28"
+										FontSize="16"/>
+									<TextBlock
+										Text="10"
+										FontSize="32"
+										VerticalAlignment="Bottom"
+										Foreground="#497248"/>
+								</DockPanel>
+							</Button>
+							<Button
+								Width="250"
+								Height="85"
+								Background="#F9F0EB"
+								CornerRadius="12">
+								<DockPanel
+									Margin="15 5 10 5">
+									<TextBlock
+										DockPanel.Dock="Right"
+										Text="→"
+										Foreground="#E0AF49"
+										FontSize="24"
+										VerticalAlignment="Center"/>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Выполненные задачи"
+										Foreground="#183F28"
+										FontSize="16"/>
+									<TextBlock
+										Text="10"
+										FontSize="32"
+										VerticalAlignment="Bottom"
+										Foreground="#497248"/>
+								</DockPanel>
+							</Button>
+							<Button
+								Width="250"
+								Height="85"
+								Background="#F9F0EB"
+								CornerRadius="12">
+								<DockPanel
+									Margin="15 5 10 5">
+									<TextBlock
+										DockPanel.Dock="Right"
+										Text="→"
+										Foreground="#E0AF49"
+										FontSize="24"
+										VerticalAlignment="Center"/>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Просроченные задачи"
+										Foreground="#183F28"
+										FontSize="16"/>
+									<TextBlock
+										Text="10"
+										FontSize="32"
+										VerticalAlignment="Bottom"
+										Foreground="#497248"/>
+								</DockPanel>
+							</Button>
+							<Button
+								Width="250"
+								Height="250"
+								Background="#F9F0EB"
+								CornerRadius="12">
+
+								<DockPanel>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Общая продуктивность в %"
+										Foreground="#497248"
+										HorizontalAlignment="Center"
+										FontSize="16"
+										Margin="0 5 0 0"/>
+									<Border
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										Background="#F3E6DE"
+										Width="190"
+										Height="190"
+										CornerRadius="180">
+										<Border
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Background="#F9F0EB"
+											Width="150"
+											Height="150"
+											CornerRadius="180">
+											<TextBlock
+												VerticalAlignment="Center"
+												HorizontalAlignment="Center"
+												Text="100"
+												FontSize="64"
+												Foreground="#E0AF49"/>
+										</Border>
+									</Border>
+								</DockPanel>
+
+							</Button>
+
+						</StackPanel>
+
+					</DockPanel>
+
+				</Border>
+
+				<Border
+					CornerRadius="25"
+					Background="#F9F0EB"
+					Padding="40 25">
+					<DockPanel>
+						<Grid
+							ColumnDefinitions="*, Auto"
+							DockPanel.Dock="Top">
+							<Border
+								Grid.Column="0">
+								<StackPanel>
+									<TextBlock
+										Text="Привет, Имя!"/>
+									<TextBlock
+										Text="Здесь ты можешь ставить задачи, следить за дедлайнами и отмечать своё настроение каждый день. Управляй делами и заботься о себе — в одном месте."
+										TextWrapping="Wrap"/>
+								</StackPanel>
+							</Border>
+							<Image
+								Grid.Column="1"
+								Source="/Assets/Icons/greeting.png"
+								Width="170"
+								Height="170"/>
+						</Grid>
+						<Grid
+							RowDefinitions="Auto, *">
+							<StackPanel
+								Grid.Row="0">
+								<TextBlock
+									Text="Посмотри на свои задачи!"/>
+								<ComboBox>
+
+								</ComboBox>
+							</StackPanel>
+							<ListBox
+								Grid.Row="1">
+
+							</ListBox>
+						</Grid>
+					</DockPanel>
+
+				</Border>
+
+
+				<DockPanel
+					Margin="10">
+
+					<!-- Панель меню -->
+					<Grid
+						ColumnDefinitions="Auto, *, Auto"
+						DockPanel.Dock="Top">
+
+					</Grid>
+
+					<DockPanel
+						Margin="0, 30, 0, 0">
+
+						<Grid
+							ColumnDefinitions="Auto, *"
+							DockPanel.Dock="Top">
+
+							<!-- Панель с фильтром -->
+							<StackPanel
+								Grid.Column="0"
+								Orientation="Horizontal">
+
+								<TextBlock
+									Text="Фильтр:"
+									VerticalAlignment="Center"
+									Margin="0,0,5,0"/>
+								<ComboBox
+									Name="FilterComboBox"
+									SelectionChanged="FilterComboBox_SelectionChanged"
+									Width="150"/>
+
+							</StackPanel>
+
+							<StackPanel
+								Grid.Column="1"
+								Orientation="Horizontal"
+								HorizontalAlignment="Right"
+								Spacing="10">
+
+								<Button
+									Name="AddListOfTasksButton"
+									Content="Добавить список"
+									Click="AddListOfTasksButton_Click"/>
+
+							</StackPanel>
+
+						</Grid>
+
+						<ScrollViewer>
+
+							<Grid
+								RowDefinitions="Auto, *, *"
+								Margin="0 10 0 0">
+
+								<ListBox
+									Grid.Row="0"
+									Name="ListsOfTasks"
+									SelectionChanged="ListsOfTasks_SelectionChanged"
+									DoubleTapped="ListsOfTasks_ItemDoubleTapped"
+									SelectionMode="Single"
+									ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+									PointerWheelChanged="HorizontalScrollViewerWithoutShift"
+									BorderThickness="1">
+									<ListBox.ItemsPanel>
+										<ItemsPanelTemplate>
+											<StackPanel
+												Orientation="Horizontal"/>
+										</ItemsPanelTemplate>
+									</ListBox.ItemsPanel>
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock
+													Text="{Binding Name}"/>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+
+								<ListBox
+									Grid.Row="1"
+									Name="AllTasksList"
+									DoubleTapped="Item_DoubleTapped"
+									BorderThickness="1"
+									MaxHeight="300">
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<Border
+												Tag="{Binding Id}"
+												Background="">
+												<StackPanel>
+													<TextBlock
+														Text="{Binding Name}"/>
+													<TextBlock
+														Text="{Binding Description}"/>
+													<TextBlock >
+														<Run  Text="Приоритет:"/>
+														<Run Text="{Binding PriorityNavigation.Name}"/>
+													</TextBlock>
+													<TextBlock
+														Text="{Binding StatusNavigation.Name}"/>
+												</StackPanel>
+											</Border>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+
+								<Grid
+									Grid.Row="2"
+									Margin="0, 20, 0, 0"
+									RowDefinitions="Auto, *">
+
+									<!-- Календарь -->
+									<Calendar
+										Name="TasksCalendar"
+										SelectedDatesChanged="TasksCalendar_SelectedDatesChanged"
+										PointerExited="TasksCalendar_PointerExited"
+										Margin="0, 0, 0, 10"/>
+
+									<!-- Всплывающее окно с задачами на выбранную дату -->
+									<Popup
+										Name="TasksOnDatePopup"
+										Placement="BottomEdgeAlignedRight"
+										IsOpen="{Binding IsPopupOpen}">
+										<Border
+											Background="White"
+											BorderBrush="Gray"
+											BorderThickness="1"
+											Padding="8">
+											<StackPanel>
+												<TextBlock
+													Text="Задачи на этот день:"
+													FontWeight="Bold"
+													Margin="0,0,0,5"/>
+												<ListBox
+													Name="TasksOnDateList"
+													DoubleTapped="Item_DoubleTapped"
+													BorderThickness="1">
+													<ListBox.ItemTemplate>
+														<DataTemplate>
+															<Border
+																Tag="{Binding Id}"
+																Background="">
+																<StackPanel>
+																	<TextBlock
+																		Text="{Binding Name}"/>
+																	<TextBlock
+																		Text="{Binding Description}"/>
+																	<TextBlock >
+																		<Run  Text="Приоритет:"/>
+																		<Run Text="{Binding PriorityNavigation.Name}"/>
+																	</TextBlock>
+																	<TextBlock
+																		Text="{Binding StatusNavigation.Name}"/>
+																</StackPanel>
+															</Border>
+														</DataTemplate>
+													</ListBox.ItemTemplate>
+												</ListBox>
+											</StackPanel>
+										</Border>
+									</Popup>
+								</Grid>
+
+							</Grid>
+
+						</ScrollViewer>
+
+					</DockPanel>
 
 				</DockPanel>
 
 			</DockPanel>
 
-		</DockPanel>
+		</Border>
+
 
 	</DockPanel>
 
