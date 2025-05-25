@@ -28,7 +28,7 @@ public partial class AddEditTask : Window
     {
         InitializeComponent();
         this.userID = userID;
-
+        GreetingTitle.Text = "Добавление задачи";
         // Подгружаем списки задач
         var lists = DBContext.Lists
             .Where(l => l.Users.Any(u => u.Id == this.userID))
@@ -48,6 +48,7 @@ public partial class AddEditTask : Window
         this.userID = userID;
         this.taskID = taskID;
 
+        GreetingTitle.Text = "Редактирование задачи";
         // Подгружаем списки задач
         var lists = DBContext.Lists
             .Where(l => l.Users.Any(u => u.Id == this.userID))

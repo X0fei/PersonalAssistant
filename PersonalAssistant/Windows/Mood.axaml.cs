@@ -145,7 +145,7 @@ public partial class Mood : Window
             < 55 => 4,
             < 70 => 3,
             < 85 => 2,
-            _ => 1
+            <= 100 => 1
         };
 
         using var context = new User8Context();

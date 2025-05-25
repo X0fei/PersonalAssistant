@@ -151,67 +151,159 @@
 					CornerRadius="25"
 					Background="#F9F0EB"
 					Padding="40 25">
-					<DockPanel Margin="10">
-
+					<DockPanel>
+						<TextBlock
+							DockPanel.Dock="Top"
+							Name="GreetingTitle"
+							Text="Добавление/Редактирование задачи"
+							FontSize="40"
+							Foreground="#373E46"
+							HorizontalAlignment="Center"/>
 						<!-- Основной контент -->
-						<ScrollViewer VerticalScrollBarVisibility="Auto">
-							<StackPanel Margin="10" Spacing="10">
+						<ScrollViewer
+							VerticalScrollBarVisibility="Hidden">
+							<StackPanel
+								Margin="0 20 0 0"
+								Spacing="10">
 
-								<TextBlock Text="Имя задачи"/>
-								<TextBox Name="NameBox"/>
+								<TextBlock
+									Text="Название"
+									Foreground="#373E46"
+									FontSize="20"/>
+								<TextBox
+									Name="NameBox"
+									BorderThickness="0"
+									CornerRadius="8"/>
 
-								<TextBlock Text="Описание"/>
-								<TextBox Name="DescriptionBox" AcceptsReturn="True" Height="80"/>
+								<TextBlock
+									Text="Описание"
+									Foreground="#373E46"
+									FontSize="20"/>
+								<TextBox
+									Name="DescriptionBox"
+									AcceptsReturn="True"
+									BorderThickness="0"
+									CornerRadius="8"/>
 
-								<TextBlock Text="Дата и время начала"/>
+								<TextBlock
+									Text="Дата и время начала"
+									Foreground="#373E46"
+									FontSize="20"/>
 								<StackPanel Orientation="Horizontal" Spacing="5">
-									<DatePicker Name="StartDatePicker"/>
-									<TimePicker Name="StartTimePicker"/>
+									<DatePicker
+										Name="StartDatePicker"
+										BorderThickness="0"
+										CornerRadius="8"/>
+									<TimePicker
+										Name="StartTimePicker"
+										BorderThickness="0"
+										CornerRadius="8"/>
 								</StackPanel>
 
-								<TextBlock Text="Дата и время окончания"/>
+								<TextBlock
+									Text="Дата и время окончания"
+									Foreground="#373E46"
+									FontSize="20"/>
 								<StackPanel Orientation="Horizontal" Spacing="5">
-									<DatePicker Name="EndDatePicker"/>
-									<TimePicker Name="EndTimePicker"/>
+									<DatePicker
+										Name="EndDatePicker"
+										BorderThickness="0"
+										CornerRadius="8"/>
+									<TimePicker
+										Name="EndTimePicker"
+										BorderThickness="0"
+										CornerRadius="8"/>
 								</StackPanel>
 
-								<TextBlock Text="Дедлайн"/>
+								<TextBlock
+									Text="Дедлайн"
+									Foreground="#373E46"
+									FontSize="20"/>
 								<StackPanel Orientation="Horizontal" Spacing="5">
-									<DatePicker Name="DeadlineDatePicker"/>
-									<TimePicker Name="DeadlineTimePicker"/>
+									<DatePicker
+										Name="DeadlineDatePicker"
+										BorderThickness="0"
+										CornerRadius="8"/>
+									<TimePicker
+										Name="DeadlineTimePicker"
+										BorderThickness="0"
+										CornerRadius="8"/>
 								</StackPanel>
+								<Grid
+									Margin="0 10"
+									ColumnDefinitions="* * *">
+									<StackPanel
+										Grid.Column="0"
+										Spacing="10">
+										<TextBlock
+											Text="Приоритет"
+											Foreground="#373E46"
+											FontSize="20"/>
+										<ComboBox
+											Name="PriorityBox"
+											SelectedIndex="0"
+											BorderThickness="0"
+											CornerRadius="8"
+											Width="155">
+											<ComboBoxItem Content="Без приоритета"/>
+											<ComboBoxItem Content="Низкий"/>
+											<ComboBoxItem Content="Средний"/>
+											<ComboBoxItem Content="Высокий"/>
+										</ComboBox>
+									</StackPanel>
 
+									<StackPanel
+										Grid.Column="1"
+										Spacing="10">
+										<TextBlock
+											Text="Эйзенхауэр"
+											Foreground="#373E46"
+											FontSize="20"/>
+										<ComboBox
+											Name="PriorityTableBox"
+											SelectedIndex="0"
+											BorderThickness="0"
+											CornerRadius="8"
+											Width="155">
+											<ComboBoxItem Content="Нет"/>
+											<ComboBoxItem Content="Не срочно и не важно"/>
+											<ComboBoxItem Content="Важно, но не срочно"/>
+											<ComboBoxItem Content="Срочно, но не важно"/>
+											<ComboBoxItem Content="Срочно и важно"/>
+										</ComboBox>
+									</StackPanel>
 
-								<TextBlock Text="Приоритет"/>
-								<ComboBox Name="PriorityBox"
-										  SelectedIndex="0">
-									<ComboBoxItem Content="Без приоритета"/>
-									<ComboBoxItem Content="Низкий"/>
-									<ComboBoxItem Content="Средний"/>
-									<ComboBoxItem Content="Высокий"/>
-								</ComboBox>
+									<StackPanel
+										Grid.Column="2"
+										Spacing="10">
+										<TextBlock
+											Text="Статус"
+											Foreground="#373E46"
+											FontSize="20"/>
+										<ComboBox
+											Name="StatusBox"
+											SelectedIndex="0"
+											BorderThickness="0"
+											CornerRadius="8"
+											Width="155">
+											<ComboBoxItem Content="Не начато"/>
+											<ComboBoxItem Content="В процессе"/>
+											<ComboBoxItem Content="Выполнено"/>
+											<ComboBoxItem Content="Не выполнено"/>
+										</ComboBox>
+									</StackPanel>
 
-								<TextBlock Text="Приоритет по таблице Эйзенхауэра"/>
-								<ComboBox Name="PriorityTableBox"
-										  SelectedIndex="0">
-									<ComboBoxItem Content="Нет"/>
-									<ComboBoxItem Content="Не срочно и не важно"/>
-									<ComboBoxItem Content="Важно, но не срочно"/>
-									<ComboBoxItem Content="Срочно, но не важно"/>
-									<ComboBoxItem Content="Срочно и важно"/>
-								</ComboBox>
+								</Grid>
 
-								<TextBlock Text="Статус"/>
-								<ComboBox Name="StatusBox"
-										  SelectedIndex="0">
-									<ComboBoxItem Content="Не начато"/>
-									<ComboBoxItem Content="В процессе"/>
-									<ComboBoxItem Content="Выполнено"/>
-									<ComboBoxItem Content="Не выполнено"/>
-								</ComboBox>
-
-								<TextBlock Text="Список"/>
-								<ComboBox Name="ListOfTasksBox">
+								<TextBlock
+									Text="Список"
+									Foreground="#373E46"
+									FontSize="20"/>
+								<ComboBox
+									Name="ListOfTasksBox"
+									BorderThickness="0"
+									CornerRadius="8"
+									Width="155">
 									<ComboBox.ItemTemplate>
 										<DataTemplate>
 											<TextBlock
@@ -225,8 +317,35 @@
 									HorizontalAlignment="Right"
 									Margin="0,10,0,0"
 									Spacing="10">
-									<Button Name="DeleteButton" Content="Удалить" Click="DeleteButton_Click" IsVisible="False"/>
-									<Button Name="SaveButton" Content="Сохранить" Click="SaveButton_Click"/>
+									<Button
+										Name="DeleteButton"
+										Click="DeleteButton_Click"
+										IsVisible="False"
+										Background="#FCF6F3"
+										Width="150"
+										Height="40"
+										CornerRadius="12">
+										<TextBlock
+											Text="Удалить"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Foreground="#E0AF49"
+											FontSize="20"/>
+									</Button>
+									<Button
+										Name="SaveButton"
+										Click="SaveButton_Click"
+										Background="#FCF6F3"
+										Width="150"
+										Height="40"
+										CornerRadius="12">
+										<TextBlock
+											Text="Сохранить"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Foreground="#E0AF49"
+											FontSize="20"/>
+									</Button>
 								</StackPanel>
 
 							</StackPanel>
