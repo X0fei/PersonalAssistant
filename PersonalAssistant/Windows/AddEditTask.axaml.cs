@@ -1,5 +1,6 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Markup.Xaml;
 using Microsoft.EntityFrameworkCore;
 using PersonalAssistant.Context;
@@ -7,6 +8,7 @@ using PersonalAssistant.Helpers;
 using PersonalAssistant.Models;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace PersonalAssistant;
@@ -15,6 +17,9 @@ public partial class AddEditTask : Window
 {
     private int userID;
     private int? taskID = null;
+    private List<Models.Task> displayAllTasks = DBContext.Tasks;
+    // Коллекция задач на выбранную дату
+    private ObservableCollection<Models.Task> _tasksOnSelectedDate = new ObservableCollection<Models.Task>();
     public AddEditTask()
     {
         InitializeComponent();
@@ -34,6 +39,7 @@ public partial class AddEditTask : Window
 
         ListOfTasksBox.ItemsSource = lists;
         ListOfTasksBox.SelectedIndex = 0;
+        CalendarOfTasks.SelectedDate = DateTime.Today;
     }
     public AddEditTask(int userID, int taskID)
     {
@@ -280,5 +286,50 @@ public partial class AddEditTask : Window
             previousWindow.Show();
             Close();
         }
+    }
+    private void MoodButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
+        Mood moodWindow = new Mood(userID);
+        moodWindow.Show();
+        Close();
+    }
+    private void MatrixButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        EisenhowerMatrixWindow matrixWindow = new EisenhowerMatrixWindow(userID);
+        matrixWindow.Show();
+        Close();
+    }
+    private void Item_DoubleTapped(object? sender, Avalonia.Input.TappedEventArgs e)
+    {
+        if (TasksByDateList.SelectedItem is Models.Task selectedTask)
+        {
+            DBContext.PreviousWindowType = typeof(TasksWindow);
+            AddEditTask addEditTask = new AddEditTask(userID, selectedTask.Id);
+            addEditTask.Show();
+            Close();
+        }
+    }
+    private void TasksCalendar_SelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
+    {
+        Calendar calendar = sender as Calendar;
+        var date = calendar.SelectedDate;
+        if (date != null)
+        {
+            var tasks = displayAllTasks.Where(t =>
+                t.Users.Any(u => u.Id == userID) &&
+                ((t.StartDate?.Date <= date && t.EndDate?.Date >= date) ||
+                (t.StartDate?.Date == null && t.EndDate?.Date == date) ||
+                (t.StartDate?.Date == date && t.EndDate?.Date == null) ||
+                (t.Deadline?.Date == date))).ToList();
+
+            _tasksOnSelectedDate.Clear();
+            foreach (var task in tasks)
+                _tasksOnSelectedDate.Add(task);
+
+            TasksByDateList.ItemsSource = _tasksOnSelectedDate;
+        }
+        CurrentDateTextBlock.Text = char.ToUpper((char)(date?.Date.ToString("dddd", new System.Globalization.CultureInfo("ru-RU"))[0])) +
+                   date?.Date.ToString("dddd, d MMMM", new System.Globalization.CultureInfo("ru-RU")).Substring(1);
     }
 }

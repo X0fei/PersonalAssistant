@@ -21,20 +21,6 @@ public partial class TasksWindow : Window
     private int userID;
     private User currentUser;
     private List<Models.Task> displayAllTasks;
-    // Коллекция задач на выбранную дату
-    private ObservableCollection<Models.Task> _tasksOnSelectedDate = new ObservableCollection<Models.Task>();
-
-    // Для управления Popup
-    private bool _isPopupOpen;
-    public bool IsPopupOpen
-    {
-        get => _isPopupOpen;
-        set
-        {
-            _isPopupOpen = value;
-            TasksOnDatePopup.IsOpen = value;
-        }
-    }
     public TasksWindow()
     {
         InitializeComponent();
@@ -160,9 +146,6 @@ public partial class TasksWindow : Window
 
         GreetingTextBlock.Text = "Привет, " + currentUser.Name + "!";
 
-        // Привязка коллекции к ItemsControl
-        TasksOnDateList.ItemsSource = displayAllTasks;
-
         // Подгружаем имя пользователя
         UserName.Text = currentUser.Name;
 
@@ -243,75 +226,4 @@ public partial class TasksWindow : Window
             }
         }
     }
-    // Событие при наведении на дату
-    private void TasksCalendar_PointerMoved(object? sender, PointerEventArgs e)
-    {
-        var calendar = sender as Calendar;
-        var point = e.GetPosition(calendar);
-
-        // Получаем дату под курсором
-        var date = GetDateFromPoint(calendar, point);
-        if (date != null)
-        {
-            var tasks = displayAllTasks.Where(t =>
-                (t.StartDate <= date && t.EndDate >= date) ||
-                (t.Deadline?.Date == date)).ToList();
-
-            if (tasks.Any())
-            {
-                _tasksOnSelectedDate.Clear();
-                foreach (var task in tasks)
-                    _tasksOnSelectedDate.Add(task);
-
-                IsPopupOpen = true;
-            }
-            else
-            {
-                IsPopupOpen = false;
-            }
-        }
-        else
-        {
-            IsPopupOpen = false;
-        }
-    }
-
-    // Событие при выходе курсора из календаря
-    private void TasksCalendar_PointerExited(object? sender, PointerEventArgs e)
-    {
-        IsPopupOpen = false;
-    }
-
-    // Получение даты под курсором (примерная реализация)
-    private DateTime? GetDateFromPoint(Calendar calendar, Point point)
-    {
-        // Здесь потребуется реализовать логику вычисления даты по позиции мыши.
-        // Это зависит от внутренней структуры Calendar.
-        // Для простоты можно использовать SelectedDate, если требуется только по клику.
-        return calendar.SelectedDate;
-    }
-    private void TasksCalendar_SelectedDatesChanged(object? sender, SelectionChangedEventArgs e)
-    {
-        Calendar calendar = sender as Calendar;
-        var date = calendar.SelectedDate;
-        if (date != null)
-        {
-            var tasks = displayAllTasks.Where(t =>
-                (t.StartDate <= date && t.EndDate >= date) ||
-                (t.Deadline?.Date == date)).ToList();
-
-            _tasksOnSelectedDate.Clear();
-            foreach (var task in tasks)
-                _tasksOnSelectedDate.Add(task);
-
-            TasksOnDateList.ItemsSource = _tasksOnSelectedDate;
-
-            IsPopupOpen = true;
-        }
-        else
-        {
-            IsPopupOpen = false;
-        }
-    }
-
 }

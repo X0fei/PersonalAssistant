@@ -2,99 +2,238 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="800"
+        mc:Ignorable="d" d:DesignWidth="1266" d:DesignHeight="768"
         x:Class="PersonalAssistant.AddEditTask"
 		x:CompileBindings="False"
-        Title="Добавить задачу" Width="600" Height="500" WindowStartupLocation="CenterOwner">
-	<DockPanel Margin="10">
+		WindowStartupLocation="CenterOwner"
+		Width="1266" Height="768"
+        Title="Управление задачей">
 
-		<!-- Кнопка Назад -->
-		<Button Name="BackButton"
-                Content="← Назад"
-				Click="GoBackButton_Click"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                DockPanel.Dock="Top"
-                Margin="0,0,0,10"/>
+	<DockPanel
+		Margin="25">
 
-		<!-- Основной контент -->
-		<ScrollViewer VerticalScrollBarVisibility="Auto">
-			<StackPanel Margin="10" Spacing="10">
+		<!-- Меню (слева) -->
+		<Border
+			DockPanel.Dock="Left">
 
-				<TextBlock Text="Имя задачи"/>
-				<TextBox Name="NameBox"/>
+			<DockPanel>
 
-				<TextBlock Text="Описание"/>
-				<TextBox Name="DescriptionBox" AcceptsReturn="True" Height="80"/>
+				<TextBlock
+					DockPanel.Dock="Top"
+					Text="LifePlan"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					Foreground="#497248"
+					FontSize="48"/>
 
-				<TextBlock Text="Дата и время начала"/>
-				<StackPanel Orientation="Horizontal" Spacing="5">
-					<DatePicker Name="StartDatePicker"/>
-					<TimePicker Name="StartTimePicker"/>
-				</StackPanel>
+				<!-- Кнопка «На главную» -->
+				<Button
+					DockPanel.Dock="Bottom"
+					Width="175"
+					Height="80"
+					Background="#F9F0EB"
+					CornerRadius="24"
+					Click="GoBackButton_Click">
+					<TextBlock
+						Text="На главную"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						FontSize="20"
+						Foreground="#E0AF49"
+						TextWrapping="Wrap"/>
+				</Button>
 
-				<TextBlock Text="Дата и время окончания"/>
-				<StackPanel Orientation="Horizontal" Spacing="5">
-					<DatePicker Name="EndDatePicker"/>
-					<TimePicker Name="EndTimePicker"/>
-				</StackPanel>
-
-				<TextBlock Text="Дедлайн"/>
-				<StackPanel Orientation="Horizontal" Spacing="5">
-					<DatePicker Name="DeadlineDatePicker"/>
-					<TimePicker Name="DeadlineTimePicker"/>
-				</StackPanel>
-
-
-				<TextBlock Text="Приоритет"/>
-				<ComboBox Name="PriorityBox"
-						  SelectedIndex="0">
-					<ComboBoxItem Content="Без приоритета"/>
-					<ComboBoxItem Content="Низкий"/>
-					<ComboBoxItem Content="Средний"/>
-					<ComboBoxItem Content="Высокий"/>
-				</ComboBox>
-
-				<TextBlock Text="Приоритет по таблице Эйзенхауэра"/>
-				<ComboBox Name="PriorityTableBox"
-						  SelectedIndex="0">
-					<ComboBoxItem Content="Нет"/>
-					<ComboBoxItem Content="Не срочно и не важно"/>
-					<ComboBoxItem Content="Важно, но не срочно"/>
-					<ComboBoxItem Content="Срочно, но не важно"/>
-					<ComboBoxItem Content="Срочно и важно"/>
-				</ComboBox>
-
-				<TextBlock Text="Статус"/>
-				<ComboBox Name="StatusBox"
-						  SelectedIndex="0">
-					<ComboBoxItem Content="Не начато"/>
-					<ComboBoxItem Content="В процессе"/>
-					<ComboBoxItem Content="Выполнено"/>
-					<ComboBoxItem Content="Не выполнено"/>
-				</ComboBox>
-
-				<TextBlock Text="Список"/>
-				<ComboBox Name="ListOfTasksBox">
-					<ComboBox.ItemTemplate>
-						<DataTemplate>
-							<TextBlock
-								Text="{Binding Name}"/>
-						</DataTemplate>
-					</ComboBox.ItemTemplate>
-				</ComboBox>
-
+				<!-- Вкладки -->
 				<StackPanel
-					Orientation="Horizontal"
-					HorizontalAlignment="Right"
-					Margin="0,10,0,0"
-					Spacing="10">
-					<Button Name="DeleteButton" Content="Удалить" Click="DeleteButton_Click" IsVisible="False"/>
-					<Button Name="SaveButton" Content="Сохранить" Click="SaveButton_Click"/>
+					Spacing="46"
+					Margin="0 60">
+
+					<Button
+						Content="Статистика"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Click="MoodButton_Click"
+						Content="Настроение"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Content="Добавить задачу"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"
+						IsEnabled="False"/>
+					<Button
+						Click="MatrixButton_Click"
+						Content="Матрица Эйзенхауэра"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+
 				</StackPanel>
-				
-			</StackPanel>
-		</ScrollViewer>
+
+			</DockPanel>
+
+		</Border>
+
+		<!-- Основная часть окна -->
+		<Border
+			CornerRadius="25"
+			Background="#F3E6DE"
+			Margin="35 0 0 0">
+			<DockPanel>
+
+				<Border
+					DockPanel.Dock="Right"
+					Padding="15">
+					<DockPanel>
+
+						<DockPanel
+							DockPanel.Dock="Top">
+							<Calendar
+								Name="CalendarOfTasks"
+								SelectionMode="SingleDate"
+								CornerRadius="8"
+								SelectedDatesChanged="TasksCalendar_SelectedDatesChanged"/>
+						</DockPanel>
+
+						<Grid
+							RowDefinitions="Auto, *"
+							Margin="0 30 0 0">
+							<TextBlock
+								Grid.Row="0"
+								Name="CurrentDateTextBlock"
+								Text="Выбранная дата"
+								FontSize="20"/>
+							<Border
+								Grid.Row="1"
+								CornerRadius="8"
+								Background="#F9F0EB"
+								Margin="0 10 0 0">
+								<ListBox
+									Name="TasksByDateList"
+									DoubleTapped="Item_DoubleTapped"
+									Background="Transparent"
+									CornerRadius="8">
+									<ListBox.ItemTemplate>
+										<DataTemplate>
+											<Border
+												Tag="{Binding Id}"
+												Background="#F3E6DE"
+												CornerRadius="12"
+												Padding="10">
+												<StackPanel>
+													<TextBlock
+														Text="{Binding Name}"/>
+													<TextBlock
+														Text="{Binding Description}"/>
+													<TextBlock >
+														<Run  Text="Приоритет:"/>
+														<Run Text="{Binding PriorityNavigation.Name}"/>
+													</TextBlock>
+													<TextBlock
+														Text="{Binding StatusNavigation.Name}"/>
+												</StackPanel>
+											</Border>
+										</DataTemplate>
+									</ListBox.ItemTemplate>
+								</ListBox>
+							</Border>
+						</Grid>
+
+					</DockPanel>
+
+				</Border>
+
+				<Border
+					CornerRadius="25"
+					Background="#F9F0EB"
+					Padding="40 25">
+					<DockPanel Margin="10">
+
+						<!-- Основной контент -->
+						<ScrollViewer VerticalScrollBarVisibility="Auto">
+							<StackPanel Margin="10" Spacing="10">
+
+								<TextBlock Text="Имя задачи"/>
+								<TextBox Name="NameBox"/>
+
+								<TextBlock Text="Описание"/>
+								<TextBox Name="DescriptionBox" AcceptsReturn="True" Height="80"/>
+
+								<TextBlock Text="Дата и время начала"/>
+								<StackPanel Orientation="Horizontal" Spacing="5">
+									<DatePicker Name="StartDatePicker"/>
+									<TimePicker Name="StartTimePicker"/>
+								</StackPanel>
+
+								<TextBlock Text="Дата и время окончания"/>
+								<StackPanel Orientation="Horizontal" Spacing="5">
+									<DatePicker Name="EndDatePicker"/>
+									<TimePicker Name="EndTimePicker"/>
+								</StackPanel>
+
+								<TextBlock Text="Дедлайн"/>
+								<StackPanel Orientation="Horizontal" Spacing="5">
+									<DatePicker Name="DeadlineDatePicker"/>
+									<TimePicker Name="DeadlineTimePicker"/>
+								</StackPanel>
+
+
+								<TextBlock Text="Приоритет"/>
+								<ComboBox Name="PriorityBox"
+										  SelectedIndex="0">
+									<ComboBoxItem Content="Без приоритета"/>
+									<ComboBoxItem Content="Низкий"/>
+									<ComboBoxItem Content="Средний"/>
+									<ComboBoxItem Content="Высокий"/>
+								</ComboBox>
+
+								<TextBlock Text="Приоритет по таблице Эйзенхауэра"/>
+								<ComboBox Name="PriorityTableBox"
+										  SelectedIndex="0">
+									<ComboBoxItem Content="Нет"/>
+									<ComboBoxItem Content="Не срочно и не важно"/>
+									<ComboBoxItem Content="Важно, но не срочно"/>
+									<ComboBoxItem Content="Срочно, но не важно"/>
+									<ComboBoxItem Content="Срочно и важно"/>
+								</ComboBox>
+
+								<TextBlock Text="Статус"/>
+								<ComboBox Name="StatusBox"
+										  SelectedIndex="0">
+									<ComboBoxItem Content="Не начато"/>
+									<ComboBoxItem Content="В процессе"/>
+									<ComboBoxItem Content="Выполнено"/>
+									<ComboBoxItem Content="Не выполнено"/>
+								</ComboBox>
+
+								<TextBlock Text="Список"/>
+								<ComboBox Name="ListOfTasksBox">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock
+												Text="{Binding Name}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+
+								<StackPanel
+									Orientation="Horizontal"
+									HorizontalAlignment="Right"
+									Margin="0,10,0,0"
+									Spacing="10">
+									<Button Name="DeleteButton" Content="Удалить" Click="DeleteButton_Click" IsVisible="False"/>
+									<Button Name="SaveButton" Content="Сохранить" Click="SaveButton_Click"/>
+								</StackPanel>
+
+							</StackPanel>
+						</ScrollViewer>
+					</DockPanel>
+				</Border>
+			</DockPanel>
+		</Border>
 	</DockPanel>
-	
 </Window>
