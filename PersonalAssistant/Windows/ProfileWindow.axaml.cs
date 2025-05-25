@@ -109,15 +109,10 @@ public partial class ProfileWindow : Window
             user.Password = password;
         }
 
-        user.Name = name;
-        user.Bio = bio;
-        user.Login = login;
-
         if (selectedImagePath != null)
         {
             string fileName = Path.GetFileName(selectedImagePath);
-            string newPath = Path.Combine("Images", fileName);
-            Directory.CreateDirectory("Images");
+            string newPath = Path.Combine("Assets", "Images", "PFPs", fileName);
             File.Copy(selectedImagePath, newPath, true);
 
             var pfp = new Pfp { Path = newPath };
@@ -126,6 +121,10 @@ public partial class ProfileWindow : Window
 
             user.MainPfp = pfp.Id;
         }
+
+        user.Name = name;
+        user.Bio = bio;
+        user.Login = login;
 
         DBContext.User8Context.SaveChanges();
 

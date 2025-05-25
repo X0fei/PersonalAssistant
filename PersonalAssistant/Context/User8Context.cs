@@ -286,6 +286,7 @@ public partial class User8Context : DbContext
 
             entity.HasOne(d => d.MainPfpNavigation).WithMany(p => p.Users)
                 .HasForeignKey(d => d.MainPfp)
+                .OnDelete(DeleteBehavior.SetNull)
                 .HasConstraintName("users_pfps_fk");
 
             entity.HasMany(d => d.Feelings).WithMany(p => p.Users)
