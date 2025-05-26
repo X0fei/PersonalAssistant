@@ -2,97 +2,198 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="500"
+        mc:Ignorable="d" d:DesignWidth="1266" d:DesignHeight="768"
         x:Class="PersonalAssistant.MainWindow"
-        Width="400" Height="500"
-        Title="Вход / Регистрация"
+        Width="1266" Height="768"
+        Title="Авторизация"
         WindowStartupLocation="CenterScreen">
-	
-	<TabControl>
-		<TabItem
-			Header="Вход">
+	<DockPanel
+		Margin="30">
+		<Border
+			DockPanel.Dock="Left"
+			Width="633">
 			<StackPanel
-				Margin="20"
-				Spacing="10">
+				Spacing="20"
+				Margin="0 0 20 0">
 				<TextBlock
-					Text="Логин"/>
-				<TextBox
-					Name="LoginBox"
-					TextChanged="Input_TextChanged"
-					MaxLength="40"
-					KeyDown="EnterToTab"/>
-
+					Text="LifePlan"
+					FontSize="96"
+					Foreground="#264E37"
+					HorizontalAlignment="Left"/>
 				<TextBlock
-					Text="Пароль"/>
-				<TextBox
-					Name="LoginPasswordBox"
-                    PasswordChar="●"
-					TextChanged="Input_TextChanged"
-					MaxLength="200"
-					KeyDown="EnterToTab"/>
-
+					Text="Добро пожаловать!"
+					FontSize="32"
+					Foreground="#373E46"
+					HorizontalAlignment="Left"/>
 				<TextBlock
-					Name="ErrorTextBlock"
-					IsVisible="False"
-					Foreground="Red"
-					FontSize="12"
-					Margin="0,10,0,0"/>
-
-				<Button
-					Content="Войти"
-                    HorizontalAlignment="Right"
-                    Margin="0,10,0,0"
-					Click="LoginButton_Click"/>
-
+					Text="Это приложение поможет тебе ставить задачи, следить за дедлайнами и отслеживать настроение. Всё — в одном месте."
+					TextWrapping="Wrap"
+					FontSize="20"
+					Width="570"
+					Foreground="#373E46"
+					HorizontalAlignment="Left"/>
+				<Image
+					Source="/Assets/Images/Layout/greeting.png"
+					Width="450"
+					Height="450"
+					HorizontalAlignment="Right"/>
 			</StackPanel>
-		</TabItem>
+		</Border>
+		<Border
+			Background="#F3E6DE"
+			CornerRadius="32"
+			Padding="45">
+			<TabControl>
+				<TabItem
+					Header="Вход"
+					Foreground="#373E46"
+					FontSize="40"
+					Margin="20">
+					<StackPanel
+						VerticalAlignment="Center"
+						Spacing="10">
+						<TextBlock
+							Text="Логин"
+							FontSize="20"
+							Foreground="#373E46"/>
+						<TextBox
+							Name="LoginBox"
+							TextChanged="Input_TextChanged"
+							MaxLength="40"
+							KeyDown="EnterToTab"
+							Background="#F9F0EB"
+							BorderThickness="0"
+							CornerRadius="12"
+							Height="50"
+							FontSize="25"/>
 
-		<TabItem
-			Header="Регистрация">
-			<StackPanel
-				Margin="20"
-				Spacing="10">
-				<TextBlock
-					Text="Логин"/>
-				<TextBox
-					Name="RegisterLoginBox"
-					TextChanged="RegisterLoginBox_TextChanged"
-					MaxLength="40"
-					KeyDown="EnterToTab"/>
+						<TextBlock
+							Text="Пароль"
+							FontSize="20"
+							Foreground="#373E46"/>
+						<TextBox
+							Name="LoginPasswordBox"
+							PasswordChar="●"
+							TextChanged="Input_TextChanged"
+							MaxLength="200"
+							KeyDown="EnterToTab"
+							Background="#F9F0EB"
+							BorderThickness="0"
+							CornerRadius="12"
+							Height="50"
+							FontSize="25"/>
 
-				<TextBlock
-					Name="LoginErrorText"
-					Foreground="Red"
-					IsVisible="False"/>
+						<TextBlock
+							Name="ErrorTextBlock"
+							IsVisible="False"
+							Foreground="Red"
+							FontSize="18"
+							Margin="0,10,0,0"/>
 
-				<TextBlock
-					Text="Пароль"/>
-				<TextBox
-					Name="RegisterPasswordBox"
-                    PasswordChar="●"
-					MaxLength="200"
-					KeyDown="EnterToTab"/>
+						<Button
+							HorizontalAlignment="Right"
+							Margin="0,100,0,0"
+							Click="LoginButton_Click"
+							Width="145"
+							Height="60"
+							Background="#F9F0EB"
+							CornerRadius="24">
+							<TextBlock
+								Text="Войти"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								FontSize="20"
+								Foreground="#E0AF49"
+								TextWrapping="Wrap"/>
+						</Button>
 
-				<TextBlock
-					Text="Подтвердите пароль"/>
-				<TextBox
-					Name="RegisterConfirmPasswordBox"
-                    PasswordChar="●"
-					MaxLength="200"
-					KeyDown="EnterToTab"/>
+					</StackPanel>
+				</TabItem>
 
-				<TextBlock
-					Name="PasswordErrorText"
-					Foreground="Red"
-					IsVisible="False"/>
+				<TabItem
+					Header="Регистрация"
+					Foreground="#373E46"
+					FontSize="40"
+					Margin="20">
+					<StackPanel
+						Spacing="10"
+						VerticalAlignment="Center">
+						<TextBlock
+							Text="Логин"
+							FontSize="20"
+							Foreground="#373E46"/>
+						<TextBox
+							Name="RegisterLoginBox"
+							TextChanged="RegisterLoginBox_TextChanged"
+							MaxLength="40"
+							KeyDown="EnterToTab"
+							Background="#F9F0EB"
+							BorderThickness="0"
+							CornerRadius="12"
+							Height="50"
+							FontSize="25"/>
 
-				<Button
-					Content="Зарегистрироваться"
-                    HorizontalAlignment="Right"
-                    Margin="0,10,0,0"
-					Click="RegisterButton_Click"/>
-			</StackPanel>
-		</TabItem>
-	</TabControl>
-	
+						<TextBlock
+							Name="LoginErrorText"
+							Foreground="Red"
+							IsVisible="False"/>
+
+						<TextBlock
+							Text="Пароль"
+							FontSize="20"
+							Foreground="#373E46"/>
+						<TextBox
+							Name="RegisterPasswordBox"
+							PasswordChar="●"
+							MaxLength="200"
+							KeyDown="EnterToTab"
+							Background="#F9F0EB"
+							BorderThickness="0"
+							CornerRadius="12"
+							Height="50"
+							FontSize="25"/>
+
+						<TextBlock
+							Text="Подтвердите пароль"
+							FontSize="20"
+							Foreground="#373E46"/>
+						<TextBox
+							Name="RegisterConfirmPasswordBox"
+							PasswordChar="●"
+							MaxLength="200"
+							KeyDown="EnterToTab"
+							Background="#F9F0EB"
+							BorderThickness="0"
+							CornerRadius="12"
+							Height="50"
+							FontSize="25"/>
+
+						<TextBlock
+							Name="PasswordErrorText"
+							Foreground="Red"
+							IsVisible="False"
+							FontSize="18"/>
+
+						<Button
+							Click="RegisterButton_Click"
+							HorizontalAlignment="Right"
+							Margin="0,100,0,0"
+							Width="250"
+							Height="60"
+							Background="#F9F0EB"
+							CornerRadius="24">
+
+							<TextBlock
+								Text="Зарегистрироваться"
+								HorizontalAlignment="Center"
+								VerticalAlignment="Center"
+								FontSize="20"
+								Foreground="#E0AF49"
+								TextWrapping="Wrap"/>
+						</Button>
+					</StackPanel>
+				</TabItem>
+			</TabControl>
+		</Border>
+	</DockPanel>
 </Window>
