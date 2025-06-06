@@ -25,7 +25,7 @@
 					Foreground="#497248"
 					FontSize="48"/>
 
-				<!-- Кнопка «Выйти из аккаунта» -->
+				<!-- Кнопка «На главную» -->
 				<Button
 					DockPanel.Dock="Bottom"
 					Width="175"
@@ -34,7 +34,7 @@
 					CornerRadius="24"
 					Click="GoBackButton_Click">
 					<TextBlock
-						Text="Выйти из аккаунта"
+						Text="На главную"
 						HorizontalAlignment="Center"
 						VerticalAlignment="Center"
 						FontSize="20"

@@ -18,102 +18,173 @@ public partial class Mood : Window
         InitializeComponent();
     }
 
-    private DateTime _currentMonth;
-    private readonly int _currentUserId; // Передайте сюда id текущего пользователя
+    private DateTime currentDate;
+    private readonly int userID;
 
     public Mood(int currentUserId)
     {
         InitializeComponent();
-        _currentUserId = currentUserId;
-        _currentMonth = DateTime.Today;
+        userID = currentUserId;
+        currentDate = DateTime.Today;
 
-        PrevMonthBtn.Click += (_, _) => { _currentMonth = _currentMonth.AddMonths(-1); DrawCalendar(); };
-        NextMonthBtn.Click += (_, _) => { _currentMonth = _currentMonth.AddMonths(1); DrawCalendar(); };
+        PrevMonthBtn.Click += (_, _) => { currentDate = currentDate.AddMonths(-1); DrawCalendar(); };
+        NextMonthBtn.Click += (_, _) => { currentDate = currentDate.AddMonths(1); DrawCalendar(); };
 
         DrawCalendar();
+    }
+    private void AddTaskButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
+        AddEditTask addEditTask = new AddEditTask(userID);
+        addEditTask.Show();
+        Close();
+    }
+    private void MatrixButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        EisenhowerMatrixWindow matrixWindow = new EisenhowerMatrixWindow(userID);
+        matrixWindow.Show();
+        Close();
     }
 
     private void DrawCalendar()
     {
-        MonthText.Text = _currentMonth.ToString("MMMM yyyy");
+        CurrentYear.Text = currentDate.ToString("yyyy");
+        MonthText.Text = currentDate.ToString("MMMM");
         CalendarGrid.Children.Clear();
 
-        var firstDay = new DateTime(_currentMonth.Year, _currentMonth.Month, 1);
-        int daysInMonth = DateTime.DaysInMonth(_currentMonth.Year, _currentMonth.Month);
-        int startDayOfWeek = ((int)firstDay.DayOfWeek + 6) % 7; // Понедельник = 0
+        var firstDayOfMonth = new DateTime(currentDate.Year, currentDate.Month, 1);
+        int daysInCurrentMonth = DateTime.DaysInMonth(currentDate.Year, currentDate.Month);
+        int startOffset = ((int)firstDayOfMonth.DayOfWeek + 6) % 7;
 
+        // Предыдущий месяц
+        var prevMonth = currentDate.AddMonths(-1);
+        int daysInPrevMonth = DateTime.DaysInMonth(prevMonth.Year, prevMonth.Month);
+
+        var nextMonth = currentDate.AddMonths(1);
+
+        // Получаем список настроений за текущий месяц
         List<Feeling> feelings;
-        using (var context = new User8Context())
+        using (var db = new User8Context())
         {
-            feelings = [.. context.Feelings
-                .Where(f => f.Users.Any(u => u.Id == _currentUserId)
-                            && f.Date.Month == _currentMonth.Month
-                            && f.Date.Year == _currentMonth.Year)];
+            feelings = db.Feelings
+                .Where(f => f.Users.Any(u => u.Id == userID)
+                         && f.Date.Month == currentDate.Month
+                         && f.Date.Year == currentDate.Year)
+                .ToList();
         }
 
-        for (int i = 0; i < startDayOfWeek; i++)
-            CalendarGrid.Children.Add(new Border());
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        DateOnly tomorrow = today.AddDays(1);
 
-        for (int day = 1; day <= daysInMonth; day++)
+        // Всего 42 ячейки
+        for (int i = 0; i < 42; i++)
         {
-            var date = new DateOnly(_currentMonth.Year, _currentMonth.Month, day);
-            var feeling = feelings.FirstOrDefault(f => f.Date.Day == date.Day);
+            DateOnly date;
+            bool isCurrentMonth;
 
-            var border = new Border
+            if (i < startOffset)
             {
-                Background = GetBrushByFeeling(feeling?.Level),
-                Margin = new Thickness(2),
-                CornerRadius = new CornerRadius(4),
-                Height = 50,
-                Width = 50,
-                Child = new TextBlock
-                {
-                    Text = day.ToString(),
-                    HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
-                    VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center
-                }
-            };
-
-            border.DoubleTapped += async (_, _) =>
+                // Дни предыдущего месяца
+                int day = daysInPrevMonth - (startOffset - 1 - i);
+                date = new DateOnly(prevMonth.Year, prevMonth.Month, day);
+                isCurrentMonth = false;
+            }
+            else if (i < startOffset + daysInCurrentMonth)
             {
-                var dialog = new AddEditMoodWindow(_currentUserId, date);
-                var result = await dialog.ShowDialog<bool?>(this);
-                if (result == true)
-                {
-                    DrawCalendar();
-                    UpdateWeekStat();
-                }
-            };
+                // Дни текущего месяца
+                int day = i - startOffset + 1;
+                date = new DateOnly(currentDate.Year, currentDate.Month, day);
+                isCurrentMonth = true;
+            }
+            else
+            {
+                // Дни следующего месяца
+                int day = i - (startOffset + daysInCurrentMonth) + 1;
+                date = new DateOnly(nextMonth.Year, nextMonth.Month, day);
+                isCurrentMonth = false;
+            }
 
-            CalendarGrid.Children.Add(border);
+            int? level = null;
+            if (isCurrentMonth)
+            {
+                level = feelings.FirstOrDefault(f => f.Date.Day == date.Day)?.Level;
+            }
+
+            // Здесь проверяем, если дата >= завтрашнего — фон прозрачный и без клика
+            bool isClickable = isCurrentMonth && date < tomorrow;
+
+            CalendarGrid.Children.Add(CreateDayCell(date.Day, isCurrentMonth, date, level, isClickable));
         }
 
         UpdateWeekStat();
     }
 
+    private Border CreateDayCell(int day, bool isCurrentMonth, DateOnly? date = null, int? level = null, bool isClickable = true)
+    {
+        var textBlock = new TextBlock
+        {
+            Text = day.ToString(),
+            HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center,
+            VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center,
+            Foreground = isCurrentMonth ? Brushes.Black : Brushes.Gray
+        };
+
+        var backgroundBrush = isCurrentMonth
+            ? (isClickable ? GetBrushByFeeling(level) : Brushes.Transparent)
+            : Brushes.Transparent;
+
+        bool isToday = date == DateOnly.FromDateTime(DateTime.Today);
+
+        var border = new Border
+        {
+            Background = backgroundBrush,
+            Margin = new Thickness(2),
+            CornerRadius = new CornerRadius(4),
+            BorderThickness = isToday ? new Thickness(4) : (isCurrentMonth ? new Thickness(1) : new Thickness(0)),
+            BorderBrush = isToday ? new SolidColorBrush(Color.Parse("#DEB464")) : new SolidColorBrush(Color.Parse("#373E46")),
+            Height = 50,
+            Width = 50,
+            Child = textBlock
+        };
+
+        if (isClickable && isCurrentMonth && date != null)
+        {
+            border.DoubleTapped += async (_, _) =>
+            {
+                var dialog = new AddEditMoodWindow(userID, date.Value);
+                var result = await dialog.ShowDialog<bool?>(this);
+                if (result == true)
+                {
+                    DrawCalendar();
+                }
+            };
+        }
+
+        return border;
+    }
+
+
     private void UpdateWeekStat()
     {
-        // Определяем диапазон прошлой календарной недели (понедельник-воскресенье)
-        DateTime today = DateTime.Today;
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
         int daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
-        DateTime thisMonday = today.AddDays(-daysSinceMonday);
-        DateTime lastMonday = thisMonday.AddDays(-7);
-        DateTime lastSunday = thisMonday.AddDays(-1);
+        DateOnly thisMonday = today.AddDays(-daysSinceMonday);
+        DateOnly lastMonday = thisMonday.AddDays(-7);
+        DateOnly lastSunday = thisMonday.AddDays(-1);
 
         using var context = new User8Context();
         var lastWeekFeelings = context.Feelings
-            .Where(f => f.Users.Any(u => u.Id == _currentUserId)
-                        && f.Date.Day >= lastMonday.Day
-                        && f.Date.Day <= lastSunday.Day)
+            .Where(f => f.Users.Any(u => u.Id == userID)
+                        && f.Date >= lastMonday
+                        && f.Date <= lastSunday)
             .ToList();
 
         if (lastWeekFeelings.Count == 0)
         {
-            WeekStatText.Text = "Нет данных по прошлой неделе";
+            WeekStatText.Text = "Нет";
             return;
         }
 
-        // Группируем по Level, ищем самый частый
         var groups = lastWeekFeelings
             .GroupBy(f => f.Level)
             .Select(g => new { Level = g.Key, Count = g.Count() })
@@ -124,15 +195,16 @@ public partial class Mood : Window
 
         if (mostFrequent.Count > 1)
         {
-            WeekStatText.Text = "На прошлой неделе не было настроения, которое встречалось чаще всего";
+            WeekStatText.Text = "Нет частого";
             return;
         }
 
         int level = mostFrequent[0].Level;
         string emotionName = GetEmotionNameByLevel(level);
 
-        WeekStatText.Text = $"За прошую неделю чаще всего вы испытывали такое настроение: {emotionName}";
+        WeekStatText.Text = emotionName;
     }
+
 
     // Используйте тот же метод, что и в AddEditMoodWindow
     private static string GetEmotionNameByLevel(int level)
@@ -156,21 +228,21 @@ public partial class Mood : Window
     private static IBrush GetBrushByFeeling(int? level)
     {
         if (level == null)
-            return Brushes.LightGray;
+            return new SolidColorBrush(Color.Parse("#F9F0EB"));
 
         // Диапазоны по вашему ТЗ
-        if (level < 15) return Brushes.Red;
-        if (level < 30) return Brushes.OrangeRed;
-        if (level < 45) return Brushes.Orange;
-        if (level < 55) return Brushes.Yellow;
-        if (level < 70) return Brushes.YellowGreen;
-        if (level < 85) return Brushes.GreenYellow;
-        return Brushes.Green;
+        if (level < 15) return new SolidColorBrush(Color.Parse("#E98080"));
+        if (level < 30) return new SolidColorBrush(Color.Parse("#F5B1B1"));
+        if (level < 45) return new SolidColorBrush(Color.Parse("#FBE0E0"));
+        if (level < 55) return new SolidColorBrush(Color.Parse("#EBF6FA"));
+        if (level < 70) return new SolidColorBrush(Color.Parse("#E0F7DD"));
+        if (level < 85) return new SolidColorBrush(Color.Parse("#D5EDBA"));
+        return new SolidColorBrush(Color.Parse("#A8E6A1")); ;
     }
 
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
-        TasksWindow taskWindow = new(_currentUserId);
+        TasksWindow taskWindow = new(userID);
         taskWindow.Show();
         Close();
     }
