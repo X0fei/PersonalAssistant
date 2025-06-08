@@ -50,6 +50,7 @@
 					Margin="0 60">
 
 					<Button
+						Click="GoToStatisticsButton_Click"
 						Content="Статистика"
 						Foreground="#183F28"
 						Background="Transparent"
@@ -145,6 +146,7 @@
 							VerticalAlignment="Bottom">
 
 							<Button
+								Click="GoToStatisticsButton_Click"
 								Width="250"
 								Height="85"
 								Background="#F9F0EB"
@@ -163,6 +165,7 @@
 										Foreground="#183F28"
 										FontSize="16"/>
 									<TextBlock
+										Name="ActiveTasksTextBlock"
 										Text="10"
 										FontSize="32"
 										VerticalAlignment="Bottom"
@@ -170,6 +173,7 @@
 								</DockPanel>
 							</Button>
 							<Button
+								Click="GoToStatisticsButton_Click"
 								Width="250"
 								Height="85"
 								Background="#F9F0EB"
@@ -188,6 +192,7 @@
 										Foreground="#183F28"
 										FontSize="16"/>
 									<TextBlock
+										Name="CompletedTasksTextBlock"
 										Text="10"
 										FontSize="32"
 										VerticalAlignment="Bottom"
@@ -195,6 +200,7 @@
 								</DockPanel>
 							</Button>
 							<Button
+								Click="GoToStatisticsButton_Click"
 								Width="250"
 								Height="85"
 								Background="#F9F0EB"
@@ -213,6 +219,7 @@
 										Foreground="#183F28"
 										FontSize="16"/>
 									<TextBlock
+										Name="OverdueTasksTextBlock"
 										Text="10"
 										FontSize="32"
 										VerticalAlignment="Bottom"
@@ -220,6 +227,7 @@
 								</DockPanel>
 							</Button>
 							<Button
+								Click="GoToStatisticsButton_Click"
 								Width="250"
 								Height="250"
 								Background="#F9F0EB"
@@ -248,6 +256,7 @@
 											Height="150"
 											CornerRadius="180">
 											<TextBlock
+												Name="CompletedTasksPercentTextBlock"
 												VerticalAlignment="Center"
 												HorizontalAlignment="Center"
 												Text="100"

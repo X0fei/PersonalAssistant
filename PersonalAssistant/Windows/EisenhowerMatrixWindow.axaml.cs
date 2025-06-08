@@ -101,4 +101,11 @@ public partial class EisenhowerMatrixWindow : Window
         CurrentDateTextBlock.Text = char.ToUpper((char)(date?.Date.ToString("dddd", new System.Globalization.CultureInfo("ru-RU"))[0])) +
                    date?.Date.ToString("dddd, d MMMM", new System.Globalization.CultureInfo("ru-RU")).Substring(1);
     }
+    private void GoToStatisticsButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
+        StatisticsWindow statisticsWindow = new StatisticsWindow();
+        statisticsWindow.Show();
+        Close();
+    }
 }

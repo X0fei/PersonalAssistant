@@ -49,6 +49,7 @@
 					Margin="0 60">
 
 					<Button
+						Click="GoToStatisticsButton_Click"
 						Content="Статистика"
 						Foreground="#183F28"
 						Background="Transparent"

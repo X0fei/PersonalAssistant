@@ -30,7 +30,7 @@ public partial class Mood : Window
         PrevMonthBtn.Click += (_, _) => { currentDate = currentDate.AddMonths(-1); DrawCalendar(); };
         NextMonthBtn.Click += (_, _) => { currentDate = currentDate.AddMonths(1); DrawCalendar(); };
 
-        DrawCalendar();
+        Load();
     }
     private void AddTaskButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {
@@ -45,7 +45,14 @@ public partial class Mood : Window
         matrixWindow.Show();
         Close();
     }
+    private void Load()
+    {
+        DrawCalendar();
 
+        Statistics.CalculateAll();
+        MostFrequentMoodCategoryTextBlock.Text = Statistics.MostFrequentMoodCategory;
+        MostFrequentMoodCategoryCountTextBlock.Text = Statistics.MostFrequentMoodCategoryCount.ToString();
+    }
     private void DrawCalendar()
     {
         CurrentYear.Text = currentDate.ToString("yyyy");
@@ -155,7 +162,7 @@ public partial class Mood : Window
                 var result = await dialog.ShowDialog<bool?>(this);
                 if (result == true)
                 {
-                    DrawCalendar();
+                    Load();
                 }
             };
         }
@@ -185,9 +192,21 @@ public partial class Mood : Window
             return;
         }
 
+        // Группировка по диапазонам уровня (уровень -> категория)
+        string GetCategoryByLevel(int level)
+        {
+            if (level < 15) return "Очень неприятно";
+            if (level < 30) return "Неприятно";
+            if (level < 45) return "Отчасти неприятно";
+            if (level < 55) return "Нейтрально";
+            if (level < 70) return "Отчасти приятно";
+            if (level < 85) return "Приятно";
+            return "Очень приятно";
+        }
+
         var groups = lastWeekFeelings
-            .GroupBy(f => f.Level)
-            .Select(g => new { Level = g.Key, Count = g.Count() })
+            .GroupBy(f => GetCategoryByLevel(f.Level))
+            .Select(g => new { Category = g.Key, Count = g.Count() })
             .ToList();
 
         int maxCount = groups.Max(g => g.Count);
@@ -199,14 +218,10 @@ public partial class Mood : Window
             return;
         }
 
-        int level = mostFrequent[0].Level;
-        string emotionName = GetEmotionNameByLevel(level);
-
-        WeekStatText.Text = emotionName;
+        WeekStatText.Text = mostFrequent[0].Category;
     }
 
 
-    // Используйте тот же метод, что и в AddEditMoodWindow
     private static string GetEmotionNameByLevel(int level)
     {
         int emotionId = level switch
@@ -230,7 +245,6 @@ public partial class Mood : Window
         if (level == null)
             return new SolidColorBrush(Color.Parse("#F9F0EB"));
 
-        // Диапазоны по вашему ТЗ
         if (level < 15) return new SolidColorBrush(Color.Parse("#E98080"));
         if (level < 30) return new SolidColorBrush(Color.Parse("#F5B1B1"));
         if (level < 45) return new SolidColorBrush(Color.Parse("#FBE0E0"));
@@ -244,6 +258,13 @@ public partial class Mood : Window
     {
         TasksWindow taskWindow = new(userID);
         taskWindow.Show();
+        Close();
+    }
+    private void GoToStatisticsButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
+        StatisticsWindow statisticsWindow = new StatisticsWindow();
+        statisticsWindow.Show();
         Close();
     }
 }

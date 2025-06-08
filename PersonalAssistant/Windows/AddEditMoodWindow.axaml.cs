@@ -95,6 +95,19 @@ public partial class AddEditMoodWindow : Window
         using var context = new User8Context();
         var user = context.Users.First(u => u.Id == _userId);
 
+        int emotionId = Level switch
+        {
+            < 15 => 7,
+            < 30 => 6,
+            < 45 => 5,
+            < 55 => 4,
+            < 70 => 3,
+            < 85 => 2,
+            _ => 1
+        };
+
+        var emotion = context.Emotions.FirstOrDefault(e => e.Id == emotionId);
+
         var feeling = context.Feelings
             .FirstOrDefault(f => f.Users.Any(u => u.Id == _userId) && f.Date.Day == _date.Day);
 
@@ -106,11 +119,16 @@ public partial class AddEditMoodWindow : Window
                 Date = _date,
                 Users = new List<User> { user }
             };
+            if (emotion != null)
+                feeling.Emotions.Add(emotion);
             context.Feelings.Add(feeling);
         }
         else
         {
             feeling.Level = Level;
+            feeling.Emotions.Clear();
+            if (emotion != null)
+                feeling.Emotions.Add(emotion);
         }
         context.SaveChanges();
         Close(true);

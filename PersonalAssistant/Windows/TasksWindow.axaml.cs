@@ -144,6 +144,12 @@ public partial class TasksWindow : Window
     {
         LoadProfileImage();
 
+        Statistics.CalculateAll();
+        ActiveTasksTextBlock.Text = $"{Statistics.AvticeTasks}";
+        CompletedTasksTextBlock.Text = $"{Statistics.CompletedTasks}";
+        OverdueTasksTextBlock.Text = $"{Statistics.OverdueTasks}";
+        CompletedTasksPercentTextBlock.Text = $"{Statistics.CompletedTasksPercent}";
+
         GreetingTextBlock.Text = "Привет, " + currentUser.Name + "!";
 
         // Подгружаем имя пользователя
@@ -225,5 +231,13 @@ public partial class TasksWindow : Window
                 e.Handled = true;
             }
         }
+    }
+
+    private void GoToStatisticsButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
+    {
+        DBContext.PreviousWindowType = typeof(TasksWindow);
+        StatisticsWindow statisticsWindow = new StatisticsWindow();
+        statisticsWindow.Show();
+        Close();
     }
 }

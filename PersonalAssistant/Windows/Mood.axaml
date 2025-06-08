@@ -48,6 +48,7 @@
 					Margin="0 60">
 
 					<Button
+						Click="GoToStatisticsButton_Click"
 						Content="Статистика"
 						Foreground="#183F28"
 						Background="Transparent"
@@ -118,6 +119,7 @@
 											Width="140"
 											HorizontalAlignment="Center">
 											<TextBlock
+												Name="MostFrequentMoodCategoryCountTextBlock"
 												Text="10"
 												HorizontalAlignment="Center"
 												VerticalAlignment="Center"
@@ -125,6 +127,7 @@
 												Foreground="#CA8A05"/>
 										</Border>
 										<TextBlock
+											Name="MostFrequentMoodCategoryTextBlock"
 											Text="Очень приятно"
 											FontSize="20"
 											Foreground="#CA8A05"
@@ -145,6 +148,7 @@
 										Foreground="#657268"/>
 								</TextBlock>
 								<Button
+									Click="GoToStatisticsButton_Click"
 									HorizontalAlignment="Center"
 									Background="#F9F0EB"
 									BorderThickness="4"
