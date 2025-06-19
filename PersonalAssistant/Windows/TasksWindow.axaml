@@ -326,12 +326,22 @@
 									Margin="0 0 0 30"
 									Spacing="30">
 									<ComboBox
+										PlaceholderText="Сортировка"
 										Background="#F3E6DE"
 										BorderThickness="0"
 										CornerRadius="12"
 										Foreground="#1F3729"
 										Width="260"
-										Height="40">
+										Height="40"
+										SelectionChanged="SortComboBox_SelectionChanged">
+										<ComboBoxItem>
+											<TextBlock
+												Text="Сначала важные"/>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock
+												Text="Сначала неважные"/>
+										</ComboBoxItem>
 									</ComboBox>
 									<Button
 										Name="AddListOfTasksButton"

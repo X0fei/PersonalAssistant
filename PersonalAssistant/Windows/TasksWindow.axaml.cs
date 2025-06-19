@@ -240,4 +240,29 @@ public partial class TasksWindow : Window
         statisticsWindow.Show();
         Close();
     }
+    private void SortTasksByPriorityDescending()
+    {
+        AllTasksList.ItemsSource = displayAllTasks
+            .OrderByDescending(t => t.Priority ?? 1) // если приоритет null, считаем его 1
+            .ToList();
+    }
+    private void SortTasksByPriorityAscending()
+    {
+        AllTasksList.ItemsSource = displayAllTasks
+            .OrderBy(t => t.Priority ?? 1)
+            .ToList();
+    }
+
+    private void SortComboBox_SelectionChanged(object? sender, Avalonia.Controls.SelectionChangedEventArgs e)
+    {
+        switch ((sender as ComboBox).SelectedIndex)
+        {
+            case 0:
+                SortTasksByPriorityDescending();
+                break;
+            case 1:
+                SortTasksByPriorityAscending();
+                break;
+        }
+    }
 }
