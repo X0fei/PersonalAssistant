@@ -12,6 +12,29 @@ public partial class StatisticsWindow : Window
     public StatisticsWindow()
     {
         InitializeComponent();
+        Load();
+    }
+    private void Load()
+    {
+        Statistics.CalculateAll();
+        CompletedTasksCountPercentTextBlock.Text = Statistics.CompletedTasksPercent.ToString() + "%";
+        CompletedTasksDiagram.Height = Statistics.CompletedTasksPercent * 300 / 100;
+        FailedTasksCountPercentTextBlock.Text = Statistics.FailedTasksPercent.ToString() + "%";
+        FailedTasksDiagram.Height = Statistics.FailedTasksPercent * 300 / 100;
+        VeryBadMoodPercentTextBlock.Text = Statistics.VeryBadMoodPercent.ToString() + "%";
+        VeryBadMoodDiagram.Height = Statistics.VeryBadMoodPercent * 300 / 100;
+        BadMoodPercentTextBlock.Text = Statistics.BadMoodPercent.ToString() + "%";
+        BadMoodDiagram.Height = Statistics.BadMoodPercent * 300 / 100;
+        SlightlyBadMoodPercentTextBlock.Text = Statistics.SlightlyBadMoodPercent.ToString() + "%";
+        SlightlyBadMoodDiagram.Height = Statistics.SlightlyBadMoodPercent * 300 / 100;
+        NeutralMoodPercentTextBlock.Text = Statistics.NeutralMoodPercent.ToString() + "%";
+        NeutralMoodDiagram.Height = Statistics.NeutralMoodPercent * 300 / 100;
+        SlightlyGoodMoodPercentTextBlock.Text = Statistics.SlightlyGoodMoodPercent.ToString() + "%";
+        SlightlyGoodMoodDiagram.Height = Statistics.SlightlyGoodMoodPercent * 300 / 100;
+        GoodMoodPercentTextBlock.Text = Statistics.GoodMoodPercent.ToString() + "%";
+        GoodMoodDiagram.Height = Statistics.GoodMoodPercent * 300 / 100;
+        VeryGoodMoodPercentTextBlock.Text = Statistics.VeryGoodMoodPercent.ToString() + "%";
+        VeryGoodMoodDiagram.Height = Statistics.VeryGoodMoodPercent * 300 / 100;
     }
     private void GoBackButton_Click(object? sender, Avalonia.Interactivity.RoutedEventArgs e)
     {

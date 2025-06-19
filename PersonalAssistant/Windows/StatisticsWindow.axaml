@@ -107,13 +107,13 @@
 									VerticalAlignment="Bottom">
 									<TextBlock
 										Name="CompletedTasksCountPercentTextBlock"
-										Text="80%"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="CompletedTasksDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="240"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -129,13 +129,13 @@
 									VerticalAlignment="Bottom">
 									<TextBlock
 										Name="FailedTasksCountPercentTextBlock"
-										Text="20%"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="FailedTasksDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="60"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -166,13 +166,14 @@
 									Grid.Row="0"
 									VerticalAlignment="Bottom">
 									<TextBlock
-										Text="5%"
+										Name="VeryBadMoodPercentTextBlock"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="VeryBadMoodDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="10"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -187,13 +188,14 @@
 									Grid.Row="0"
 									VerticalAlignment="Bottom">
 									<TextBlock
-										Text="10%"
+										Name="BadMoodPercentTextBlock"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="BadMoodDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="30"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -208,13 +210,14 @@
 									Grid.Row="0"
 									VerticalAlignment="Bottom">
 									<TextBlock
-										Text="10%"
+										Name="SlightlyBadMoodPercentTextBlock"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="SlightlyBadMoodDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="30"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -229,13 +232,14 @@
 									Grid.Row="0"
 									VerticalAlignment="Bottom">
 									<TextBlock
-										Text="40%"
+										Name="NeutralMoodPercentTextBlock"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="NeutralMoodDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="120"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -250,13 +254,14 @@
 									Grid.Row="0"
 									VerticalAlignment="Bottom">
 									<TextBlock
-										Text="20%"
+										Name="SlightlyGoodMoodPercentTextBlock"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="SlightlyGoodMoodDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="60"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -271,13 +276,14 @@
 									Grid.Row="0"
 									VerticalAlignment="Bottom">
 									<TextBlock
-										Text="10%"
+										Name="GoodMoodPercentTextBlock"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="GoodMoodDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="30"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
@@ -292,13 +298,14 @@
 									Grid.Row="0"
 									VerticalAlignment="Bottom">
 									<TextBlock
-										Text="5%"
+										Name="VeryGoodMoodPercentTextBlock"
+										Text="0%"
 										HorizontalAlignment="Center"
 										FontSize="18"/>
 									<Border
+										Name="VeryGoodMoodDiagram"
 										Background="#E0AF49"
 										Width="20"
-										Height="15"
 										Margin="10"/>
 								</StackPanel>
 								<TextBlock
