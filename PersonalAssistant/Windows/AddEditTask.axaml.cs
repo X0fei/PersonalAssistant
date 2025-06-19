@@ -65,6 +65,24 @@ public partial class AddEditTask : Window
                 .Include(t => t.Lists)
                 .FirstOrDefault(t => t.Id == taskID);
 
+            if (task.StartDate.HasValue)
+            {
+                StartDatePicker.SelectedDate = task.StartDate.Value.Date;
+                StartTimePicker.SelectedTime = task.StartDate.Value.TimeOfDay;
+            }
+
+            if (task.EndDate.HasValue)
+            {
+                EndDatePicker.SelectedDate = task.EndDate.Value.Date;
+                EndTimePicker.SelectedTime = task.EndDate.Value.TimeOfDay;
+            }
+
+            if (task.Deadline.HasValue)
+            {
+                DeadlineDatePicker.SelectedDate = task.Deadline.Value.Date;
+                DeadlineTimePicker.SelectedTime = task.Deadline.Value.TimeOfDay;
+            }
+
             NameBox.Text = task.Name;
             DescriptionBox.Text = task.Description;
             if (task.Priority != null)
