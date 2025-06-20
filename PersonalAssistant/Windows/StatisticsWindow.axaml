@@ -1,0 +1,325 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1266" d:DesignHeight="768"
+        x:Class="PersonalAssistant.StatisticsWindow"
+		x:CompileBindings="False"
+		WindowStartupLocation="CenterScreen"
+		Width="1266" Height="768"
+		Title="Статистика">
+	<!-- Главное окно -->
+	<DockPanel
+		Margin="25">
+
+		<!-- Меню (слева) -->
+		<Border
+			DockPanel.Dock="Left">
+
+			<DockPanel>
+
+				<TextBlock
+					DockPanel.Dock="Top"
+					Text="LifePlan"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					Foreground="#497248"
+					FontSize="48"/>
+
+				<!-- Кнопка «На главную» -->
+				<Button
+					DockPanel.Dock="Bottom"
+					Width="175"
+					Height="80"
+					Background="#F9F0EB"
+					CornerRadius="24"
+					Click="GoBackButton_Click">
+					<TextBlock
+						Text="На главную"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						FontSize="20"
+						Foreground="#E0AF49"
+						TextWrapping="Wrap"/>
+				</Button>
+
+				<!-- Вкладки -->
+				<StackPanel
+					Spacing="46"
+					Margin="0 60">
+
+					<Button
+						Content="Статистика"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"
+						IsEnabled="False"/>
+					<Button
+						Click="MoodButton_Click"
+						Content="Настроение"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Click="AddTaskButton_Click"
+						Content="Добавить задачу"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Click="MatrixButton_Click"
+						Content="Матрица Эйзенхауэра"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+
+				</StackPanel>
+
+			</DockPanel>
+
+		</Border>
+
+		<!-- Основная часть окна -->
+		<Border
+			CornerRadius="25"
+			Background="#F3E6DE"
+			Margin="35 0 0 0"
+			Padding="20">
+			<ScrollViewer>
+				<StackPanel
+					Spacing="20">
+					<Border
+						Background="#F9F0EB"
+						CornerRadius="20"
+						Padding="15">
+						<DockPanel>
+							<TextBlock
+								DockPanel.Dock="Top"
+								Text="Статистика задач (за всё время)"
+								FontSize="24"
+								Margin="0 0 0 20"/>
+							<Grid
+								ColumnDefinitions="Auto Auto"
+								RowDefinitions="Auto Auto">
+								<StackPanel
+									Grid.Column="0"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="CompletedTasksCountPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="CompletedTasksDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="0"
+									Grid.Row="1"
+									Text="Выполненные задачи"
+									HorizontalAlignment="Center"
+									FontSize="18"
+									Margin="10 0"/>
+								<StackPanel
+									Grid.Column="1"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="FailedTasksCountPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="FailedTasksDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="1"
+									Grid.Row="1"
+									Text="Невыполненные задачи"
+									HorizontalAlignment="Center"
+									FontSize="18"
+									Margin="10 0"/>
+							</Grid>
+						</DockPanel>
+					</Border>
+					<Border
+						Background="#F9F0EB"
+						CornerRadius="20"
+						Padding="15">
+						<DockPanel>
+							<TextBlock
+								DockPanel.Dock="Top"
+								Text="Статистика настроения (за всё время)"
+								FontSize="24"
+								Margin="0 0 0 20"/>
+							<Grid
+								ColumnDefinitions="* * * * * * *"
+								RowDefinitions="Auto Auto">
+								<StackPanel
+									Grid.Column="0"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="VeryBadMoodPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="VeryBadMoodDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="0"
+									Grid.Row="1"
+									Text="Очень неприятно"
+									HorizontalAlignment="Center"
+									FontSize="14"
+									Margin="10 0"/>
+								<StackPanel
+									Grid.Column="1"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="BadMoodPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="BadMoodDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="1"
+									Grid.Row="1"
+									Text="Неприятно"
+									HorizontalAlignment="Center"
+									FontSize="14"
+									Margin="10 0"/>
+								<StackPanel
+									Grid.Column="2"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="SlightlyBadMoodPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="SlightlyBadMoodDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="2"
+									Grid.Row="1"
+									Text="Отчасти неприятно"
+									HorizontalAlignment="Center"
+									FontSize="14"
+									Margin="10 0"/>
+								<StackPanel
+									Grid.Column="3"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="NeutralMoodPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="NeutralMoodDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="3"
+									Grid.Row="1"
+									Text="Нейтрально"
+									HorizontalAlignment="Center"
+									FontSize="14"
+									Margin="10 0"/>
+								<StackPanel
+									Grid.Column="4"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="SlightlyGoodMoodPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="SlightlyGoodMoodDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="4"
+									Grid.Row="1"
+									Text="Отчасти приятно"
+									HorizontalAlignment="Center"
+									FontSize="14"
+									Margin="10 0"/>
+								<StackPanel
+									Grid.Column="5"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="GoodMoodPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="GoodMoodDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="5"
+									Grid.Row="1"
+									Text="Приятно"
+									HorizontalAlignment="Center"
+									FontSize="14"
+									Margin="10 0"/>
+								<StackPanel
+									Grid.Column="6"
+									Grid.Row="0"
+									VerticalAlignment="Bottom">
+									<TextBlock
+										Name="VeryGoodMoodPercentTextBlock"
+										Text="0%"
+										HorizontalAlignment="Center"
+										FontSize="18"/>
+									<Border
+										Name="VeryGoodMoodDiagram"
+										Background="#E0AF49"
+										Width="20"
+										Margin="10"/>
+								</StackPanel>
+								<TextBlock
+									Grid.Column="6"
+									Grid.Row="1"
+									Text="Очень приятно"
+									HorizontalAlignment="Center"
+									FontSize="14"
+									Margin="10 0"/>
+							</Grid>
+						</DockPanel>
+					</Border>
+				</StackPanel>
+			</ScrollViewer>
+		</Border>
+	</DockPanel>
+</Window>

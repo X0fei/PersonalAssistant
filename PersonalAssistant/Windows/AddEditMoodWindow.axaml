@@ -1,0 +1,19 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="PersonalAssistant.AddEditMoodWindow"
+        x:CompileBindings="False"
+		Title="Добавление/редактирование настроения"
+		Width="350" Height="250">
+	<StackPanel Margin="20" Spacing="10">
+		<TextBlock Text="{Binding DateText}" FontWeight="Bold" FontSize="16" HorizontalAlignment="Center"/>
+		<Slider Name="LevelSlider" Minimum="0" Maximum="100" TickFrequency="1" IsSnapToTickEnabled="True"/>
+		<TextBlock Name="EmotionText" FontSize="14" HorizontalAlignment="Center"/>
+		<StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Spacing="10">
+			<Button Name="SaveBtn" Content="Сохранить" Width="100"/>
+			<Button Name="DeleteBtn" Content="Удалить" Width="100" IsVisible="False"/>
+		</StackPanel>
+	</StackPanel>
+</Window>

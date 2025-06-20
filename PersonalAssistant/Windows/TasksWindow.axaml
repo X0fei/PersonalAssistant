@@ -1,0 +1,437 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1266" d:DesignHeight="768"
+        x:Class="PersonalAssistant.TasksWindow"
+		x:CompileBindings="False"
+		WindowStartupLocation="CenterScreen"
+		Width="1266" Height="768"
+        Title="Задачи">
+
+	<!-- Главное окно -->
+	<DockPanel
+		Margin="25">
+
+		<!-- Меню (слева) -->
+		<Border
+			DockPanel.Dock="Left">
+
+			<DockPanel>
+
+				<TextBlock
+					DockPanel.Dock="Top"
+					Text="LifePlan"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					Foreground="#497248"
+					FontSize="48"/>
+
+				<!-- Кнопка «Выйти из аккаунта» -->
+				<Button
+					DockPanel.Dock="Bottom"
+					Width="175"
+					Height="80"
+					Background="#F9F0EB"
+					CornerRadius="24"
+					Click="GoBackButton_Click">
+					<TextBlock
+						Text="Выйти из аккаунта"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						FontSize="20"
+						Foreground="#E0AF49"
+						TextWrapping="Wrap"/>
+				</Button>
+
+				<!-- Вкладки -->
+				<StackPanel
+					Spacing="46"
+					Margin="0 60">
+
+					<Button
+						Click="GoToStatisticsButton_Click"
+						Content="Статистика"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Click="MoodButton_Click"
+						Content="Настроение"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Click="AddTaskButton_Click"
+						Content="Добавить задачу"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Click="MatrixButton_Click"
+						Content="Матрица Эйзенхауэра"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+
+				</StackPanel>
+
+			</DockPanel>
+
+		</Border>
+
+		<!-- Основная часть окна -->
+		<Border
+			CornerRadius="25"
+			Background="#F3E6DE"
+			Margin="35 0 0 0">
+			<DockPanel>
+
+				<Border
+					DockPanel.Dock="Right"
+					Padding="15">
+					<DockPanel>
+
+						<Grid
+							DockPanel.Dock="Top"
+							ColumnDefinitions="Auto, Auto, *">
+
+							<Border
+								Grid.Column="0"
+								Width="75"
+								Height="75"
+								Margin="0 0 20 0"
+								CornerRadius="180"
+								Background="#F9F0EB">
+								<Image
+									Name="ProfileImage"
+									Source="/Assets/Images/PFPs/blank_profile.png"
+									Width="75"
+									Height="75">
+									<Image.Clip>
+										<EllipseGeometry
+											Center="37.5,37.5"
+											RadiusX="37.5"
+											RadiusY="37.5"/>
+									</Image.Clip>
+								</Image>
+							</Border>
+
+							<TextBlock
+								Grid.Column="1"
+								Name="UserName"
+								Text="Имя"
+								Foreground="#264E37"
+								FontSize="16"
+								HorizontalAlignment="Left"
+								VerticalAlignment="Top"
+								Margin="0 5 0 0"/>
+							<Button
+								Grid.Column="2"
+								Click="ProfileButton_Click"
+								Background="Transparent"
+								HorizontalAlignment="Right"
+								VerticalAlignment="Top">
+								<Image
+									Source="/Assets/Icons/edit_icon.png"
+									Width="16.67"
+									Height="16.67"/>
+							</Button>
+
+						</Grid>
+
+						<StackPanel
+							Spacing="20"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Bottom">
+
+							<Button
+								Click="GoToStatisticsButton_Click"
+								Width="250"
+								Height="85"
+								Background="#F9F0EB"
+								CornerRadius="12">
+								<DockPanel
+									Margin="15 5 10 5">
+									<TextBlock
+										DockPanel.Dock="Right"
+										Text="→"
+										Foreground="#E0AF49"
+										FontSize="24"
+										VerticalAlignment="Center"/>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Активные задачи"
+										Foreground="#183F28"
+										FontSize="16"/>
+									<TextBlock
+										Name="ActiveTasksTextBlock"
+										Text="10"
+										FontSize="32"
+										VerticalAlignment="Bottom"
+										Foreground="#497248"/>
+								</DockPanel>
+							</Button>
+							<Button
+								Click="GoToStatisticsButton_Click"
+								Width="250"
+								Height="85"
+								Background="#F9F0EB"
+								CornerRadius="12">
+								<DockPanel
+									Margin="15 5 10 5">
+									<TextBlock
+										DockPanel.Dock="Right"
+										Text="→"
+										Foreground="#E0AF49"
+										FontSize="24"
+										VerticalAlignment="Center"/>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Выполненные задачи"
+										Foreground="#183F28"
+										FontSize="16"/>
+									<TextBlock
+										Name="CompletedTasksTextBlock"
+										Text="10"
+										FontSize="32"
+										VerticalAlignment="Bottom"
+										Foreground="#497248"/>
+								</DockPanel>
+							</Button>
+							<Button
+								Click="GoToStatisticsButton_Click"
+								Width="250"
+								Height="85"
+								Background="#F9F0EB"
+								CornerRadius="12">
+								<DockPanel
+									Margin="15 5 10 5">
+									<TextBlock
+										DockPanel.Dock="Right"
+										Text="→"
+										Foreground="#E0AF49"
+										FontSize="24"
+										VerticalAlignment="Center"/>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Просроченные задачи"
+										Foreground="#183F28"
+										FontSize="16"/>
+									<TextBlock
+										Name="OverdueTasksTextBlock"
+										Text="10"
+										FontSize="32"
+										VerticalAlignment="Bottom"
+										Foreground="#497248"/>
+								</DockPanel>
+							</Button>
+							<Button
+								Click="GoToStatisticsButton_Click"
+								Width="250"
+								Height="250"
+								Background="#F9F0EB"
+								CornerRadius="12">
+
+								<DockPanel>
+									<TextBlock
+										DockPanel.Dock="Top"
+										Text="Общая продуктивность в %"
+										Foreground="#497248"
+										HorizontalAlignment="Center"
+										FontSize="16"
+										Margin="0 5 0 0"/>
+									<Border
+										HorizontalAlignment="Center"
+										VerticalAlignment="Center"
+										Background="#F3E6DE"
+										Width="190"
+										Height="190"
+										CornerRadius="180">
+										<Border
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Background="#F9F0EB"
+											Width="150"
+											Height="150"
+											CornerRadius="180">
+											<TextBlock
+												Name="CompletedTasksPercentTextBlock"
+												VerticalAlignment="Center"
+												HorizontalAlignment="Center"
+												Text="100"
+												FontSize="64"
+												Foreground="#E0AF49"/>
+										</Border>
+									</Border>
+								</DockPanel>
+
+							</Button>
+
+						</StackPanel>
+
+					</DockPanel>
+
+				</Border>
+
+				<Border
+					CornerRadius="25"
+					Background="#F9F0EB"
+					Padding="40 25">
+					<DockPanel>
+						<Border
+							DockPanel.Dock="Top"
+							Background="#F3E6DE"
+							Padding="30 0"
+							CornerRadius="25">
+							<Grid
+								ColumnDefinitions="*, Auto">
+								<StackPanel
+									Grid.Column="0"
+									Margin="0 0 50 0"
+									Spacing="15"
+									VerticalAlignment="Center">
+									<TextBlock
+										Name="GreetingTextBlock"
+										Text="Привет, Имя!"
+										FontSize="24"
+										Foreground="#373E46"/>
+									<TextBlock
+										Text="Здесь ты можешь ставить задачи, следить за дедлайнами и отмечать своё настроение каждый день. Управляй делами и заботься о себе — в одном месте."
+										TextWrapping="Wrap"
+										FontSize="14"
+										Foreground="#1F3729"/>
+								</StackPanel>
+								<Image
+									Grid.Column="1"
+									Source="/Assets/Images/Layout/greeting.png"
+									Width="150"
+									Height="150"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Center"/>
+							</Grid>
+						</Border>
+
+						<Grid
+							RowDefinitions="Auto, *">
+							<StackPanel
+								Grid.Row="0">
+								<TextBlock
+									Text="Посмотри на свои задачи!"
+									FontSize="32"
+									Margin="0 30"
+									Foreground="#373E46"/>
+								<StackPanel
+									Orientation="Horizontal"
+									Margin="0 0 0 30"
+									Spacing="30">
+									<ComboBox
+										PlaceholderText="Сортировка"
+										Background="#F3E6DE"
+										BorderThickness="0"
+										CornerRadius="12"
+										Foreground="#1F3729"
+										Width="260"
+										Height="40"
+										SelectionChanged="SortComboBox_SelectionChanged">
+										<ComboBoxItem>
+											<TextBlock
+												Text="Сначала важные"/>
+										</ComboBoxItem>
+										<ComboBoxItem>
+											<TextBlock
+												Text="Сначала неважные"/>
+										</ComboBoxItem>
+									</ComboBox>
+									<Button
+										Name="AddListOfTasksButton"
+										Click="AddListOfTasksButton_Click"
+										Background="#F3E6DE"
+										BorderThickness="0"
+										CornerRadius="12"
+										Height="40">
+										<TextBlock
+											Text="Добавить список"
+											HorizontalAlignment="Center"
+											VerticalAlignment="Center"
+											Margin="5"
+											Foreground="#1F3729"/>
+									</Button>
+								</StackPanel>
+
+							</StackPanel>
+
+							<Border
+								Grid.Row="1"
+								Background="#F3E6DE"
+								CornerRadius="25">
+								<Grid
+									RowDefinitions="Auto, *">
+									<ListBox
+										Grid.Row="0"
+										Name="ListsOfTasks"
+										SelectionChanged="ListsOfTasks_SelectionChanged"
+										DoubleTapped="ListsOfTasks_ItemDoubleTapped"
+										SelectionMode="Single"
+										ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+										PointerWheelChanged="HorizontalScrollViewerWithoutShift"
+										CornerRadius="25 25 0 0"
+										Background="Transparent">
+										<ListBox.ItemsPanel>
+											<ItemsPanelTemplate>
+												<StackPanel
+													Orientation="Horizontal"/>
+											</ItemsPanelTemplate>
+										</ListBox.ItemsPanel>
+										<ListBox.ItemTemplate>
+											<DataTemplate>
+												<Border
+													Background="#F9F0EB"
+													CornerRadius="12"
+													Padding="10">
+													<TextBlock
+														Text="{Binding Name}"/>
+												</Border>
+											</DataTemplate>
+										</ListBox.ItemTemplate>
+									</ListBox>
+									<ListBox
+										Grid.Row="1"
+										Name="AllTasksList"
+										DoubleTapped="Item_DoubleTapped"
+										Background="Transparent"
+										CornerRadius="0 0 25 25">
+										<ListBox.ItemTemplate>
+											<DataTemplate>
+												<Border
+													Tag="{Binding Id}"
+													Background="#F9F0EB"
+													CornerRadius="12"
+													Padding="10">
+													<StackPanel>
+														<TextBlock
+															Text="{Binding Name}"/>
+														<TextBlock
+															Text="{Binding Description}"/>
+														<TextBlock >
+															<Run  Text="Приоритет:"/>
+															<Run Text="{Binding PriorityNavigation.Name}"/>
+														</TextBlock>
+														<TextBlock
+															Text="{Binding StatusNavigation.Name}"/>
+													</StackPanel>
+												</Border>
+											</DataTemplate>
+										</ListBox.ItemTemplate>
+									</ListBox>
+								</Grid>
+
+							</Border>
+						</Grid>
+					</DockPanel>
+
+				</Border>
+			</DockPanel>
+		</Border>
+	</DockPanel>
+</Window>

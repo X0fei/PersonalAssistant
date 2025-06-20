@@ -1,0 +1,381 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="1266" d:DesignHeight="768"
+        x:Class="PersonalAssistant.Mood"
+		x:CompileBindings="False"
+		WindowStartupLocation="CenterScreen"
+		Width="1266" Height="768"
+        Title="Настроение">
+	<DockPanel
+		Margin="25">
+
+		<!-- Меню (слева) -->
+		<Border
+			DockPanel.Dock="Left">
+
+			<DockPanel>
+
+				<TextBlock
+					DockPanel.Dock="Top"
+					Text="LifePlan"
+					VerticalAlignment="Center"
+					HorizontalAlignment="Center"
+					Foreground="#497248"
+					FontSize="48"/>
+
+				<!-- Кнопка «На главную» -->
+				<Button
+					DockPanel.Dock="Bottom"
+					Width="175"
+					Height="80"
+					Background="#F9F0EB"
+					CornerRadius="24"
+					Click="GoBackButton_Click">
+					<TextBlock
+						Text="На главную"
+						HorizontalAlignment="Center"
+						VerticalAlignment="Center"
+						FontSize="20"
+						Foreground="#E0AF49"
+						TextWrapping="Wrap"/>
+				</Button>
+
+				<!-- Вкладки -->
+				<StackPanel
+					Spacing="46"
+					Margin="0 60">
+
+					<Button
+						Click="GoToStatisticsButton_Click"
+						Content="Статистика"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Content="Настроение"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"
+						IsEnabled="False"/>
+					<Button
+						Click="AddTaskButton_Click"
+						Content="Добавить задачу"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+					<Button
+						Click="MatrixButton_Click"
+						Content="Матрица Эйзенхауэра"
+						Foreground="#183F28"
+						Background="Transparent"
+						FontSize="15"/>
+
+				</StackPanel>
+
+			</DockPanel>
+
+		</Border>
+
+		<!-- Основная часть окна -->
+		<Border
+			CornerRadius="25"
+			Background="#F9F0EB"
+			Margin="35 0 0 0">
+			<DockPanel>
+
+				<Border
+					DockPanel.Dock="Right"
+					Padding="40 30">
+					<DockPanel>
+						<TextBlock
+							DockPanel.Dock="Top"
+							Name="CurrentYear"
+							Text="Год"
+							FontSize="100"
+							Foreground="#657268"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"/>
+						<Border
+							VerticalAlignment="Bottom">
+							<StackPanel>
+								<TextBlock
+									Text="Статистика"
+									HorizontalAlignment="Center"
+									FontSize="32"
+									Foreground="#373E46"
+									Margin="0 0 0 25"/>
+								<Border
+									Background="#F3E6DE"
+									CornerRadius="12"
+									Padding="50, 15"
+									HorizontalAlignment="Center">
+									<StackPanel>
+										<Border
+											Background="#F9F0EB"
+											CornerRadius="12"
+											Height="140"
+											Width="140"
+											HorizontalAlignment="Center">
+											<TextBlock
+												Name="MostFrequentMoodCategoryCountTextBlock"
+												Text="10"
+												HorizontalAlignment="Center"
+												VerticalAlignment="Center"
+												FontSize="48"
+												Foreground="#CA8A05"/>
+										</Border>
+										<TextBlock
+											Name="MostFrequentMoodCategoryTextBlock"
+											Text="Очень приятно"
+											FontSize="20"
+											Foreground="#CA8A05"
+											HorizontalAlignment="Center"
+											Margin="0 20 0 10"/>
+									</StackPanel>
+								</Border>
+								<TextBlock
+									HorizontalAlignment="Center"
+									FontSize="20"
+									Margin="0, 25">
+									<Run
+										Text="Прошлая неделя:"
+										Foreground="#264E37"/>
+									<Run
+										Name="WeekStatText"
+										Text="Очень приятно"
+										Foreground="#657268"/>
+								</TextBlock>
+								<Button
+									Click="GoToStatisticsButton_Click"
+									HorizontalAlignment="Center"
+									Background="#F9F0EB"
+									BorderThickness="4"
+									BorderBrush="#DEB464"
+									CornerRadius="12"
+									Padding="40 10">
+									<TextBlock
+										Text="Больше статистики"
+										Foreground="#CA8A05"
+										FontSize="16"/>
+								</Button>
+							</StackPanel>
+						</Border>
+					</DockPanel>
+				</Border>
+
+				<Border
+					Padding="40 25 0 25">
+					<DockPanel>
+						<Border
+							DockPanel.Dock="Top"
+							Background="#F3E6DE"
+							CornerRadius="24"
+							Padding="35 15">
+							<StackPanel>
+								<TextBlock
+									Text="Дневник настроения"
+									FontSize="24"
+									Foreground="#373E46"
+									Margin="0 0 0 15"/>
+								<Grid
+									ColumnDefinitions="*, *"
+									RowDefinitions="*, *, *, *">
+									<StackPanel
+										Grid.Column="0"
+										Grid.Row="0"
+										Orientation="Horizontal"
+										Spacing="15"
+										Margin="0 10">
+										<Border
+											Width="15"
+											Height="15"
+											Background="#A8E6A1"
+											CornerRadius="180"
+											BorderBrush="#373E46"
+											BorderThickness="1"/>
+										<TextBlock
+											Text="Очень приятно"
+											FontSize="15"
+											Foreground="#244030"/>
+									</StackPanel>
+									<StackPanel
+										Grid.Column="0"
+										Grid.Row="1"
+										Orientation="Horizontal"
+										Spacing="15"
+										Margin="0 10">
+										<Border
+											Width="15"
+											Height="15"
+											Background="#D5EDBA"
+											CornerRadius="180"
+											BorderBrush="#373E46"
+											BorderThickness="1"/>
+										<TextBlock
+											Text="Приятно"
+											FontSize="15"
+											Foreground="#244030"/>
+									</StackPanel>
+									<StackPanel
+										Grid.Column="0"
+										Grid.Row="2"
+										Orientation="Horizontal"
+										Spacing="15"
+										Margin="0 10">
+										<Border
+											Width="15"
+											Height="15"
+											Background="#E0F7DD"
+											CornerRadius="180"
+											BorderBrush="#373E46"
+											BorderThickness="1"/>
+										<TextBlock
+											Text="Отчасти приятно"
+											FontSize="15"
+											Foreground="#244030"/>
+									</StackPanel>
+									<StackPanel
+										Grid.Column="0"
+										Grid.Row="3"
+										Orientation="Horizontal"
+										Spacing="15"
+										Margin="0 10">
+										<Border
+											Width="15"
+											Height="15"
+											Background="#EBF6FA"
+											CornerRadius="180"
+											BorderBrush="#373E46"
+											BorderThickness="1"/>
+										<TextBlock
+											Text="Нейтрально"
+											FontSize="15"
+											Foreground="#244030"/>
+									</StackPanel>
+									<StackPanel
+										Grid.Column="1"
+										Grid.Row="0"
+										Orientation="Horizontal"
+										Spacing="15"
+										Margin="0 10">
+										<Border
+											Width="15"
+											Height="15"
+											Background="#FBE0E0"
+											CornerRadius="180"
+											BorderBrush="#373E46"
+											BorderThickness="1"/>
+										<TextBlock
+											Text="Отчасти неприятно"
+											FontSize="15"
+											Foreground="#244030"/>
+									</StackPanel>
+									<StackPanel
+										Grid.Column="1"
+										Grid.Row="1"
+										Orientation="Horizontal"
+										Spacing="15"
+										Margin="0 10">
+										<Border
+											Width="15"
+											Height="15"
+											Background="#F5B1B1"
+											CornerRadius="180"
+											BorderBrush="#373E46"
+											BorderThickness="1"/>
+										<TextBlock
+											Text="Неприятно"
+											FontSize="15"
+											Foreground="#244030"/>
+									</StackPanel>
+									<StackPanel
+										Grid.Column="1"
+										Grid.Row="2"
+										Orientation="Horizontal"
+										Spacing="15"
+										Margin="0 10">
+										<Border
+											Width="15"
+											Height="15"
+											Background="#E98080"
+											CornerRadius="180"
+											BorderBrush="#373E46"
+											BorderThickness="1"/>
+										<TextBlock
+											Text="Очень неприятно"
+											FontSize="15"
+											Foreground="#244030"/>
+									</StackPanel>
+								</Grid>
+							</StackPanel>
+						</Border>
+						<!-- Основной контент -->
+						<DockPanel
+							Margin="0 30 0 0">
+							<Grid
+								DockPanel.Dock="Top"
+								ColumnDefinitions="*, *"
+								Margin="0 0 0 15">
+								<TextBlock
+									Grid.Column="0"
+									Text="Календарь"
+									FontSize="32"
+									Foreground="#373E46"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Left"
+									Margin="35 0 0 0"/>
+								<StackPanel
+									Grid.Column="1"
+									Orientation="Horizontal"
+									VerticalAlignment="Center"
+									HorizontalAlignment="Right"
+									Spacing="5"
+									Margin="0 0 35 0">
+									<Button
+										Name="PrevMonthBtn"
+										Background="Transparent">
+										<TextBlock
+											Text="←"
+											FontSize="20"
+											FontWeight="Bold"
+											VerticalAlignment="Center"/>
+									</Button>
+									<TextBlock
+										Name="MonthText"
+										Text="Месяц"
+										FontSize="32"
+										VerticalAlignment="Center"
+										HorizontalAlignment="Center"
+										TextAlignment="Center"
+										Width="150"/>
+									<Button
+										Name="NextMonthBtn"
+										Background="Transparent">
+										<TextBlock
+											Text="→"
+											FontSize="20"
+											FontWeight="Bold"
+											VerticalAlignment="Center"/>
+									</Button>
+								</StackPanel>
+							</Grid>
+							<Border
+								Background="#F3E6DE"
+								CornerRadius="24">
+								<UniformGrid
+									Name="CalendarGrid"
+									Columns="7"
+									Rows="6"
+									Margin="10"
+									HorizontalAlignment="Center"
+									VerticalAlignment="Center"/>
+							</Border>
+						</DockPanel>
+					</DockPanel>
+				</Border>
+			</DockPanel>
+		</Border>
+	</DockPanel>
+</Window>
